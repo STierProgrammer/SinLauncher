@@ -16,7 +16,7 @@ public class MainLauncherMenu extends Application {
 
         Button playBtn = new Button();
 
-        playBtn.getStyleClass().add("rounded-lg"); // Apply CSS class
+        playBtn.getStyleClass().add("btn"); // Apply CSS class
 
         playBtn.setText(text_1);
 
@@ -35,9 +35,9 @@ public class MainLauncherMenu extends Application {
 
         scene.getStylesheets().add(getClass().getResource("./css/styles.css").toExternalForm()); // Load CSS file
 
-        
+
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Test");
+        primaryStage.setTitle("SinLauncher");
         primaryStage.show();
     }
 

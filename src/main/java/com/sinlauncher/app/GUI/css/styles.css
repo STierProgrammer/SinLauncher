@@ -1,8 +1,10 @@
 /* styles.css */
-.rounded-lg {
+.btn {
     -fx-background-radius: 20px; /* Adjust radius for desired rounded corners */
     -fx-min-width: 120px; /* Adjust width as needed */
     -fx-min-height: 40px; /* Adjust height as needed */
     -fx-max-width: 120px; /* Adjust width as needed */
     -fx-max-height: 40px; /* Adjust height as needed */
+    -fx-background-color: aqua;
+    -fx-text: black;
 }
