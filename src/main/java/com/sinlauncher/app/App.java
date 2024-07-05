@@ -1,4 +1,4 @@
-package com.css.app;
+package com.sinlauncher.app;
 
 /**
  * Hello world!

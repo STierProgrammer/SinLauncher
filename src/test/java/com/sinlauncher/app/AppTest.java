@@ -1,7 +1,6 @@
-package com.mycompany.app;
+package com.sinlauncher.app;
 
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 /**
