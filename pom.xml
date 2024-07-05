@@ -25,6 +25,14 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.konghq</groupId>
+      <artifactId>unirest-java-core</artifactId>
+      <version>4.4.0</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
