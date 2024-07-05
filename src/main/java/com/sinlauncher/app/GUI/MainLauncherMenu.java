@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class MainLauncherMenu extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Button btn = new Button();
@@ -24,5 +25,3 @@ public class MainLauncherMenu extends Application {
         launch(args);
     }
 }
-
-// Here

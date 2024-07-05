@@ -108,14 +108,15 @@
         </configuration>
       </plugin>
 
-      <plugin>
+    <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-            <mainClass>com.sinlauncher.GUI.MainLauncherMenu</mainClass>
+            <mainClass>com.sinlauncher.app.GUI.MainLauncherMenu</mainClass>
         </configuration>
-      </plugin>
+    </plugin>
+
 
     </plugins>
   </build>
