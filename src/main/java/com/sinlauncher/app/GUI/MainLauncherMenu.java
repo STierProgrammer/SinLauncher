@@ -1,2 +1,4 @@
-package com.sinlauncher.app.GUI;public class MainLauncherMenu {
+package com.sinlauncher.app.GUI;
+
+public class MainLauncherMenu {
 }

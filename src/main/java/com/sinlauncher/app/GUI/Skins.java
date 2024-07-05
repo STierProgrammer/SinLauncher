@@ -1,2 +1,4 @@
-package com.sinlauncher.app.GUI;public class Skins {
+package com.sinlauncher.app.GUI;
+
+public class Skins {
 }

@@ -1,2 +1,4 @@
-package com.sinlauncher.app.GUI;public class Installations {
+package com.sinlauncher.app.GUI;
+
+public class Installations {
 }
