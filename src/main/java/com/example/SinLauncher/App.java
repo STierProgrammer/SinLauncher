@@ -1,4 +1,4 @@
-package com.sinlauncher.app;
+package com.example.SinLauncher;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
+
 
 public class App {
     private static final String LAUNCHER_DIR;
@@ -18,7 +19,7 @@ public class App {
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             LAUNCHER_DIR = System.getProperty("user.home") + "/.sinlauncher";
         } else {
-            LAUNCHER_DIR = "SinLauncher";
+            LAUNCHER_DIR = "com/example/SinLauncher";
         }
     }
 

@@ -1,13 +1,17 @@
-// MainLauncherMenu.java
-package com.sinlauncher.app.GUI;
+package com.example.SinLauncher;// com.MainLauncherMenu.java
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class MainLauncherMenu extends Application {
+
+    private static String[] savedArgs;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -37,11 +41,13 @@ public class MainLauncherMenu extends Application {
 
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("SinLauncher");
+        primaryStage.setTitle("com/example/SinLauncher");
         primaryStage.show();
     }
 
     public static void main(String[] args) {
-        launch(args);
+        savedArgs = args;
+        new Thread(() -> SpringApplication.run(MainLauncherMenu.class, args).start());
+        Application.launch(args);
     }
 }
