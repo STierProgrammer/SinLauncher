@@ -9,11 +9,7 @@ import com.google.gson.Gson;
 import com.sinlauncher.app.App;
 
 public class Manifest {
-    public static final String PATH;
-
-    static  {
-        PATH = App.DIR + "/manifest_version.json";
-    }
+    public static final Path PATH  = Paths.get(App.DIR, "manifest_version.json");
 
     public class Latest {
         public String release;
@@ -32,8 +28,6 @@ public class Manifest {
     public Version[] versions;
 
     public static Manifest readManifest() throws IOException {
-        Path path = Paths.get(PATH);
-
-        return new Gson().fromJson(Files.readString(path), Manifest.class);
+        return new Gson().fromJson(Files.readString(PATH), Manifest.class);
     }
 }
