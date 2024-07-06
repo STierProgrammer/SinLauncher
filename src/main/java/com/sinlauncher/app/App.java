@@ -4,14 +4,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.sinlauncher.app.Json.Manifest;
+import com.sinlauncher.app.config.Config;
+import com.sinlauncher.app.json.Manifest;
 
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
 
 public class App {
+    private static final Logger LOGGER = Logger.getLogger(App.class.getName());
     public static final String DIR;
+    public static final Config CONFIG;
 
     static {
         String os = System.getProperty("os.name").toLowerCase();
@@ -22,6 +27,8 @@ public class App {
         } else {
             DIR = "SinLauncher";
         }
+
+        CONFIG = new Config(); // replace with reading config.json or creating new one
     }
 
     static void init_launcher_dir() throws IOException {
@@ -59,7 +66,7 @@ public class App {
         try {
             init_launcher_dir();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory", e);
         }
 
         System.out.println("Launcher Directory: " + DIR);
@@ -68,7 +75,7 @@ public class App {
             Manifest manifest = Manifest.readManifest();
             System.out.println(manifest.latest.release);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to read manifest", e);
         }
     }
 }

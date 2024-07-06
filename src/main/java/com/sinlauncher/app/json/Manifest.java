@@ -1,4 +1,4 @@
-package com.sinlauncher.app.Json;
+package com.sinlauncher.app.json;
 
 import java.io.IOException;
 import java.nio.file.Files;
