@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.sinlauncher.app.config.Config;
+import com.sinlauncher.app.json.Instance;
 import com.sinlauncher.app.json.Manifest;
 
 import kong.unirest.core.HttpResponse;
@@ -51,8 +52,8 @@ public class App {
             Files.createDirectories(Paths.get(DIR + "/libraries"));
         }
 
-        if (!Files.exists(Paths.get(DIR + "/instances"))) {
-            Files.createDirectories(Paths.get(DIR + "/instances"));
+        if (!Files.exists(Paths.get(Instance.PARENT_DIR))) {
+            Files.createDirectories(Paths.get(Instance.PARENT_DIR));
         }
 
         // fetching manifest json or using an already downloaded one
@@ -78,6 +79,7 @@ public class App {
         
         try {
             Manifest manifest = Manifest.readManifest();
+            System.out.println(CONFIG.MAX_RAM);
             System.out.println(manifest.latest.release);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to read manifest", e);

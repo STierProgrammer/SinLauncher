@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.sinlauncher.app.App;
 
 public class Manifest {
-    public static final Path PATH  = Paths.get(App.DIR, "manifest_version.json");
+    public static final Path PATH  = Paths.get(App.DIR, "version_manifest.json");
 
     public class Latest {
         public String release;
