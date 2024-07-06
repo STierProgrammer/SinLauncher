@@ -51,7 +51,13 @@
       <version>22.0.1</version>
     </dependency>
 
-
+    <!--  Gson: Java to JSON conversion -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.11.0</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
