@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gson.Gson;
 import com.sinlauncher.app.config.Config;
 import com.sinlauncher.app.json.Manifest;
 
@@ -13,7 +14,9 @@ import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
 
 public class App {
-    private static final Logger LOGGER = Logger.getLogger(App.class.getName());
+    public static final Logger LOGGER = Logger.getLogger(App.class.getName());
+    public static final Gson GSON = new Gson();
+
     public static final String DIR;
     public static Config CONFIG;
 
