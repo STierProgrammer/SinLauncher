@@ -1,35 +1,30 @@
 // MainLauncherMenu.java
 package com.sinlauncher.app.GUI;
 
+import com.sinlauncher.app.GUI.components.StyledButton;
+import com.sinlauncher.app.GUI.components.StyledTextInput;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+
+// Testing
 public class MainLauncherMenu extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        String text_1 = "Click Me";
-        String text_2 = "Don't Click Me";
+        StyledButton btn = new StyledButton("Button", "btn");
+        StyledTextInput txtI = new StyledTextInput("Placeholder", "txtI");
 
-        Button playBtn = new Button();
-
-        playBtn.getStyleClass().add("btn"); // Apply CSS class
-
-        playBtn.setText(text_1);
-
-        playBtn.setOnAction(event -> {
-            if (playBtn.getText().equals(text_1))
-                playBtn.setText(text_2);
-            else
-                playBtn.setText(text_1);
-        });
+        HBox _10H = new HBox(10);
 
         StackPane root = new StackPane();
         
-        root.getChildren().add(playBtn);
+        root.getChildren().add(txtI);
 
         Scene scene = new Scene(root, 1200, 600);
 

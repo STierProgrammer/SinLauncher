@@ -8,3 +8,9 @@
     -fx-background-color: aqua;
     -fx-text: black;
 }
+
+.txtI {
+    -fx-background-radius: 20px;
+    -fx-text: black;
+    -fx-background-color: white;
+}

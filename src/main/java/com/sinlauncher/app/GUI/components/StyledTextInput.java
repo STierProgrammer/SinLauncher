@@ -1,14 +1,14 @@
 package com.sinlauncher.app.GUI.components;
 
-import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
-public class StyledButton extends Button {
+// Testing
 
-    public StyledButton(String text, String styleClass) {
+public class StyledTextInput extends TextField {
+    public StyledTextInput(String text, String styleClass) {
         super(text);
         if (styleClass != null && !styleClass.isEmpty()) {
             this.getStyleClass().add(styleClass);
         }
     }
-    
 }
