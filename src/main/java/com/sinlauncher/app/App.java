@@ -2,21 +2,24 @@ package com.sinlauncher.app;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gson.Gson;
 import com.sinlauncher.app.config.Config;
+import com.sinlauncher.app.json.Instance;
 import com.sinlauncher.app.json.Manifest;
 
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
 
 public class App {
-    private static final Logger LOGGER = Logger.getLogger(App.class.getName());
+    public static final Logger LOGGER = Logger.getLogger(App.class.getName());
+    public static final Gson GSON = new Gson();
+
     public static final String DIR;
-    public static final Config CONFIG;
+    public static Config CONFIG;
 
     static {
         String os = System.getProperty("os.name").toLowerCase();
@@ -28,7 +31,12 @@ public class App {
             DIR = "SinLauncher";
         }
 
-        CONFIG = new Config(); // replace with reading config.json or creating new one
+        try {
+            init_launcher_dir();
+            CONFIG = Config.readConfig();
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory or read config", e);
+        }
     }
 
     static void init_launcher_dir() throws IOException {
@@ -44,19 +52,17 @@ public class App {
             Files.createDirectories(Paths.get(DIR + "/libraries"));
         }
 
-        if (!Files.exists(Paths.get(DIR + "/instances"))) {
-            Files.createDirectories(Paths.get(DIR + "/instances"));
+        if (!Files.exists(Paths.get(Instance.PARENT_DIR))) {
+            Files.createDirectories(Paths.get(Instance.PARENT_DIR));
         }
 
         // fetching manifest json or using an already downloaded one
         HttpResponse<String> response = Unirest.get("https://launchermeta.mojang.com/mc/game/version_manifest.json").asString();
         
-        Path path = Paths.get(Manifest.PATH);
-
         if (response.getStatus() == 200) {
-            Files.write(path, response.getBody().getBytes());
+            Files.write(Manifest.PATH, response.getBody().getBytes());
         } else {
-            if (!Files.exists(path)) {
+            if (!Files.exists(Manifest.PATH)) {
                 throw new IOException("Failed to fetch manifest JSON. Response code: " + response.getStatus());
             }
         }
@@ -73,6 +79,7 @@ public class App {
         
         try {
             Manifest manifest = Manifest.readManifest();
+            System.out.println(CONFIG.MAX_RAM);
             System.out.println(manifest.latest.release);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to read manifest", e);
