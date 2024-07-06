@@ -26,7 +26,7 @@ public class MainLauncherMenu extends Application {
 
         Scene scene = new Scene(root, 1200, 600);
 
-        scene.getStylesheets().add(getClass().getResource("./css/styles.css").toExternalForm()); // Load CSS file
+        scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm()); // Load CSS file
 
 
         primaryStage.setScene(scene);
