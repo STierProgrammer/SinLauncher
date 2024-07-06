@@ -2,7 +2,6 @@ package com.sinlauncher.app;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +15,7 @@ import kong.unirest.core.Unirest;
 public class App {
     private static final Logger LOGGER = Logger.getLogger(App.class.getName());
     public static final String DIR;
-    public static final Config CONFIG;
+    public static Config CONFIG;
 
     static {
         String os = System.getProperty("os.name").toLowerCase();
@@ -28,7 +27,12 @@ public class App {
             DIR = "SinLauncher";
         }
 
-        CONFIG = new Config(); // replace with reading config.json or creating new one
+        try {
+            init_launcher_dir();
+            CONFIG = Config.readConfig();
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory or read config", e);
+        }
     }
 
     static void init_launcher_dir() throws IOException {
@@ -51,12 +55,10 @@ public class App {
         // fetching manifest json or using an already downloaded one
         HttpResponse<String> response = Unirest.get("https://launchermeta.mojang.com/mc/game/version_manifest.json").asString();
         
-        Path path = Paths.get(Manifest.PATH);
-
         if (response.getStatus() == 200) {
-            Files.write(path, response.getBody().getBytes());
+            Files.write(Manifest.PATH, response.getBody().getBytes());
         } else {
-            if (!Files.exists(path)) {
+            if (!Files.exists(Manifest.PATH)) {
                 throw new IOException("Failed to fetch manifest JSON. Response code: " + response.getStatus());
             }
         }
