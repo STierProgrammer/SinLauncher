@@ -6,10 +6,10 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.example.SinLauncher.SinLauncherClasses.Instance;
+import com.example.SinLauncher.config.Config;
+import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
-import com.sinlauncher.app.config.Config;
-import com.sinlauncher.app.json.Instance;
-import com.sinlauncher.app.json.Manifest;
 
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
@@ -29,8 +29,10 @@ public class App {
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             DIR = System.getProperty("user.home") + "/.sinlauncher";
         } else {
-            LAUNCHER_DIR = "SinLauncher";
+            DIR = "SinLauncher";
         }
+
+        CONFIG = Config.readConfig();
     }
 
     static void init_launcher_dir() throws IOException {

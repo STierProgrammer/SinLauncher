@@ -1,4 +1,4 @@
-package com.sinlauncher.app.config;
+package com.example.SinLauncher.config;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -7,7 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.google.gson.Gson;
-import com.sinlauncher.app.App;
+import com.example.SinLauncher.App;
+
 import com.sun.management.OperatingSystemMXBean;
 
 public class Config {
