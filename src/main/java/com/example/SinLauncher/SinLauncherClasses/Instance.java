@@ -1,12 +1,12 @@
-package com.sinlauncher.app.json;
+package com.example.SinLauncher.SinLauncherClasses;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.sinlauncher.app.App;
-import com.sinlauncher.app.config.Config;
+import com.example.SinLauncher.App;
+import com.example.SinLauncher.config.Config;
 
 
 public class Instance {

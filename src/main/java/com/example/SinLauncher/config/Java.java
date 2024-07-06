@@ -1,4 +1,4 @@
-package com.sinlauncher.app.config;
+package com.example.SinLauncher.config;
 
 public class Java {
     public String version;

@@ -1,4 +1,4 @@
-package com.sinlauncher.app;
+package com.example.SinLauncher;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -6,13 +6,14 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.example.SinLauncher.SinLauncherClasses.Instance;
+import com.example.SinLauncher.config.Config;
+import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
-import com.sinlauncher.app.config.Config;
-import com.sinlauncher.app.json.Instance;
-import com.sinlauncher.app.json.Manifest;
 
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
+
 
 public class App {
     public static final Logger LOGGER = Logger.getLogger(App.class.getName());
@@ -31,12 +32,7 @@ public class App {
             DIR = "SinLauncher";
         }
 
-        try {
-            init_launcher_dir();
-            CONFIG = Config.readConfig();
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory or read config", e);
-        }
+        CONFIG = Config.readConfig();
     }
 
     static void init_launcher_dir() throws IOException {
