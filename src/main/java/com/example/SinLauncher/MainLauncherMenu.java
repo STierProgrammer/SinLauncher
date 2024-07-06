@@ -1,39 +1,28 @@
 package com.example.SinLauncher;// com.MainLauncherMenu.java
 
+import org.springframework.boot.SpringApplication;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+
+// Testing
 public class MainLauncherMenu extends Application {
 
     private static String[] savedArgs;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        String text_1 = "Click Me";
-        String text_2 = "Don't Click Me";
-
-        Button playBtn = new Button();
-
-        playBtn.getStyleClass().add("btn"); // Apply CSS class
-
-        playBtn.setText(text_1);
-
-        playBtn.setOnAction(event -> {
-            if (playBtn.getText().equals(text_1))
-                playBtn.setText(text_2);
-            else
-                playBtn.setText(text_1);
-        });
+        TextField searchInput = new TextField();
+        searchInput.getStyleClass().add("txtI");
+        searchInput.setPromptText("Search");
 
         StackPane root = new StackPane();
         
-        root.getChildren().add(playBtn);
+        root.getChildren().add(searchInput);
 
         Scene scene = new Scene(root, 1200, 600);
 
