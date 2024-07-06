@@ -13,16 +13,16 @@ import com.sun.management.OperatingSystemMXBean;
 public class Config {
     public static final String PATH = App.DIR + "/config.json";
 
-    public long MIN_RAM;
-    public long MAX_RAM;
-    public Java JAVA;
+    public long MIN_RAM = 0;
+    public long MAX_RAM = 0;
+    public Java JAVA = null;
 
     public Config() {
         OperatingSystemMXBean os = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
         long total = os.getTotalMemorySize();
 
-        this.MIN_RAM = total / 6;
-        this.MAX_RAM = total / 4;
+        this.MAX_RAM = total / 4 / 1024 / 1024;
+        this.MIN_RAM = this.MAX_RAM / 2;
 
         this.JAVA = null;
     }
@@ -31,14 +31,27 @@ public class Config {
         Path path = Paths.get(App.DIR, instance, "config.json");
         
         try {
-            return new Gson().fromJson(Files.readString(path), Config.class);
+            Config config = App.GSON.fromJson(Files.readString(path), Config.class);
+            if (config.JAVA == null) {
+                config.JAVA = App.CONFIG.JAVA;
+            }
+
+            if (config.MIN_RAM == 0) {
+                config.MIN_RAM = App.CONFIG.MIN_RAM;
+            } 
+            
+            if (config.MAX_RAM == 0) {
+                config.MAX_RAM = App.CONFIG.MAX_RAM;
+            }
+
+            return config;
         } catch (IOException _e) {
             return App.CONFIG;
         }
     }
 
     public void writeConfig() throws IOException {
-        String json = new Gson().toJson(this);
+        String json = App.GSON.toJson(this);
         Path path = Path.of(PATH);
         Files.writeString(path, json);
     }
