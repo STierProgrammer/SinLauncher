@@ -1,4 +1,4 @@
-package com.example.SinLauncher;// com.MainLauncherMenu.java
+package com.example.SinLauncher;
 
 import org.springframework.boot.SpringApplication;
 
@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
-// Testing
+
 public class MainLauncherMenu extends Application {
 
     private static String[] savedArgs;
@@ -26,7 +26,7 @@ public class MainLauncherMenu extends Application {
 
         Scene scene = new Scene(root, 1200, 600);
 
-        scene.getStylesheets().add(getClass().getResource("./css/styles.css").toExternalForm()); // Load CSS file
+        scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm()); // Load CSS file
 
 
         primaryStage.setScene(scene);
