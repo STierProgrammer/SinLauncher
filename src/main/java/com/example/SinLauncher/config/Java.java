@@ -57,7 +57,7 @@ public class Java {
                         Path path = Paths.get(file.getAbsolutePath(), "bin", "java.exe");
 
                         if (Files.exists(path))
-                            cups.add(new Java("", path.toString()));
+                            cups.add(new Java("DIR", path.toString()));
                     }
                 }
             }
@@ -70,7 +70,7 @@ public class Java {
                 File javaFile = new File(p, "java.exe");
 
                 if (javaFile.exists()) {
-                    cups.add(new Java("", javaFile.getAbsolutePath()));
+                    cups.add(new Java("ENV", javaFile.getAbsolutePath()));
                 }
             }
         }
