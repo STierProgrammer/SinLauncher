@@ -18,7 +18,6 @@ public class MojangController {
         this.mojangService = mojangService;
     }
 
-    //finds uuid using username, if Mono<String> is empty it means user not found
     @GetMapping(path = "/uuid/{username}")
     public Mono<String> UUIDFromName(@PathVariable String username) {
         return mojangService.getUUUIDByUsername(username);

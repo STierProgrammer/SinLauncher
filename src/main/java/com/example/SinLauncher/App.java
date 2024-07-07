@@ -24,43 +24,39 @@ public class App {
 
     static {
         String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) {
+        
+        if (os.contains("win")) 
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+        
+        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) 
             DIR = System.getProperty("user.home") + "/.sinlauncher";
-        } else {
+        
+        else 
             DIR = "SinLauncher";
-        }
-
+        
         CONFIG = Config.readConfig();
     }
 
     static void init_launcher_dir() throws IOException {
-        if (!Files.exists(Paths.get(DIR))) {
+        if (!Files.exists(Paths.get(DIR))) 
             Files.createDirectories(Paths.get(DIR));
-        }
+        
+        if (!Files.exists(Paths.get(DIR + "/assets"))) 
+            Files.createDirectories(Paths.get(DIR + "/assets"));   
 
-        if (!Files.exists(Paths.get(DIR + "/assets"))) {
-            Files.createDirectories(Paths.get(DIR + "/assets"));
-        }
+        if (!Files.exists(Paths.get(DIR + "/libraries"))) 
+            Files.createDirectories(Paths.get(DIR + "/libraries"));        
 
-        if (!Files.exists(Paths.get(DIR + "/libraries"))) {
-            Files.createDirectories(Paths.get(DIR + "/libraries"));
-        }
+        if (!Files.exists(Paths.get(Instance.PARENT_DIR))) 
+            Files.createDirectories(Paths.get(Instance.PARENT_DIR));   
 
-        if (!Files.exists(Paths.get(Instance.PARENT_DIR))) {
-            Files.createDirectories(Paths.get(Instance.PARENT_DIR));
-        }
-
-        // fetching manifest json or using an already downloaded one
         HttpResponse<String> response = Unirest.get("https://launchermeta.mojang.com/mc/game/version_manifest.json").asString();
         
-        if (response.getStatus() == 200) {
+        if (response.getStatus() == 200) 
             Files.write(Manifest.PATH, response.getBody().getBytes());
-        } else {
-            if (!Files.exists(Manifest.PATH)) {
-                throw new IOException("Failed to fetch manifest JSON. Response code: " + response.getStatus());
-            }
+        else {
+            if (!Files.exists(Manifest.PATH)) 
+                throw new IOException("Failed to fetch manifest JSON. Response code: " + response.getStatus());         
         }
     }
 
