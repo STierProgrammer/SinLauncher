@@ -1,4 +1,4 @@
-package com.example.SinLauncher;// com.MainLauncherMenu.java
+package com.example.SinLauncher;
 
 import org.springframework.boot.SpringApplication;
 
@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
-// Testing
+
 public class MainLauncherMenu extends Application {
 
     private static String[] savedArgs;
