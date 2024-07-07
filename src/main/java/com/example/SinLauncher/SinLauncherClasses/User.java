@@ -15,6 +15,4 @@ public class User {
     private String password;
     private String email;
     private boolean isLoggedIn;
-
-
 }

@@ -3,11 +3,13 @@ package com.example.SinLauncher;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.example.SinLauncher.SinLauncherClasses.Instance;
 import com.example.SinLauncher.config.Config;
+import com.example.SinLauncher.config.Java;
 import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
 
@@ -73,6 +75,11 @@ public class App {
             Manifest manifest = Manifest.readManifest();
             System.out.println(CONFIG.MAX_RAM);
             System.out.println(manifest.latest.release);
+
+            List<Java> cups = Java.getAvailableJavaInstallations();
+
+            for (Java cup : cups)
+                System.out.println(cup.version + ": " + cup.path);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to read manifest", e);
         }
