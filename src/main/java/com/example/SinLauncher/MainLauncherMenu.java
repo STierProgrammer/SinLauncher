@@ -1,5 +1,6 @@
 package com.example.SinLauncher;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 
 import javafx.application.Application;
@@ -7,9 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-
+@SpringBootApplication
+@EnableEncryptableProperties
 public class MainLauncherMenu extends Application {
 
     private static String[] savedArgs;
@@ -26,8 +29,9 @@ public class MainLauncherMenu extends Application {
 
         Scene scene = new Scene(root, 1200, 600);
 
-        scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm()); // Load CSS file
-
+        //scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm()); // Load CSS file
+        // mvn javafx:run doesn't work when the above line isn't commented
+        //Build fails due to some problem with java fx
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("com/example/SinLauncher");
