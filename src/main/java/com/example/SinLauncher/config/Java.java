@@ -71,13 +71,13 @@ public class Java {
     }
 
     public static List<Java> getCommonLinuxCups() {
-        List<Java> cups = new ArrayList<>();
-        return cups;
+        File[] directories = {
+            new File("/usr/lib/jvm"),
+        };
+        return getCupsInDirs(directories);
     }
 
     public static List<Java> getCommonWindowsCups() {
-        List<Java> cups = new ArrayList<>();
-
         String systemDrive = System.getenv("SystemDrive");
 
         File[] directories = {
@@ -85,25 +85,42 @@ public class Java {
             new File(systemDrive + "/Program Files (x86)/Java")
         };
 
+
+        return getCupsInDirs(directories);
+    }
+
+    public static List<Java> getCupsInDirs(File[] directories) {
+        List<Java> cups = new ArrayList<>();
+
         for (File dir : directories) {
             if (dir == null)
                 continue;
 
-            File[] files = dir.listFiles();
-
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        Path path = Paths.get(file.getAbsolutePath(), "bin", "java.exe");
-
-                        if (Files.exists(path))
-                            cups.add(new Java("DIR", path.toString()));
-                    }
-                }
-            }
+            findJavaBinaries(dir, cups);
         }
 
         return cups;
+    }
+
+    private static void findJavaBinaries(File dir, List<Java> cups) {
+        File[] files = dir.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    String binary = "java.exe";
+                    if (App.OS == Os.Linux)
+                        binary = "java";
+
+                    Path path = Paths.get(file.getAbsolutePath(), "bin", binary);
+
+                    if (Files.exists(path))
+                        cups.add(new Java("DIR", path.toString()));
+                    else
+                        findJavaBinaries(file, cups);
+                }
+            }
+        }
     }
 
     public static List<Java> getPATHCups() {
