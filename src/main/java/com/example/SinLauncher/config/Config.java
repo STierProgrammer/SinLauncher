@@ -10,7 +10,9 @@ import com.google.gson.Gson;
 import com.example.SinLauncher.App;
 
 import com.sun.management.OperatingSystemMXBean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class Config {
     public static final String PATH = App.DIR + "/config.json";
 
