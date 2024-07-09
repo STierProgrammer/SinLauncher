@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import com.example.SinLauncher.App;
+import com.example.SinLauncher.SinLauncherClasses.Os;
+
 public class Java {
     public String version;
     public String path;
@@ -21,22 +24,25 @@ public class Java {
     public static List<Java> getAvailableJavaCups() {
         List<Java> cups = new ArrayList<>();
 
-        // TODO!: FACTOR INTO SMALLER FUNCTIONS, DIFFERENT FUNCTIONS FOR DIFFERENT SYSTEM
+        switch (App.OS) {
+            case Windows -> cups.addAll(getCommonWindowsCups());
+            case Linux -> cups.addAll(getCommonLinuxCups());
+            default -> {}
+        }
 
-
-
-        cups.addAll(getCommonWindowsCups());
         cups.addAll(getPATHCups());
 
-        // Check registry
-        Preferences runtime = Preferences.userRoot().node("Software/JavaSoft/Java Runtime Environment");
-        Preferences jdk = Preferences.userRoot().node("Software/JavaSoft/Java Development Kit");
+        if (App.OS == Os.Windows) {
+            // Check registry
+            Preferences runtime = Preferences.userRoot().node("Software/JavaSoft/Java Runtime Environment");
+            Preferences jdk = Preferences.userRoot().node("Software/JavaSoft/Java Development Kit");
 
-        List<Java> runtimes = getRegCups(runtime);
-        List<Java> jdks = getRegCups(jdk);
+            List<Java> runtimes = getRegCups(runtime);
+            List<Java> jdks = getRegCups(jdk);
 
-        cups.addAll(runtimes);
-        cups.addAll(jdks);
+            cups.addAll(runtimes);
+            cups.addAll(jdks);
+        }
 
         return cups;
     }
@@ -49,13 +55,24 @@ public class Java {
             File javaHomeDir = new File(javaHome);
 
             if (javaHomeDir.exists() && javaHomeDir.isDirectory()) {
-                Path path = Paths.get(javaHomeDir.getAbsolutePath(), "bin", "java.exe");
+                String binary = "java.exe";
+
+                if (App.OS == Os.Linux) {
+                    binary = "java";
+                }
+
+                Path path = Paths.get(javaHomeDir.getAbsolutePath(), "bin", binary);
 
                 if (Files.exists(path))
                     home = new Java("", path.toString());
             }
         }
         return home;
+    }
+
+    public static List<Java> getCommonLinuxCups() {
+        List<Java> cups = new ArrayList<>();
+        return cups;
     }
 
     public static List<Java> getCommonWindowsCups() {
@@ -91,11 +108,18 @@ public class Java {
 
     public static List<Java> getPATHCups() {
         List<Java> cups = new ArrayList<>();
+
         // Check PATH environment variable
         String path = System.getenv("PATH");
         if (path != null) {
             for (String p : path.split(File.pathSeparator)) {
-                File javaFile = new File(p, "java.exe");
+                String binary = "java.exe";
+
+                if (App.OS == Os.Linux) {
+                    binary = "java";
+                }
+
+                File javaFile = new File(p, binary);
                 if (javaFile.exists()) {
                     cups.add(new Java("ENV", javaFile.getAbsolutePath()));
                 }
