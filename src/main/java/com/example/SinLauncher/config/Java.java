@@ -18,12 +18,31 @@ public class Java {
         this.path = path;
     }
 
-    public static List<Java> getAvailableJavaInstallations() {
+    public static List<Java> getAvailableJavaCups() {
         List<Java> cups = new ArrayList<>();
 
         // TODO!: FACTOR INTO SMALLER FUNCTIONS, DIFFERENT FUNCTIONS FOR DIFFERENT SYSTEM
 
-        // Check JAVA_HOME environment var
+
+
+        cups.addAll(getCommonWindowsCups());
+        cups.addAll(getPATHCups());
+
+        // Check registry
+        Preferences runtime = Preferences.userRoot().node("Software/JavaSoft/Java Runtime Environment");
+        Preferences jdk = Preferences.userRoot().node("Software/JavaSoft/Java Development Kit");
+
+        List<Java> runtimes = getRegCups(runtime);
+        List<Java> jdks = getRegCups(jdk);
+
+        cups.addAll(runtimes);
+        cups.addAll(jdks);
+
+        return cups;
+    }
+
+    public static Java getJavaHomeCup() {
+        Java home = null;
         String javaHome = System.getenv("JAVA_HOME");
 
         if (javaHome != null) {
@@ -33,11 +52,15 @@ public class Java {
                 Path path = Paths.get(javaHomeDir.getAbsolutePath(), "bin", "java.exe");
 
                 if (Files.exists(path))
-                    cups.add(new Java("", path.toString()));
+                    home = new Java("", path.toString());
             }
         }
+        return home;
+    }
 
-        // Check common installation directories
+    public static List<Java> getCommonWindowsCups() {
+        List<Java> cups = new ArrayList<>();
+
         String systemDrive = System.getenv("SystemDrive");
 
         File[] directories = {
@@ -63,32 +86,25 @@ public class Java {
             }
         }
 
+        return cups;
+    }
+
+    public static List<Java> getPATHCups() {
+        List<Java> cups = new ArrayList<>();
         // Check PATH environment variable
         String path = System.getenv("PATH");
         if (path != null) {
             for (String p : path.split(File.pathSeparator)) {
                 File javaFile = new File(p, "java.exe");
-
                 if (javaFile.exists()) {
                     cups.add(new Java("ENV", javaFile.getAbsolutePath()));
                 }
             }
         }
-
-        // Check registry
-        Preferences runtime = Preferences.userRoot().node("Software/JavaSoft/Java Runtime Environment");
-        Preferences jdk = Preferences.userRoot().node("Software/JavaSoft/Java Development Kit");
-
-        List<Java> runtimes = search_reg(runtime);
-        List<Java> jdks = search_reg(jdk);
-
-        cups.addAll(runtimes);
-        cups.addAll(jdks);
-
         return cups;
     }
 
-    public static List<Java> search_reg(Preferences node) {
+    public static List<Java> getRegCups(Preferences node) {
         List<Java> cups = new ArrayList<>();
         try {
             String[] children = node.childrenNames();

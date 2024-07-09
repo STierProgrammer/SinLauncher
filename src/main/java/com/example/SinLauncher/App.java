@@ -76,7 +76,7 @@ public class App {
             System.out.println(CONFIG.MAX_RAM);
             System.out.println(manifest.latest.release);
 
-            List<Java> cups = Java.getAvailableJavaInstallations();
+            List<Java> cups = Java.getAvailableJavaCups();
 
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
