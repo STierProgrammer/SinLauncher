@@ -1,12 +1,13 @@
 package com.example.SinLauncher.SinLauncherClasses;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import java.util.UUID;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -23,8 +24,6 @@ public class User {
     private String password;
     private String email;
     private boolean isLoggedIn;
-<<<<<<< HEAD
-=======
 
     //Directly pass in Minecraft UUID
     public User(UUID minecraftUUID, String username, String password, String email, boolean isLoggedIn) {
@@ -44,5 +43,4 @@ public class User {
         this.email = email;
         this.isLoggedIn = isLoggedIn;
     }
->>>>>>> 6ddee7d (Added authentication and authorization, Added uuid mechanism for cracked and legit, set up jpa and modified user)
 }
