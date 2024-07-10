@@ -75,8 +75,10 @@ public class Java {
 
                     if (matcher.find()) {
                         String version = matcher.group(1);
-                        version = version.replaceFirst("version", "");
-                        version = version.replaceFirst("\"", "");
+                        if (matcher.group(2) != null) {
+                            version += "_";
+                            version += matcher.group(2);
+                        }
 
                         cup.version = version;
                     } else {
