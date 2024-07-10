@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.example.SinLauncher.SinLauncherClasses.Instance;
+import com.example.SinLauncher.SinLauncherClasses.Os;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.config.Java;
 import com.example.SinLauncher.json.Manifest;
@@ -18,6 +19,7 @@ import kong.unirest.core.Unirest;
 
 
 public class App {
+    public static final Os OS;
     public static final Logger LOGGER = Logger.getLogger(App.class.getName());
     public static final Gson GSON = new Gson();
 
@@ -27,20 +29,22 @@ public class App {
     static {
         String os = System.getProperty("os.name").toLowerCase();
         
-        if (os.contains("win")) 
+        if (os.contains("win")) {
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
-        
-        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) 
+            OS = Os.Windows;
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix"))  {
             DIR = System.getProperty("user.home") + "/.sinlauncher";
-        
-        else 
+            OS = Os.Linux;
+        } else {
             DIR = "SinLauncher";
+            OS = null;
+        }
         
         CONFIG = Config.readConfig();
     }
 
-    static void init_launcher_dir() throws IOException {
-        if (!Files.exists(Paths.get(DIR))) 
+    static void initLauncherDir() throws IOException {
+        if (!Files.exists(Paths.get(DIR)))
             Files.createDirectories(Paths.get(DIR));
         
         if (!Files.exists(Paths.get(DIR + "/assets"))) 
@@ -64,7 +68,7 @@ public class App {
 
     public static void main(String[] args) {
         try {
-            init_launcher_dir();
+            initLauncherDir();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory", e);
         }
@@ -76,7 +80,7 @@ public class App {
             System.out.println(CONFIG.MAX_RAM);
             System.out.println(manifest.latest.release);
 
-            List<Java> cups = Java.getAvailableJavaInstallations();
+            List<Java> cups = Java.getAvailableJavaCups();
 
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
