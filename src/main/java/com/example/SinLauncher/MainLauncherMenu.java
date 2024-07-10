@@ -6,9 +6,11 @@ import org.springframework.boot.SpringApplication;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Primary;
 
 
 @SpringBootApplication
@@ -29,12 +31,14 @@ public class MainLauncherMenu extends Application {
 
         Scene scene = new Scene(root, 1200, 600);
 
-        //scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm()); // Load CSS file
-        // mvn javafx:run doesn't work when the above line isn't commented
-        //Build fails due to some problem with java fx
+        scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm());
 
+        Image icon = new Image(getClass().getResourceAsStream("/Minecraft.png"));
+
+
+        primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("com/example/SinLauncher");
+        primaryStage.setTitle("SinLauncher");
         primaryStage.show();
     }
 
