@@ -1,13 +1,19 @@
 package com.example.SinLauncher.config;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.SinLauncherClasses.Os;
@@ -44,6 +50,44 @@ public class Java {
             cups.addAll(jdks);
         }
 
+        // putting versions in cups with no version
+        Iterator<Java> iterator = cups.iterator();
+        while (iterator.hasNext()) {
+            Java cup = iterator.next();
+            if (cup.version == null) {
+                ProcessBuilder processBuilder = new ProcessBuilder(cup.path, "-version");
+                processBuilder.redirectErrorStream(true);
+
+                try {
+                    StringBuilder result = new StringBuilder();
+                    Process process = processBuilder.start();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    process.destroy();
+
+                    // getting version from output using regex
+                    Pattern pattern = Pattern.compile("version \"(\\d+\\.\\d+\\.\\d+)_?(\\d+)?\"");
+                    Matcher matcher = pattern.matcher(result);
+
+                    if (matcher.find()) {
+                        String version = matcher.group(1);
+                        version = version.replaceFirst("version", "");
+                        version = version.replaceFirst("\"", "");
+
+                        cup.version = version;
+                    } else {
+                        iterator.remove();
+                    }
+                } catch(IOException e) {
+                    iterator.remove(); // removing invaild cup
+                }
+            }
+        }
+
         return cups;
     }
 
@@ -73,6 +117,8 @@ public class Java {
     public static List<Java> getCommonLinuxCups() {
         File[] directories = {
             new File("/usr/lib/jvm"),
+            new File("/usr/lib64/jvm"),
+            new File("/usr/lib32/jvm"),
         };
         return getCupsInDirs(directories);
     }
@@ -115,7 +161,7 @@ public class Java {
                     Path path = Paths.get(file.getAbsolutePath(), "bin", binary);
 
                     if (Files.exists(path))
-                        cups.add(new Java("DIR", path.toString()));
+                        cups.add(new Java(null, path.toString()));
                     else
                         findJavaBinaries(file, cups);
                 }
@@ -138,7 +184,7 @@ public class Java {
 
                 File javaFile = new File(p, binary);
                 if (javaFile.exists()) {
-                    cups.add(new Java("ENV", javaFile.getAbsolutePath()));
+                    cups.add(new Java(null, javaFile.getAbsolutePath()));
                 }
             }
         }
@@ -160,7 +206,7 @@ public class Java {
                     Path javaPath = Paths.get(javaHomeDir, "bin", "java.exe");
 
                     if (Files.exists(javaPath))
-                        cups.add(new Java("reg" + child, javaPath.toString())); // TODO! REMOVE REG IT IS JUST TO CHECK IF IT IS WORKING
+                        cups.add(new Java(null, javaPath.toString()));
                 }
             }
         }
