@@ -33,8 +33,7 @@ public class User {
     private boolean isLoggedIn;
 
 
-<<<<<<< HEAD
-=======
+
     //pass in generatedUUID here in String format
     //UUID.randomUUID() generates a unique UUID
     public User(String generatedUUID, String username, String password, String email, boolean isLoggedIn) {
@@ -44,5 +43,4 @@ public class User {
         this.email = email;
         this.isLoggedIn = isLoggedIn;
     }
->>>>>>> 1a72e5f13353cb336d1ddf5b585a09cd5b639e1c
 }
