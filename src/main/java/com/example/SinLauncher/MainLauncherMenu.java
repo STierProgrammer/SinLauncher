@@ -30,8 +30,6 @@ public class MainLauncherMenu extends Application {
         Scene scene = new Scene(root, 1200, 600);
 
         //scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm()); // Load CSS file
-        // mvn javafx:run doesn't work when the above line isn't commented
-        //Build fails due to some problem with java fx
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("com/example/SinLauncher");
