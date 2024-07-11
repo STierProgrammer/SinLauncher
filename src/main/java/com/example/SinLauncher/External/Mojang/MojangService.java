@@ -22,4 +22,7 @@ public class MojangService {
                 .bodyToMono(String.class);
         // finds user by username if they don't exist returns empty Mono<String>
     }
+//    public boolean userTaken(String username) {
+//
+//    } under review for now
 }

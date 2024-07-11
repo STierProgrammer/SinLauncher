@@ -23,23 +23,17 @@ public class User {
     private String password;
     private String email;
     private boolean isLoggedIn;
+    private boolean cracked;
 
-    //Directly pass in Minecraft UUID
-    public User(UUID minecraftUUID, String username, String password, String email, boolean isLoggedIn) {
-        this.uuid = minecraftUUID.toString();
+
+
+    //pass in generatedUUID or legit UUID here in String format
+    //UUID.randomUUID() generates a unique UUID with a very low chance for the same UUID
+    public User(String uuid, String username, String password, String email, boolean cracked) {
+        this.uuid = uuid;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.isLoggedIn = isLoggedIn;
-    }
-
-    //pass in generatedUUID here in String format
-    //UUID.randomUUID() generates a unique UUID
-    public User(String generatedUUID, String username, String password, String email, boolean isLoggedIn) {
-        this.uuid = generatedUUID + "--Sin";
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.isLoggedIn = isLoggedIn;
+        this.cracked = cracked;
     }
 }
