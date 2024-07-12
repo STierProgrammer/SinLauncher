@@ -6,12 +6,10 @@ import com.example.SinLauncher.SinLauncherClasses.POJOClasses.CreateAccountReque
 import com.example.SinLauncher.SinLauncherClasses.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +27,12 @@ public class SLController {
         this.mojangService = mojangService;
         this.mojangController = mojangController;
     }
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return slService.getAllUsers();
+    }
+
     @PostMapping(path = "/adduser")
     public void addUser(@RequestBody User user) {
         //user is valid code must check through if user is valid or not
@@ -39,6 +43,6 @@ public class SLController {
     //creates an account with either legit or cracked Minecraft indicated by cracked boolean
     @PostMapping(path = "/create-account")
     public void createAccount(@RequestBody CreateAccountRequest request) {
-        slService.createAccount(request.getUsername(), request.getPassword(), request.getPassword());
+        slService.createAccount(request.getUsername(), request.getPassword(), request.getEmail());
     }
 }

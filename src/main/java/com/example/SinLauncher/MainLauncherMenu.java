@@ -37,8 +37,16 @@ public class MainLauncherMenu extends Application {
     }
 
     public static void main(String[] args) {
+        //when we use mvn:javafx run spring boot should run as-well due to it having a separate thread
+        //That must run before javafx
         savedArgs = args;
-        new Thread(() -> SpringApplication.run(MainLauncherMenu.class, args).start());
-        Application.launch(args);
+        new Thread(() -> {
+            SpringApplication.run(MainLauncherMenu.class, args);
+            System.out.println("Spring boot fully started");
+        }).start();
+
+        launch(args);
+        System.out.println("JavaFx Running");
+
     }
 }
