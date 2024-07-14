@@ -38,7 +38,7 @@ public class App {
         CONFIG = Config.readConfig();
     }
 
-    static void init_launcher_dir() throws IOException {
+    static void initLauncherDir() throws IOException {
         if (!Files.exists(Paths.get(DIR))) 
             Files.createDirectories(Paths.get(DIR));
         
@@ -61,11 +61,17 @@ public class App {
         }
     }
 
+    public static void init() throws IOException {
+        // initLauncherDir();
+        LOGGER.info("Launcher initialized");
+    }
+
     public static void main(String[] args) {
         try {
-            init_launcher_dir();
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory", e);
+            init();
+        }
+        catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize launcher", e);
         }
 
 
