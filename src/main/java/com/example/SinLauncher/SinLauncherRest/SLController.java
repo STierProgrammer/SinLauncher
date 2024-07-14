@@ -2,16 +2,12 @@ package com.example.SinLauncher.SinLauncherRest;
 
 import com.example.SinLauncher.External.Mojang.MojangController;
 import com.example.SinLauncher.External.Mojang.MojangService;
-import com.example.SinLauncher.SinLauncherClasses.POJOClasses.CreateAccountRequest;
-import com.example.SinLauncher.SinLauncherClasses.User;
-import jakarta.transaction.Transactional;
+import com.example.SinLauncher.SinLauncherEntites.POJOClasses.CreateAccountRequest;
+import com.example.SinLauncher.SinLauncherEntites.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "api/v1/sin")

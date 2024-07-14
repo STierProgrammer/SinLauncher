@@ -1,4 +1,4 @@
-package com.example.SinLauncher.SinLauncherClasses.POJOClasses;
+package com.example.SinLauncher.SinLauncherEntites.POJOClasses;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

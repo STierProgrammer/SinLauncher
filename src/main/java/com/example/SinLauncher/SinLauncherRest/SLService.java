@@ -1,7 +1,7 @@
 package com.example.SinLauncher.SinLauncherRest;
 
 import com.example.SinLauncher.External.Mojang.MojangService;
-import com.example.SinLauncher.SinLauncherClasses.User;
+import com.example.SinLauncher.SinLauncherEntites.User;
 import com.example.SinLauncher.SinLauncherRepositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +38,11 @@ public class SLService {
 
         Optional<String> monoOptional = uuidMono.blockOptional();
         if (monoOptional.isPresent()) {
-            user = new User(monoOptional.get(), username, password, email, false);
+            user = new User(monoOptional.get(), username, password, email, false, false);
         } else {
             UUID uuid = UUID.randomUUID();
             String generatedUUID = uuid.toString();
-            user = new User(generatedUUID, username, password, email, true);
+            user = new User(generatedUUID, username, password, email, true, false);
         }
         userRepository.save(user);
     }

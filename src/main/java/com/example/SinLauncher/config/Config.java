@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Config {
-    public static final String PATH = App.DIR + "config.json";
+    public static final String PATH = "config.json";
 
     public long MIN_RAM = 0;
     public long MAX_RAM = 0;
@@ -61,7 +61,9 @@ public class Config {
 
     public static Config readConfig() {
         try {
+            System.out.println("PATH is : " + PATH);
             Path path = Path.of(PATH);
+            System.out.println("path is : " + path);
             return new Gson().fromJson(Files.readString(path), Config.class);
         } catch (IOException _e) {
             Config config = new Config();

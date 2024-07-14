@@ -1,12 +1,9 @@
-package com.example.SinLauncher.SinLauncherClasses;
+package com.example.SinLauncher.SinLauncherEntites;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -29,11 +26,12 @@ public class User {
 
     //pass in generatedUUID or legit UUID here in String format
     //UUID.randomUUID() generates a unique UUID with a very low chance for the same UUID
-    public User(String uuid, String username, String password, String email, boolean cracked) {
+    public User(String uuid, String username, String password, String email, boolean cracked, boolean isLoggedIn) {
         this.uuid = uuid;
         this.username = username;
         this.password = password;
         this.email = email;
         this.cracked = cracked;
+        this.isLoggedIn = isLoggedIn;
     }
 }

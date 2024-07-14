@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.example.SinLauncher.SinLauncherClasses.Instance;
+import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
