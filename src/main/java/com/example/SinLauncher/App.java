@@ -3,14 +3,11 @@ package com.example.SinLauncher;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.example.SinLauncher.SinLauncherClasses.Instance;
-import com.example.SinLauncher.SinLauncherClasses.Os;
+import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.config.Config;
-import com.example.SinLauncher.config.Java;
 import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
 
@@ -19,7 +16,6 @@ import kong.unirest.core.Unirest;
 
 
 public class App {
-    public static final Os OS;
     public static final Logger LOGGER = Logger.getLogger(App.class.getName());
     public static final Gson GSON = new Gson();
 
@@ -29,22 +25,20 @@ public class App {
     static {
         String os = System.getProperty("os.name").toLowerCase();
         
-        if (os.contains("win")) {
+        if (os.contains("win")) 
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
-            OS = Os.Windows;
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix"))  {
+        
+        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) 
             DIR = System.getProperty("user.home") + "/.sinlauncher";
-            OS = Os.Linux;
-        } else {
+        
+        else 
             DIR = "SinLauncher";
-            OS = null;
-        }
         
         CONFIG = Config.readConfig();
     }
 
-    static void initLauncherDir() throws IOException {
-        if (!Files.exists(Paths.get(DIR)))
+    static void init_launcher_dir() throws IOException {
+        if (!Files.exists(Paths.get(DIR))) 
             Files.createDirectories(Paths.get(DIR));
         
         if (!Files.exists(Paths.get(DIR + "/assets"))) 
@@ -68,7 +62,7 @@ public class App {
 
     public static void main(String[] args) {
         try {
-            initLauncherDir();
+            init_launcher_dir();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory", e);
         }
@@ -80,11 +74,6 @@ public class App {
             Manifest manifest = Manifest.readManifest();
             System.out.println(CONFIG.MAX_RAM);
             System.out.println(manifest.latest.release);
-
-            List<Java> cups = Java.getAvailableJavaCups();
-
-            for (Java cup : cups)
-                System.out.println(cup.version + ": " + cup.path);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to read manifest", e);
         }

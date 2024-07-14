@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+<<<<<<< HEAD
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -16,6 +17,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+=======
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+>>>>>>> 4a787a3e74cd80e9f0f9aedfc60845c057e093a0
 
 @SpringBootApplication
 @EnableEncryptableProperties
@@ -69,17 +76,24 @@ public class MainLauncherMenu extends Application {
         mainPane.setCenter(centerScrollPane);
         mainPane.setBottom(bottomSection);
 
+<<<<<<< HEAD
         Scene scene = new Scene(mainPane, 1200, 600);
         scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm());
 
         Image icon = new Image(getClass().getResourceAsStream("/Minecraft.png"));
         primaryStage.getIcons().add(icon);
+=======
+        //scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm()); // Load CSS file
+
+>>>>>>> 4a787a3e74cd80e9f0f9aedfc60845c057e093a0
         primaryStage.setScene(scene);
-        primaryStage.setTitle("SinLauncher");
+        primaryStage.setTitle("com/example/SinLauncher");
         primaryStage.show();
     }
 
     public static void main(String[] args) {
+        //when we use mvn:javafx run spring boot should run as-well due to it having a separate thread
+        //That must run before javafx
         savedArgs = args;
         new Thread(() -> {
             SpringApplication.run(MainLauncherMenu.class, args);
@@ -88,5 +102,9 @@ public class MainLauncherMenu extends Application {
 
         launch(args);
         System.out.println("JavaFx Running");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4a787a3e74cd80e9f0f9aedfc60845c057e093a0
     }
 }

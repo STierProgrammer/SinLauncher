@@ -1,4 +1,4 @@
-package com.example.SinLauncher.SinLauncherClasses;
+package com.example.SinLauncher.SinLauncherEntites;
 
 public enum Os {
     Windows,

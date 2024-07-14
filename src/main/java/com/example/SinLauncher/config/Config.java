@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Config {
-    public static final String PATH = App.DIR + "/config.json";
+    public static final String PATH = "config.json";
 
     public long MIN_RAM = 0;
     public long MAX_RAM = 0;
@@ -32,7 +32,7 @@ public class Config {
 
     public static Config getInstanceConfig(String instance) {
         Path path = Paths.get(App.DIR, instance, "config.json");
-        
+
         try {
             Config config = App.GSON.fromJson(Files.readString(path), Config.class);
             if (config.JAVA == null) {
@@ -41,8 +41,8 @@ public class Config {
 
             if (config.MIN_RAM == 0) {
                 config.MIN_RAM = App.CONFIG.MIN_RAM;
-            } 
-            
+            }
+
             if (config.MAX_RAM == 0) {
                 config.MAX_RAM = App.CONFIG.MAX_RAM;
             }
@@ -61,11 +61,13 @@ public class Config {
 
     public static Config readConfig() {
         try {
+            System.out.println("PATH is : " + PATH);
             Path path = Path.of(PATH);
+            System.out.println("path is : " + path);
             return new Gson().fromJson(Files.readString(path), Config.class);
         } catch (IOException _e) {
             Config config = new Config();
-            
+
             try {
                 config.writeConfig();
             } catch (IOException e) {
