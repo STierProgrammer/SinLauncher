@@ -6,15 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.google.gson.Gson;
-import com.example.SinLauncher.App;
-
-import com.sun.management.OperatingSystemMXBean;
 import org.springframework.context.annotation.Configuration;
+
+import com.example.SinLauncher.App;
+import com.google.gson.Gson;
+import com.sun.management.OperatingSystemMXBean;
 
 @Configuration
 public class Config {
-    public static final String PATH = "config.json";
+    public static final String PATH = App.DIR + "/config.json";
 
     public long MIN_RAM = 0;
     public long MAX_RAM = 0;

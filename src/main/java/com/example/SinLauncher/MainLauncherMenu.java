@@ -1,8 +1,12 @@
 package com.example.SinLauncher;
 
+import java.io.IOException;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import com.example.SinLauncher.config.Config;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-import org.springframework.boot.SpringApplication;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -10,18 +14,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableEncryptableProperties
@@ -87,14 +84,17 @@ public class MainLauncherMenu extends Application {
         primaryStage.show();
     }
 
+    public static void init(Object arg) {}
+
     public static void main(String[] args) {
         //when we use mvn:javafx run spring boot should run as-well due to it having a separate thread
         //That must run before javafx
         savedArgs = args;
-
-        System.out.println("App: " + App.DIR);
-        System.out.println("Path: " + Config.PATH);
-
+        init(App.DIR);
+        init(Config.PATH);
+        try {
+         App.init();
+        } catch (IOException e) {}
 
         new Thread(() -> {
             SpringApplication.run(MainLauncherMenu.class, args);
