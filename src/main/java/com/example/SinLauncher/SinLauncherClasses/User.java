@@ -1,6 +1,5 @@
 package com.example.SinLauncher.SinLauncherClasses;
 
-
 import java.util.UUID;
 
 import jakarta.persistence.Entity;

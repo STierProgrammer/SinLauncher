@@ -74,7 +74,8 @@ public class App {
         }
 
         System.out.println("Launcher Directory: " + DIR);
-        
+        System.out.println("App Directory: " + App.DIR);
+
         try {
             Manifest manifest = Manifest.readManifest();
             System.out.println(CONFIG.MAX_RAM);
