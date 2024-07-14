@@ -34,6 +34,7 @@ public class App {
         else 
             DIR = "SinLauncher";
         
+
         CONFIG = Config.readConfig();
     }
 
@@ -67,8 +68,6 @@ public class App {
             LOGGER.log(Level.SEVERE, "Failed to initialize launcher directory", e);
         }
 
-        System.out.println("Launcher Directory: " + DIR);
-        System.out.println("App Directory: " + App.DIR);
 
         try {
             Manifest manifest = Manifest.readManifest();

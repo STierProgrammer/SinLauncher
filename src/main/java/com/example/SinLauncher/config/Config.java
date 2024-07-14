@@ -62,8 +62,13 @@ public class Config {
     public static Config readConfig() {
         try {
             System.out.println("PATH is : " + PATH);
+
             Path path = Path.of(PATH);
+            
             System.out.println("path is : " + path);
+            
+            System.out.println("Config App.DIR : " + App.DIR);
+            
             return new Gson().fromJson(Files.readString(path), Config.class);
         } catch (IOException _e) {
             Config config = new Config();

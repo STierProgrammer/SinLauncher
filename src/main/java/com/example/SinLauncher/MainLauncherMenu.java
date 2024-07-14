@@ -1,5 +1,6 @@
 package com.example.SinLauncher;
 
+import com.example.SinLauncher.config.Config;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 
@@ -90,6 +91,11 @@ public class MainLauncherMenu extends Application {
         //when we use mvn:javafx run spring boot should run as-well due to it having a separate thread
         //That must run before javafx
         savedArgs = args;
+
+        System.out.println("App: " + App.DIR);
+        System.out.println("Path: " + Config.PATH);
+
+
         new Thread(() -> {
             SpringApplication.run(MainLauncherMenu.class, args);
             System.out.println("Spring boot fully started");
