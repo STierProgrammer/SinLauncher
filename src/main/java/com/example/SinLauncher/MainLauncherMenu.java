@@ -83,7 +83,7 @@ public class MainLauncherMenu extends Application {
         primaryStage.getIcons().add(icon);
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("com/example/SinLauncher");
+        primaryStage.setTitle("SinLauncher");
         primaryStage.show();
     }
 
