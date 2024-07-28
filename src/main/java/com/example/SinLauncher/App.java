@@ -1,14 +1,17 @@
 package com.example.SinLauncher;
 
 import java.io.IOException;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.json.Manifest;
+
 import com.google.gson.Gson;
 
 import kong.unirest.core.HttpResponse;
@@ -33,7 +36,6 @@ public class App {
         
         else 
             DIR = "SinLauncher";
-        
 
         CONFIG = Config.readConfig();
     }
