@@ -107,13 +107,6 @@ public class MainLauncherMenu extends Application {
         init(App.DIR);
         init(Config.PATH);
 
-        try {
-            App.init();
-        } 
-        catch (IOException e) {
-
-        }
-
         new Thread(() -> {
             SpringApplication.run(MainLauncherMenu.class, args);
 

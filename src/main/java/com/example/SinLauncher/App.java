@@ -36,6 +36,11 @@ public class App {
         
         else 
             DIR = "SinLauncher";
+        try { App.init(); } 
+        catch (IOException e) 
+        {
+            LOGGER.info("failed to init launcher");
+        };
 
         CONFIG = Config.readConfig();
     }
@@ -64,19 +69,11 @@ public class App {
     }
 
     public static void init() throws IOException {
-        // initLauncherDir();
+        initLauncherDir();
         LOGGER.info("Launcher initialized");
     }
 
     public static void main(String[] args) {
-        try {
-            init();
-        }
-        catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to initialize launcher", e);
-        }
-
-
         try {
             Manifest manifest = Manifest.readManifest();
             System.out.println(CONFIG.MAX_RAM);

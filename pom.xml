@@ -10,6 +10,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <exec.mainClass>com.example.SinLauncher.App</exec.mainClass>
   </properties>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -54,7 +55,6 @@
       <groupId>com.konghq</groupId>
       <artifactId>unirest-java-core</artifactId>
       <version>4.4.0</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <!--  Reduces boilerplate code  -->
