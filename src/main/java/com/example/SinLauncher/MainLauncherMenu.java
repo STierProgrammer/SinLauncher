@@ -1,7 +1,5 @@
 package com.example.SinLauncher;
 
-import java.io.IOException;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -83,11 +81,11 @@ public class MainLauncherMenu extends Application {
         mainPane.setBottom(bottomSection);
 
         Scene scene = new Scene(mainPane, 1200, 600);
-                
+
         scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm());
 
         Image icon = new Image(getClass().getResourceAsStream("/Minecraft.png"));
-        
+
         primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.setTitle("SinLauncher");
@@ -99,20 +97,14 @@ public class MainLauncherMenu extends Application {
     }
 
     public static void main(String[] args) {
-        // When we use mvn javafx:run Spring Boot should run as well due to it having a separate thread
+        // When we use mvn javafx:run Spring Boot should run as well due to it having a
+        // separate thread
         // This must run before JavaFX
 
         savedArgs = args;
-        
+
         init(App.DIR);
         init(Config.PATH);
-
-        try {
-            App.init();
-        } 
-        catch (IOException e) {
-
-        }
 
         new Thread(() -> {
             SpringApplication.run(MainLauncherMenu.class, args);
