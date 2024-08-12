@@ -1,2 +1,2 @@
 # SinLauncher Info
-a minecraft launcher written in java
+A Minecraft launcher written in Java
