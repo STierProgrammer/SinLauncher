@@ -3,6 +3,7 @@ package com.example.SinLauncher;
 import java.io.IOException;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.logging.Level;
@@ -52,6 +53,16 @@ public class App {
         CONFIG = Config.readConfig();
     }
 
+    static void initInstances() throws IOException {
+        if (!Files.exists(Instance.PARENT_DIR))
+            Files.createDirectories(Instance.PARENT_DIR);
+
+        if (!Files.exists(Instance.INSTANCES_FILE)) {
+            Path file = Files.createFile(Instance.INSTANCES_FILE);
+            Files.writeString(file, "[]");
+        }
+    }
+
     static void initLauncherDir() throws IOException {
         if (!Files.exists(Paths.get(DIR)))
             Files.createDirectories(Paths.get(DIR));
@@ -62,8 +73,7 @@ public class App {
         if (!Files.exists(Paths.get(DIR + "/libraries")))
             Files.createDirectories(Paths.get(DIR + "/libraries"));
 
-        if (!Files.exists(Paths.get(Instance.PARENT_DIR)))
-            Files.createDirectories(Paths.get(Instance.PARENT_DIR));
+        App.initInstances();
 
         HttpResponse<String> response = Unirest.get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
                 .asString();
