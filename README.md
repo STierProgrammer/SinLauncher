@@ -26,8 +26,6 @@ We appreciate and welcome contributions! If you’re interested in helping out, 
 3. Make your changes and test them.
 4. Submit a pull request with a detailed description of your changes.
 
-Please refer to our [Contribution Guidelines](CONTRIBUTING.md) for more details.
-
 ## Roadmap
 
 - [ ] Complete basic account support (Premium & Cracked)
@@ -37,11 +35,11 @@ Please refer to our [Contribution Guidelines](CONTRIBUTING.md) for more details.
 
 ## License
 
-SinLauncher is licensed under the [Contributors-Only License (COL)](LICENSE.md). This means the software is open-source but with strict guidelines on usage and contribution. Please review the license before contributing.
+SinLauncher is licensed under the [Contributors-Only License (COL)](LICENSE.MD). This means the software is open-source but with strict guidelines on usage and contribution. Please review the license before contributing.
 
 ## Contact
 
-If you have any questions or need further assistance, feel free to reach out to us via the project's issue tracker or [contact@example.com](mailto:contact@example.com).
+If you have any questions or need further assistance, feel free to reach out to us via the project's issue tracker or [STierProgrammer@gmail.com](mailto:contact@example.com).
 
 ---
 
