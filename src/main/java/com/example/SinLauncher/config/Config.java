@@ -14,7 +14,7 @@ import com.sun.management.OperatingSystemMXBean;
 
 @Configuration
 public class Config {
-    public static final String PATH = App.DIR + "/config.json";
+    public static final Path PATH = Paths.get(App.DIR, "config.json");
 
     public long MIN_RAM = 0;
     public long MAX_RAM = 0;
@@ -55,17 +55,14 @@ public class Config {
 
     public void writeConfig() throws IOException {
         String json = App.GSON.toJson(this);
-        Path path = Path.of(PATH);
-        Files.writeString(path, json);
+        Files.writeString(PATH, json);
     }
 
     public static Config readConfig() {
         try {
-            Path path = Path.of(PATH);  
-            
-            System.out.println("Config & App.DIR Path: " + App.DIR);
-            
-            return new Gson().fromJson(Files.readString(path), Config.class);
+            System.out.println("Config & App.DIR Path: " + PATH);
+
+            return new Gson().fromJson(Files.readString(PATH), Config.class);
         } catch (IOException _e) {
             Config config = new Config();
 
@@ -76,9 +73,7 @@ public class Config {
                 System.exit(1);
             }
 
-
             return config;
         }
     }
 }
-
