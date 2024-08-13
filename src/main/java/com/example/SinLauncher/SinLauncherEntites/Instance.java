@@ -4,10 +4,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.config.Config;
+import com.example.SinLauncher.json.Manifest;
+import com.example.SinLauncher.json.Manifest.Version;
+
+import kong.unirest.core.HttpResponse;
+import kong.unirest.core.Unirest;
 
 public class Instance {
     public static class InstanceNotFoundException extends Exception {
@@ -16,6 +23,24 @@ public class Instance {
         public InstanceNotFoundException(String message, String name) {
             super(message);
             this.name = name;
+        }
+    }
+
+    public static class InstanceAlreadyExistsException extends Exception {
+        public String name;
+
+        public InstanceAlreadyExistsException(String message, String name) {
+            super(message);
+            this.name = name;
+        }
+    }
+
+    public static class InvaildInstanceVersionException extends Exception {
+        public String version;
+
+        public InvaildInstanceVersionException(String message, String version) {
+            super(message);
+            this.version = version;
         }
     }
 
@@ -30,6 +55,57 @@ public class Instance {
     public Instance(String name, String version) {
         this.name = name;
         this.version = version;
+    }
+
+    public Path Dir() {
+        return Paths.get(PARENT_DIR.toString(), this.name);
+    }
+
+    public void initDir() throws IOException {
+        Files.createDirectory(this.Dir());
+    }
+
+    /**
+     * creates a new vaild instance,
+     * creates it's folder, downloads it's client.json, serializes and appends it to
+     * instances.json then returns it
+     * 
+     * @throws InvaildInstanceVersionException if manifest doesn't contain the
+     *                                         provided {@code version}
+     * @throws IOException                     if failed to fetch client.json from
+     *                                         the manifest or failed to append
+     *                                         instance to instances.json
+     */
+    public static Instance createInstance(String name, String version)
+            throws InstanceAlreadyExistsException, InvaildInstanceVersionException, IOException {
+        Instance instance = new Instance(name, version);
+
+        Manifest manifest = Manifest.readManifest();
+
+        String url = null;
+        for (Version man_version : manifest.versions) {
+            if (man_version.id.equals(version)) {
+                url = man_version.url;
+                break;
+            }
+        }
+
+        if (url == null)
+            throw new InvaildInstanceVersionException("unexpected version while creating instance '" + version + '\'',
+                    version);
+
+        instance.initDir();
+        Path client_path = Paths.get(instance.Dir().toString(), "client.json");
+
+        HttpResponse<String> client = Unirest.get(url).asString();
+
+        if (client.getStatus() == 200)
+            Files.write(client_path, client.getBody().getBytes());
+        else
+            throw new IOException("Failed to fetch client.json for version '" + version + '\'');
+
+        addInstance(instance);
+        return instance;
     }
 
     /**
@@ -99,13 +175,23 @@ public class Instance {
     }
 
     /**
-     * appends serialized {@code instance} to instances.json
+     * appends serialized {@code new_instance} to instances.json
      */
-    public static void addInstance(Instance instance) throws IOException {
-        List<Instance> instances = List.of(readInstances());
-        if (instance != null)
-            instances.add(instance);
+    public static void addInstance(Instance new_instance) throws InstanceAlreadyExistsException, IOException {
+        List<Instance> instances = new ArrayList<Instance>(Arrays.asList(readInstances()));
 
-        writeInstances((Instance[]) instances.toArray());
+        for (Instance instance : instances) {
+            if (instance.name == new_instance.name) {
+                throw new InstanceAlreadyExistsException(
+                        "failed to add instance '" + new_instance.name + '\''
+                                + ", because there is an instance with the same name...",
+                        new_instance.name);
+            }
+        }
+
+        if (new_instance != null)
+            instances.add(new_instance);
+
+        writeInstances(instances.toArray(new Instance[0]));
     }
 }
