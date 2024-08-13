@@ -112,6 +112,7 @@ public class MainLauncherMenu extends Application {
 
     public static void main(String[] args) {
         savedArgs = args;
+        
         init(App.DIR);
         init(Config.PATH);
 

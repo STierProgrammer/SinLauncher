@@ -1,5 +1,7 @@
 package com.example.SinLauncher.pages;
 
-public class page_MODS {
+import javafx.scene.layout.VBox;
+
+public class page_MODS extends VBox{
     
 }

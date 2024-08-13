@@ -27,6 +27,7 @@ public class App {
 
     public static final String DIR;
     public static final Os OS;
+
     public static Config CONFIG;
 
     static {
@@ -35,20 +36,24 @@ public class App {
         if (os.contains("win")) {
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
             OS = Os.Windows;
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+        }
+
+        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             DIR = System.getProperty("user.home") + "/.sinlauncher";
             OS = Os.Linux;
-        } else {
+        } 
+
+        else {
             DIR = "SinLauncher";
             OS = Os.Linux;
         }
 
         try {
             App.init();
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             LOGGER.info("failed to init launcher");
         }
-        ;
 
         CONFIG = Config.readConfig();
     }
@@ -75,12 +80,16 @@ public class App {
 
         App.initInstances();
 
-        HttpResponse<String> response = Unirest.get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
-                .asString();
+        HttpResponse<String> response = Unirest
+                    .get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
+                    .asString();
 
         if (response.getStatus() == 200)
-            Files.write(Manifest.PATH, response.getBody().getBytes());
-        else {
+            Files.write(Manifest.PATH, response
+                    .getBody()
+                    .getBytes());
+                
+            else {
             if (!Files.exists(Manifest.PATH))
                 throw new IOException("Failed to fetch manifest JSON. Response code: " + response.getStatus());
         }
@@ -94,13 +103,15 @@ public class App {
     public static void main(String[] args) {
         try {
             Manifest manifest = Manifest.readManifest();
+
             System.out.println(CONFIG.MAX_RAM);
             System.out.println(manifest.latest.release);
+            
             List<Java> cups = Java.getAvailableJavaCups();
 
-            for (Java cup : cups) {
+            for (Java cup : cups) 
                 System.out.println(cup.version + ": " + cup.path);
-            }
+                
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to read manifest", e);
         }
