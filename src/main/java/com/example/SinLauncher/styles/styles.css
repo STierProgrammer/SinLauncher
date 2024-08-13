@@ -1,71 +1,118 @@
+/* Top Section */
 .top-section {
-    -fx-background-color: #2c3e50;
+    -fx-background-image: url("/background-top.png");
+    -fx-background-size: cover;
     -fx-padding: 20px;
-    -fx-alignment: center-left;
-    -fx-border-width: 0 0 2px 0;
-    -fx-border-color: #34495e;
+    -fx-alignment: center;
+    -fx-border-width: 0 0 3px 0;
+    -fx-border-color: #3b4b5a;
 }
 
+/* Left Section */
 .left-section {
-    -fx-background-color: #34495e;
+    -fx-background-color: #2b2f33;
     -fx-pref-width: 250px;
-    -fx-padding: 15px;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
 }
 
+/* Center Content */
 .center-content {
-    -fx-background-color: #ecf0f1;
-    -fx-padding: 15px;
-    -fx-spacing: 15px;
+    -fx-background-color: #f5f7fa;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
 }
 
 .center-scroll-pane {
-    -fx-background-color: transparent;
+    -fx-background-color: #2b2f33;
     -fx-border-width: 0;
-    -fx-padding: 10px;
 }
 
+/* Bottom Section */
 .bottom-section {
-    -fx-background-color: #2c3e50;
+    -fx-background-color: #2b2f33;
     -fx-padding: 15px;
-    -fx-spacing: 15px;
+    -fx-spacing: 10px;
     -fx-alignment: center-right;
-    -fx-border-width: 2px 0 0 0;
-    -fx-border-color: #34495e;
 }
 
+/* Text Input */
 .txtI {
     -fx-prompt-text-fill: #95a5a6;
-    -fx-background-color: #34495e;
-    -fx-text-fill: #ecf0f1;
-    -fx-min-width: 250px;
-    -fx-min-height: 35px;
-    -fx-padding: 5px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-border-width: 0;
-}
-
-.title-label {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #ecf0f1;
-}
-
-.version-label {
-    -fx-font-size: 16px;
-    -fx-text-fill: #ecf0f1;
-    -fx-padding: 5px;
-}
-
-.content-label {
+    -fx-background-color: #2b2f33;
+    -fx-text-fill: #f0f4f7;
+    -fx-min-width: 300px;
+    -fx-min-height: 40px;
     -fx-padding: 10px;
-    -fx-text-fill: #2c3e50;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-border-color: #3b4b5a;
+}
+
+/* Title Label */
+.title-label {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+/* Version Label */
+.version-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #ffffff;
+}
+
+/* Versions Box */
+.version-combo-box {
+    -fx-background-color: #2b2f33;
+    -fx-text-fill: #f0f4f7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Content Label */
+.content-label {
+    -fx-padding: 15px;
+    -fx-text-fill: #34495e;
     -fx-font-size: 16px;
-    -fx-background-color: #bdc3c7;
+    -fx-background-color: #d8dde3;
     -fx-background-radius: 8px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 2);
 }
 
 .content-label:hover {
-    -fx-background-color: #95a5a6;
+    -fx-background-color: #c0c7cc;
+}
+
+/* Navigation Button */
+.nav-button {
+    -fx-background-color: #2b2f33;
+    -fx-text-fill: #f0f4f7;
+    -fx-padding: 15px;
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: #3b4b5a;
+}
+
+/* Login Button */
+.login-button {
+    -fx-background-color: #1ea67b;
+    -fx-text-fill: #f0f4f7;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #20b690;
 }

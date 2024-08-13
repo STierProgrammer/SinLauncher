@@ -35,20 +35,19 @@ public class Config {
 
         try {
             Config config = App.GSON.fromJson(Files.readString(path), Config.class);
-            if (config.JAVA == null) {
+
+            if (config.JAVA == null) 
                 config.JAVA = App.CONFIG.JAVA;
-            }
 
-            if (config.MIN_RAM == 0) {
+            if (config.MIN_RAM == 0)
                 config.MIN_RAM = App.CONFIG.MIN_RAM;
-            }
 
-            if (config.MAX_RAM == 0) {
+            if (config.MAX_RAM == 0) 
                 config.MAX_RAM = App.CONFIG.MAX_RAM;
-            }
 
             return config;
-        } catch (IOException _e) {
+        } 
+        catch (IOException _e) {
             return App.CONFIG;
         }
     }
@@ -63,12 +62,14 @@ public class Config {
             System.out.println("Config & App.DIR Path: " + PATH);
 
             return new Gson().fromJson(Files.readString(PATH), Config.class);
-        } catch (IOException _e) {
+        } 
+        catch (IOException _e) {
             Config config = new Config();
 
             try {
                 config.writeConfig();
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 System.err.println("Failed to write config");
                 System.exit(1);
             }
