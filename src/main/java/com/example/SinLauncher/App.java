@@ -111,9 +111,10 @@ public class App {
 
             for (Java cup : cups) 
                 System.out.println(cup.version + ": " + cup.path);
-                
-        } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Failed to read manifest", e);
+          
+            Instance.createInstance("test", manifest.latest.release);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "exception: ", e);
         }
     }
 }
