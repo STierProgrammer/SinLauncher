@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,19 +27,28 @@ public class MainLauncherMenu extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        /*
+         * 
+         * TOP SECTION
+         * 
+         */
+
         HBox topSection = new HBox();
         topSection.getStyleClass().add("top-section");
-
-        ImageView logo = new ImageView(new Image(getClass().getResourceAsStream("/furnace.png"))); // Placeholder for logo
-        logo.setFitHeight(50);
-        logo.setFitWidth(50);
 
         Label titleLabel = new Label("SinLauncher");
         titleLabel.getStyleClass().add("title-label");
 
-        topSection.getChildren().addAll(logo, titleLabel);
+        topSection.getChildren().addAll(titleLabel);
         topSection.setSpacing(20);
         topSection.setAlignment(Pos.CENTER);
+
+        /*
+         * 
+         * LEFT SECTION
+         * 
+         */
 
         VBox leftSection = new VBox();
         leftSection.getStyleClass().add("left-section");
@@ -57,6 +65,12 @@ public class MainLauncherMenu extends Application {
         leftSection.getChildren().addAll(playButton, settingsButton, modsButton);
         leftSection.setSpacing(20);
 
+        /*
+         * 
+         * CENTER SECTION
+         * 
+         */
+
         VBox centerContent = new VBox();
         centerContent.getStyleClass().add("center-content");
 
@@ -68,6 +82,12 @@ public class MainLauncherMenu extends Application {
 
         ScrollPane centerScrollPane = new ScrollPane(centerContent);
         centerScrollPane.getStyleClass().add("center-scroll-pane");
+
+        /*
+         * 
+         * BOTTOM SECTION
+         * 
+         */
 
         HBox bottomSection = new HBox();
         bottomSection.getStyleClass().add("bottom-section");
@@ -100,7 +120,7 @@ public class MainLauncherMenu extends Application {
         Scene scene = new Scene(mainPane, 1200, 700);
         scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm());
 
-        Image icon = new Image(getClass().getResourceAsStream("/Minecraft.png"));
+        Image icon = new Image(getClass().getResourceAsStream("/assets/images/Minecraft.png"));
         primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.setTitle("SinLauncher");
@@ -108,6 +128,7 @@ public class MainLauncherMenu extends Application {
     }
 
     public static void init(Object arg) {
+        System.out.println("Initialized: " + arg);
     }
 
     public static void main(String[] args) {

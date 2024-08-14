@@ -1,16 +1,15 @@
 /* Top Section */
 .top-section {
-    -fx-background-image: url("/background-top.png");
     -fx-background-size: cover;
     -fx-padding: 20px;
     -fx-alignment: center;
     -fx-border-width: 0 0 3px 0;
-    -fx-border-color: #3b4b5a;
+    -fx-background-color: #2b2f33;
 }
 
 /* Left Section */
 .left-section {
-    -fx-background-color: #2b2f33;
+    -fx-background-color: #38393b;
     -fx-pref-width: 250px;
     -fx-padding: 20px;
     -fx-spacing: 10px;
@@ -38,7 +37,7 @@
 
 /* Text Input */
 .txtI {
-    -fx-prompt-text-fill: #95a5a6;
+    -fx-prompt-text-fill: #b3c4c6;
     -fx-background-color: #2b2f33;
     -fx-text-fill: #f0f4f7;
     -fx-min-width: 300px;
@@ -66,7 +65,7 @@
 /* Versions Box */
 .version-combo-box {
     -fx-background-color: #2b2f33;
-    -fx-text-fill: #f0f4f7;
+    -fx-text-fill: #ffffff;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
     -fx-padding: 5px;
@@ -89,7 +88,7 @@
 
 /* Navigation Button */
 .nav-button {
-    -fx-background-color: #2b2f33;
+    -fx-background-color: transperent;
     -fx-text-fill: #f0f4f7;
     -fx-padding: 15px;
     -fx-font-size: 16px;
