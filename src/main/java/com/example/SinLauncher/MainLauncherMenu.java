@@ -1,93 +1,62 @@
 package com.example.SinLauncher;
 
+import com.example.SinLauncher.pages.PlayPage;
+import com.example.SinLauncher.pages.SettingsPage;
+
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.example.SinLauncher.config.Config;
-import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+
+import com.example.SinLauncher.pages.ModsPage;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-@SpringBootApplication
-@EnableEncryptableProperties
 public class MainLauncherMenu extends Application {
 
     private static String[] savedArgs;
 
+    private PlayPage playPage = new PlayPage();
+    private SettingsPage settingsPage = new SettingsPage();
+    private ModsPage modsPage = new ModsPage();
+    
+    private BorderPane mainPane;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        /*
-         * 
-         * TOP SECTION
-         * 
-         */
-
         HBox topSection = new HBox();
         topSection.getStyleClass().add("top-section");
-
+        
         Label titleLabel = new Label("SinLauncher");
         titleLabel.getStyleClass().add("title-label");
-
         topSection.getChildren().addAll(titleLabel);
         topSection.setSpacing(20);
         topSection.setAlignment(Pos.CENTER);
-
-        /*
-         * 
-         * LEFT SECTION
-         * 
-         */
 
         VBox leftSection = new VBox();
         leftSection.getStyleClass().add("left-section");
 
         Button playButton = new Button("Play");
         playButton.getStyleClass().add("nav-button");
+        playButton.setOnAction(e -> mainPane.setCenter(playPage.getPlayPageContent()));
 
         Button settingsButton = new Button("Settings");
         settingsButton.getStyleClass().add("nav-button");
+        settingsButton.setOnAction(e -> mainPane.setCenter(settingsPage.getSettingsPageContent()));
 
         Button modsButton = new Button("Mods");
         modsButton.getStyleClass().add("nav-button");
+        modsButton.setOnAction(e -> mainPane.setCenter(modsPage.getModsPageContent()));
 
         leftSection.getChildren().addAll(playButton, settingsButton, modsButton);
         leftSection.setSpacing(20);
-
-        /*
-         * 
-         * CENTER SECTION
-         * 
-         */
-
-        VBox centerContent = new VBox();
-        centerContent.getStyleClass().add("center-content");
-
-        for (int i = 0; i < 10; i++) {
-            Label label = new Label("News Item " + (i + 1));
-            label.getStyleClass().add("content-label");
-            centerContent.getChildren().add(label);
-        }
-
-        ScrollPane centerScrollPane = new ScrollPane(centerContent);
-        centerScrollPane.getStyleClass().add("center-scroll-pane");
-
-        /*
-         * 
-         * BOTTOM SECTION
-         * 
-         */
 
         HBox bottomSection = new HBox();
         bottomSection.getStyleClass().add("bottom-section");
@@ -110,32 +79,21 @@ public class MainLauncherMenu extends Application {
         bottomSection.getChildren().addAll(versionLabel, versionComboBox, usernameInput, loginButton);
         bottomSection.setSpacing(10);
 
-        // Main pane layout
-        BorderPane mainPane = new BorderPane();
+        mainPane = new BorderPane();
         mainPane.setTop(topSection);
         mainPane.setLeft(leftSection);
-        mainPane.setCenter(centerScrollPane);
-        mainPane.setBottom(bottomSection);
+        mainPane.setBottom(bottomSection);  
 
         Scene scene = new Scene(mainPane, 1200, 700);
         scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm());
 
-        Image icon = new Image(getClass().getResourceAsStream("/assets/images/Minecraft.png"));
-        primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.setTitle("SinLauncher");
         primaryStage.show();
     }
 
-    public static void init(Object arg) {
-        System.out.println("Initialized: " + arg);
-    }
-
     public static void main(String[] args) {
         savedArgs = args;
-        
-        init(App.DIR);
-        init(Config.PATH);
 
         new Thread(() -> {
             SpringApplication.run(MainLauncherMenu.class, args);
@@ -143,6 +101,5 @@ public class MainLauncherMenu extends Application {
         }).start();
 
         launch(args);
-        System.out.println("JavaFX Running");
     }
 }
