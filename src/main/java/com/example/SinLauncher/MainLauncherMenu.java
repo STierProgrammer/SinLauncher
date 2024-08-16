@@ -2,10 +2,8 @@ package com.example.SinLauncher;
 
 import com.example.SinLauncher.pages.PlayPage;
 import com.example.SinLauncher.pages.SettingsPage;
-
-import org.springframework.boot.SpringApplication;
-
 import com.example.SinLauncher.pages.ModsPage;
+import org.springframework.boot.SpringApplication;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,24 +20,49 @@ public class MainLauncherMenu extends Application {
 
     private static String[] savedArgs;
 
-    private PlayPage playPage = new PlayPage();
-    private SettingsPage settingsPage = new SettingsPage();
-    private ModsPage modsPage = new ModsPage();
+    private final PlayPage playPage = new PlayPage();
+    private final SettingsPage settingsPage = new SettingsPage();
+    private final ModsPage modsPage = new ModsPage();
     
     private BorderPane mainPane;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        HBox topSection = createTopSection();
 
+        VBox leftSection = createLeftSection();
+
+        HBox bottomSection = createBottomSection();
+
+        mainPane = new BorderPane();
+        mainPane.setTop(topSection);
+        mainPane.setLeft(leftSection);
+        mainPane.setBottom(bottomSection);
+        mainPane.setCenter(playPage.getPlayPageContent());  
+
+        Scene scene = new Scene(mainPane, 1200, 700);
+        scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm());
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("SinLauncher");
+        primaryStage.show();
+    }
+
+    private HBox createTopSection() {
         HBox topSection = new HBox();
         topSection.getStyleClass().add("top-section");
-        
+
         Label titleLabel = new Label("SinLauncher");
         titleLabel.getStyleClass().add("title-label");
+
         topSection.getChildren().addAll(titleLabel);
         topSection.setSpacing(20);
         topSection.setAlignment(Pos.CENTER);
 
+        return topSection;
+    }
+
+    private VBox createLeftSection() {
         VBox leftSection = new VBox();
         leftSection.getStyleClass().add("left-section");
 
@@ -57,7 +80,12 @@ public class MainLauncherMenu extends Application {
 
         leftSection.getChildren().addAll(playButton, settingsButton, modsButton);
         leftSection.setSpacing(20);
+        leftSection.setAlignment(Pos.TOP_CENTER);
 
+        return leftSection;
+    }
+
+    private HBox createBottomSection() {
         HBox bottomSection = new HBox();
         bottomSection.getStyleClass().add("bottom-section");
 
@@ -78,18 +106,9 @@ public class MainLauncherMenu extends Application {
 
         bottomSection.getChildren().addAll(versionLabel, versionComboBox, usernameInput, loginButton);
         bottomSection.setSpacing(10);
+        bottomSection.setAlignment(Pos.CENTER_RIGHT);
 
-        mainPane = new BorderPane();
-        mainPane.setTop(topSection);
-        mainPane.setLeft(leftSection);
-        mainPane.setBottom(bottomSection);  
-
-        Scene scene = new Scene(mainPane, 1200, 700);
-        scene.getStylesheets().add(getClass().getResource("./styles/styles.css").toExternalForm());
-
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("SinLauncher");
-        primaryStage.show();
+        return bottomSection;
     }
 
     public static void main(String[] args) {
@@ -97,7 +116,7 @@ public class MainLauncherMenu extends Application {
 
         new Thread(() -> {
             SpringApplication.run(MainLauncherMenu.class, args);
-            System.out.println("Spring boot fully started");
+            System.out.println("Spring Boot fully started");
         }).start();
 
         launch(args);
