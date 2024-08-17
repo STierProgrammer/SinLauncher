@@ -148,6 +148,7 @@
       <scope>runtime</scope>
     </dependency>
 
+
   </dependencies>
   <build>
     <pluginManagement>
@@ -208,7 +209,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>com.example.SinLauncher.MainLauncherMenu</mainClass>
+          <mainClass>com.example.SinLauncher.JavaFX</mainClass>
           <!--  Main Class  -->
         </configuration>
       </plugin>
