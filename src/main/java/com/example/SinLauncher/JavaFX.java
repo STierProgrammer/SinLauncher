@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebEngine;
@@ -52,6 +53,8 @@ public class JavaFX extends Application {
         double screenHeight = screenBounds.getHeight();
 
         scene = new Scene(root, screenWidth * 0.8, screenHeight * 0.8); 
+
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/images/SinLauncher.png")));
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("SinLauncher");
