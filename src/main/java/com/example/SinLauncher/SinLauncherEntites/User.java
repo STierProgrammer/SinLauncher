@@ -32,8 +32,8 @@ public class User {
 
 
 
-    //pass in generatedUUID or legit UUID here in String format
-    //UUID.randomUUID() generates a unique UUID with a very low chance for the same UUID
+    // Pass in generatedUUID or legit UUID here in String format
+    // UUID.randomUUID() generates a unique UUID with a very low chance for the same UUID
     public User(String uuid, String username, String password, String email, boolean cracked, boolean isLoggedIn) {
         this.uuid = uuid;
         this.username = username;

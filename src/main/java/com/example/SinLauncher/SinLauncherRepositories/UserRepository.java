@@ -8,6 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    //Allows for the service layer to interact with the database
-    //which allows the controller to interact with the service layer
+    // Allows for the service layer to interact with the database
+    // which allows the controller to interact with the service layer
 }

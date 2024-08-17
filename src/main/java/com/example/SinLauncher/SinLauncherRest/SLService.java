@@ -25,11 +25,11 @@ public class SLService {
     }
 
     public void addUser(User user) {
-        //A duplicate user cannot be created neither any user can have same name
+        // A duplicate user cannot be created neither any user can have same name
         userRepository.save(user);
     }
 
-    //creates a Minecraft account on our database
+    // Creates a Minecraft account on our database
     @Transactional
     public void createAccount(String username,String password, String email) {
         Mono<String> uuidMono = mojangService.getUUUIDByUsername(username);
@@ -38,11 +38,11 @@ public class SLService {
 
         Optional<String> monoOptional = uuidMono.blockOptional();
         if (monoOptional.isPresent()) {
-            user = new User(monoOptional.get(), username, password, email, false, false);
+            user = new User(monoOptional.get(), username, password, email,  false,   false);
         } else {
             UUID uuid = UUID.randomUUID();
             String generatedUUID = uuid.toString();
-            user = new User(generatedUUID, username, password, email, true, false);
+            user = new User(generatedUUID, username, password, email,  true,  false);
         }
         userRepository.save(user);
     }

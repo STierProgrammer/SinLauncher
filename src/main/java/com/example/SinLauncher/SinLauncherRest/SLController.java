@@ -31,12 +31,12 @@ public class SLController {
 
     @PostMapping(path = "/adduser")
     public void addUser(@RequestBody User user) {
-        //user is valid code must check through if user is valid or not
-        //non-valid accounts cannot be created
+        // User is valid code must check through if user is valid or not
+        // Non-valid accounts cannot be created
         slService.addUser(user);
     }
 
-    //creates an account with either legit or cracked Minecraft indicated by cracked boolean
+    // Creates an account with either legit or cracked Minecraft indicated by cracked boolean
     @PostMapping(path = "/create-account")
     public void createAccount(@RequestBody CreateAccountRequest request) {
         slService.createAccount(request.getUsername(), request.getPassword(), request.getEmail());
