@@ -61,8 +61,12 @@ public class Instance {
         return Paths.get(PARENT_DIR.toString(), this.name);
     }
 
+    /**
+     * creates instance dir if it doesn't exist
+     */
     public void initDir() throws IOException {
-        Files.createDirectory(this.Dir());
+        if (!Files.exists(this.Dir()))
+            Files.createDirectory(this.Dir());
     }
 
     /**
@@ -76,6 +80,7 @@ public class Instance {
      *                                         the manifest or failed to append
      *                                         instance to instances.json
      */
+    // FIXME: there is a bug in here which you will never see, expect if you were me
     public static Instance createInstance(String name, String version)
             throws InstanceAlreadyExistsException, InvaildInstanceVersionException, IOException {
         Instance instance = new Instance(name, version);
@@ -181,7 +186,7 @@ public class Instance {
         List<Instance> instances = new ArrayList<Instance>(Arrays.asList(readInstances()));
 
         for (Instance instance : instances) {
-            if (instance.name == new_instance.name) {
+            if (instance.name.equals(new_instance.name)) {
                 throw new InstanceAlreadyExistsException(
                         "failed to add instance '" + new_instance.name + '\''
                                 + ", because there is an instance with the same name...",
@@ -193,5 +198,10 @@ public class Instance {
             instances.add(new_instance);
 
         writeInstances(instances.toArray(new Instance[0]));
+    }
+
+    @Override
+    public String toString() {
+        return this.name + ": " + this.version;
     }
 }
