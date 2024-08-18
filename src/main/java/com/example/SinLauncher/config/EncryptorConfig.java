@@ -1,6 +1,6 @@
 package com.example.SinLauncher.config;
 
-import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
+// import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;

@@ -2,11 +2,11 @@ package com.sinlauncher.app;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jasypt.encryption.StringEncryptor;
+// import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.junit.Test;
-import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Bean;
 
 /**
  * Unit test for simple com.App.
