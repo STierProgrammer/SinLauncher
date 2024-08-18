@@ -23,26 +23,12 @@ public class JavaFX extends Application {
     private BorderPane root;
     private Scene scene;
     private ChoiceBox<String> versionChoiceBox;
-    private List<String> availableVersions; // Assume you fetch these from a source
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         webView = new WebView();
         webEngine = webView.getEngine();
         root = new BorderPane();
-
-        availableVersions = getAvailableVersions(); // Fetch the available versions
-
-        versionChoiceBox = new ChoiceBox<>();
-        versionChoiceBox.getItems().addAll(availableVersions);
-        versionChoiceBox.setStyle(
-            "-fx-background-color: #282c34;" +
-            "-fx-text-fill: white;" +
-            "-fx-font-size: 14px;" +
-            "-fx-padding: 10px;" +
-            "-fx-background-radius: 4px;" +
-            "-fx-pref-width: 150px;"
-        );
 
         Button btnPlay = createStyledButton("Play");
         Button btnMods = createStyledButton("Mods");
@@ -56,7 +42,7 @@ public class JavaFX extends Application {
         btnRegister.setOnAction(e -> loadPage("/Pages/Register.HTML"));
         btnLogin.setOnAction(e -> loadPage("/Pages/Login.HTML"));
 
-        VBox sidebar = new VBox(15, btnPlay, btnMods, btnSettings, btnRegister, btnLogin, versionChoiceBox);
+        VBox sidebar = new VBox(15, btnPlay, btnMods, btnSettings, btnRegister, btnLogin);
         sidebar.setPadding(new Insets(20));
         sidebar.setStyle("-fx-background-color: #20232a; -fx-pref-width: 220px;");
 
@@ -94,11 +80,6 @@ public class JavaFX extends Application {
 
     private void loadPage(String page) {
         webEngine.load(getClass().getResource(page).toExternalForm());
-    }
-
-    private List<String> getAvailableVersions() {
-        // Mockup of available versions. Replace with actual fetching logic.
-        return List.of("1.20.1", "1.19.4", "1.18.2", "1.17.1");
     }
 
     public static void main(String[] args) {
