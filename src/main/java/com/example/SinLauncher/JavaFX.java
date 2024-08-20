@@ -14,7 +14,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.util.List;
 
 public class JavaFX extends Application {
 
@@ -22,7 +21,6 @@ public class JavaFX extends Application {
     private WebEngine webEngine;
     private BorderPane root;
     private Scene scene;
-    private ChoiceBox<String> versionChoiceBox;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -36,11 +34,11 @@ public class JavaFX extends Application {
         Button btnRegister = createStyledButton("Register");
         Button btnLogin = createStyledButton("Login");
 
-        btnPlay.setOnAction(e -> loadPage("/Pages/Play.HTML"));
-        btnMods.setOnAction(e -> loadPage("/Pages/Mods.HTML"));
-        btnSettings.setOnAction(e -> loadPage("/Pages/Settings.HTML"));
-        btnRegister.setOnAction(e -> loadPage("/Pages/Register.HTML"));
-        btnLogin.setOnAction(e -> loadPage("/Pages/Login.HTML"));
+        btnPlay.setOnAction(e -> loadPage("/Pages/play.HTML"));
+        btnMods.setOnAction(e -> loadPage("/Pages/mods.HTML"));
+        btnSettings.setOnAction(e -> loadPage("/Pages/settings.HTML"));
+        btnRegister.setOnAction(e -> loadPage("/Pages/register.HTML"));
+        btnLogin.setOnAction(e -> loadPage("/Pages/login.HTML"));
 
         VBox sidebar = new VBox(15, btnPlay, btnMods, btnSettings, btnRegister, btnLogin);
         sidebar.setPadding(new Insets(20));
@@ -49,7 +47,7 @@ public class JavaFX extends Application {
         root.setLeft(sidebar);
         root.setCenter(webView);
 
-        loadPage("/Pages/Play.HTML");
+        loadPage("/Pages/play.HTML");
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
