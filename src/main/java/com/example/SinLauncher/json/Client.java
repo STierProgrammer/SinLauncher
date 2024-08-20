@@ -62,6 +62,24 @@ public class Client {
         public String action;
         public OSRules os;
         public Features features;
+
+        /**
+         * checks if os matches OSRules also respects action
+         */
+        public boolean osMatches() {
+            boolean match = true;
+            if (os != null) {
+                match = os.name == App.OS && os.arch == App.ARCH;
+
+                if (action.equals("allow"))
+                    return match;
+
+                if (action.equals("disallow"))
+                    return !match;
+            }
+
+            return match;
+        }
     }
 
     @ToString
@@ -363,7 +381,14 @@ public class Client {
      * downloads the client libraries including native libraries
      */
     public void downloadLibraries(Path instanceDir) throws IOException {
-        for (Library library : libraries) {
+        libloop: for (Library library : libraries) {
+            if (library.rules != null) {
+                for (Rule rule : library.rules) {
+                    if (!rule.osMatches())
+                        continue libloop;
+                }
+            }
+
             library.downloadArtifact();
             library.downloadNative();
             library.extractNative(instanceDir);
