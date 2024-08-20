@@ -9,7 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.util.List;
+import java.util.Scanner;
 
+import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
 import com.example.SinLauncher.SinLauncherEntites.Instance.InstanceAlreadyExistsException;
@@ -29,7 +31,12 @@ public class App {
             .registerTypeAdapter(Client.Argument.class, new Client.ArgumentDeserializer()).create();
 
     public static final String DIR;
+    public static final Path ASSETS_DIR;
+    public static final Path LIBRARIES_DIR;
+    public static final Path NATIVES_DIR;
+
     public static final Os OS;
+    public static final Arch ARCH;
 
     public static Config CONFIG;
 
@@ -39,17 +46,31 @@ public class App {
         if (os.contains("win")) {
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
             OS = Os.Windows;
-        }
-
-        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             DIR = System.getProperty("user.home") + "/.sinlauncher";
             OS = Os.Linux;
-        }
-
-        else {
+        } else {
             DIR = "SinLauncher";
             OS = Os.Linux;
         }
+
+        String arch = System.getProperty("os.arch").toLowerCase();
+
+        if (arch == "amd64") {
+            ARCH = Arch.X86_64;
+        } else if (arch == "aarch64") {
+            ARCH = Arch.Arm64;
+        } else if (arch == "arm") {
+            ARCH = Arch.Arm;
+        } else if (arch == "x86") {
+            ARCH = Arch.X86;
+        } else {
+            ARCH = Arch.X86_64;
+        }
+
+        ASSETS_DIR = Paths.get(DIR, "assets");
+        LIBRARIES_DIR = Paths.get(DIR, "libraries");
+        NATIVES_DIR = Paths.get(DIR, "natives");
 
         try {
             App.init();
@@ -71,14 +92,15 @@ public class App {
     }
 
     static void initLauncherDir() throws IOException {
+
         if (!Files.exists(Paths.get(DIR)))
             Files.createDirectories(Paths.get(DIR));
 
-        if (!Files.exists(Paths.get(DIR + "/assets")))
-            Files.createDirectories(Paths.get(DIR + "/assets"));
+        if (!Files.exists(ASSETS_DIR))
+            Files.createDirectories(ASSETS_DIR);
 
-        if (!Files.exists(Paths.get(DIR + "/libraries")))
-            Files.createDirectories(Paths.get(DIR + "/libraries"));
+        if (!Files.exists(LIBRARIES_DIR))
+            Files.createDirectories(LIBRARIES_DIR);
 
         App.initInstances();
 
@@ -140,6 +162,18 @@ public class App {
             System.out.println(GSON.toJson(client));
             System.out.println("\n\n\nCLIENT1: ");
             System.out.println(GSON.toJson(client1));
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.print(
+                    "WARNING 1 GIGS OF DATA INCOMING (wouldn't re-download if you already did)!!!, DO YOU WANT TO CONTINUE y\\N: ");
+
+            var confirm = scanner.nextLine();
+            if (confirm.toLowerCase().equals("y")) {
+                client.download(testInstance.Dir());
+                client1.download(testInstance1.Dir());
+            }
+
+            scanner.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "exception: ", e);
         }

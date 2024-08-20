@@ -102,6 +102,10 @@ public class Instance {
         instance.initDir();
         Path client_path = Paths.get(instance.Dir().toString(), "client.json");
 
+        if (Files.exists(client_path))
+            throw new InstanceAlreadyExistsException(
+                    "failed to create new instance because instance's client.json already exists", instance.name);
+
         HttpResponse<String> client = Unirest.get(url).asString();
 
         if (client.getStatus() == 200)
