@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -168,9 +167,9 @@ public class App {
                     "WARNING 1 GIGS OF DATA INCOMING (wouldn't re-download if you already did)!!!, DO YOU WANT TO CONTINUE y\\N: ");
 
             var confirm = scanner.nextLine();
+
             if (confirm.toLowerCase().equals("y")) {
                 client.download(testInstance.Dir());
-                client1.download(testInstance1.Dir());
             }
 
             scanner.close();

@@ -8,6 +8,8 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -69,7 +71,11 @@ public class Client {
         public boolean osMatches() {
             boolean match = true;
             if (os != null) {
-                match = os.name == App.OS && os.arch == App.ARCH;
+                if (os.name != null)
+                    match = match && os.name == App.OS;
+
+                if (os.arch != null)
+                    match = match && os.arch == App.ARCH;
 
                 if (action.equals("allow"))
                     return match;
@@ -79,6 +85,18 @@ public class Client {
             }
 
             return match;
+        }
+
+        /**
+         * mass check {@code Rule.osMatches} on each rule in {@code rules}
+         */
+        public static boolean osMatches(Rule[] rules) {
+            for (Rule rule : rules) {
+                if (!rule.osMatches())
+                    return false;
+            }
+
+            return true;
         }
     }
 
@@ -174,7 +192,7 @@ public class Client {
             return artifact.fetch();
         }
 
-        public Path artifactPath() throws IOException {
+        public Path artifactPath() {
             return Paths.get(App.LIBRARIES_DIR.toString(), artifact.path);
         }
 
@@ -381,12 +399,10 @@ public class Client {
      * downloads the client libraries including native libraries
      */
     public void downloadLibraries(Path instanceDir) throws IOException {
-        libloop: for (Library library : libraries) {
+        for (Library library : libraries) {
             if (library.rules != null) {
-                for (Rule rule : library.rules) {
-                    if (!rule.osMatches())
-                        continue libloop;
-                }
+                if (!Rule.osMatches(library.rules))
+                    continue;
             }
 
             library.downloadArtifact();
@@ -415,5 +431,24 @@ public class Client {
         downloadAssets();
         downloadLibraries(instanceDir);
         downloadClientDownloads(instanceDir);
+    }
+
+    /**
+     * gives a list of the required libraries paths in {@code App.LIBRARIES_DIR}
+     */
+    public Path[] getLibrariesList() {
+        List<Path> pathList = new ArrayList<Path>();
+
+        for (Library library : libraries) {
+            if (library.downloads.artifact != null) {
+                if (library.rules != null)
+                    if (!Rule.osMatches(library.rules))
+                        continue;
+
+                pathList.add(library.downloads.artifactPath());
+            }
+        }
+
+        return pathList.toArray(new Path[0]);
     }
 }
