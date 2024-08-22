@@ -20,17 +20,17 @@ public class AssetIndex {
             return id;
         }
 
-        /** get the url of the asset object */
+        // Get the URL of the asset object
         public String url() {
             return "https://resources.download.minecraft.net/" + this.id() + "/" + hash;
         }
 
-        /** gets the Path of the asset */
+        // Gets the Path of the asset
         public Path path() {
             return Paths.get(App.ASSETS_DIR.toString(), "objects", this.id(), hash);
         }
 
-        /** downloads an asset object and puts it in {@code this.path()} */
+        // Downloads an asset object and puts it in {@code this.path()} 
         public void fetch() throws IOException {
             if (!Files.exists(this.path())) {
                 var fetch = Unirest.get(this.url()).asBytes();
