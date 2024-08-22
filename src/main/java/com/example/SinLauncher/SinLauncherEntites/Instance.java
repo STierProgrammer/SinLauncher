@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.config.Config;
+import com.example.SinLauncher.json.Client;
 import com.example.SinLauncher.json.Manifest;
 import com.example.SinLauncher.json.Manifest.Version;
 
@@ -50,7 +51,6 @@ public class Instance {
     public String name;
     public String version;
     public Path icon = null;
-    public Config config = null;
 
     public Instance(String name, String version) {
         this.name = name;
@@ -58,7 +58,7 @@ public class Instance {
     }
 
     public Path Dir() {
-        return Paths.get(PARENT_DIR.toString(), this.name);
+        return PARENT_DIR.resolve(this.name);
     }
 
     /**
@@ -142,7 +142,6 @@ public class Instance {
         if (instances != null) {
             for (Instance instance : instances) {
                 if (instance.name.equals(name)) {
-                    instance.config = Config.getInstanceConfig(name);
                     return instance;
                 }
             }
@@ -202,6 +201,47 @@ public class Instance {
             instances.add(new_instance);
 
         writeInstances(instances.toArray(new Instance[0]));
+    }
+
+    /**
+     * reads client.json in {@link Dir} and desrializes it
+     */
+    public Client readClient() throws IOException {
+        return App.GSON.fromJson(Files.readString(Paths.get(this.Dir().toString(), "client.json")),
+                Client.class);
+    }
+
+    /**
+     * reads the instance config, desrializes it and returns it or simply returns
+     * {@code App.CONFIG}
+     */
+    public Config getConfig() {
+        Path path = this.Dir().resolve("config.json");
+
+        try {
+            Config config = App.GSON.fromJson(Files.readString(path), Config.class);
+
+            if (config.java == null)
+                config.java = App.CONFIG.java;
+
+            if (config.min_ram == 0)
+                config.min_ram = App.CONFIG.min_ram;
+
+            if (config.max_ram == 0)
+                config.max_ram = App.CONFIG.max_ram;
+
+            return config;
+        } catch (IOException _e) {
+            return App.CONFIG;
+        }
+    }
+
+    /**
+     * downloads then attempts to launch this instance
+     */
+    public void launch() throws IOException {
+        this.readClient().download(this.Dir());
+        this.getConfig().launch(this);
     }
 
     @Override

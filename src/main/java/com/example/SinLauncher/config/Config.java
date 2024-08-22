@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.SinLauncher.App;
+import com.example.SinLauncher.SinLauncherEntites.Instance;
+import com.example.SinLauncher.json.Client;
 import com.google.gson.Gson;
 import com.sun.management.OperatingSystemMXBean;
 
@@ -16,40 +18,21 @@ import com.sun.management.OperatingSystemMXBean;
 public class Config {
     public static final Path PATH = Paths.get(App.DIR, "config.json");
 
-    public long MIN_RAM = 0;
-    public long MAX_RAM = 0;
-    public Java JAVA = null;
+    public long min_ram = 0;
+    public long max_ram = 0;
+    public Java java = null;
 
+    /**
+     * the default config
+     */
     public Config() {
         OperatingSystemMXBean os = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
         long total = os.getTotalMemorySize();
 
-        this.MAX_RAM = total / 4 / 1024 / 1024;
-        this.MIN_RAM = this.MAX_RAM / 2;
+        this.max_ram = total / 4 / 1024 / 1024;
+        this.min_ram = this.max_ram / 2;
 
-        this.JAVA = null;
-    }
-
-    public static Config getInstanceConfig(String instance) {
-        Path path = Paths.get(App.DIR, instance, "config.json");
-
-        try {
-            Config config = App.GSON.fromJson(Files.readString(path), Config.class);
-
-            if (config.JAVA == null) 
-                config.JAVA = App.CONFIG.JAVA;
-
-            if (config.MIN_RAM == 0)
-                config.MIN_RAM = App.CONFIG.MIN_RAM;
-
-            if (config.MAX_RAM == 0) 
-                config.MAX_RAM = App.CONFIG.MAX_RAM;
-
-            return config;
-        } 
-        catch (IOException _e) {
-            return App.CONFIG;
-        }
+        this.java = Java.getAvailableJavaCups()[0];
     }
 
     public void writeConfig() throws IOException {
@@ -62,19 +45,59 @@ public class Config {
             System.out.println("Config & App.DIR Path: " + PATH);
 
             return new Gson().fromJson(Files.readString(PATH), Config.class);
-        } 
-        catch (IOException _e) {
+        } catch (IOException _e) {
             Config config = new Config();
 
             try {
                 config.writeConfig();
-            } 
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.err.println("Failed to write config");
                 System.exit(1);
             }
 
             return config;
+        }
+    }
+
+    /**
+     * launches minecraft using {@code this} as a {@link Config}
+     * doesn't handle downloading
+     */
+    public void launch(Instance instance) throws IOException {
+        Client client = instance.readClient();
+        Path[] paths = client.getLibrariesList();
+
+        String classpath = "";
+
+        for (Path path : paths) {
+            classpath += path;
+            classpath += ':';
+        }
+
+        classpath += instance.Dir().resolve("client.jar");
+        String mainClass = client.mainClass;
+
+        // TODO: use client.arguments instead
+        // TODO: account arguments...
+        ProcessBuilder javaProcess = new ProcessBuilder(
+                this.java.path,
+                "-Xms" + Long.toString(this.min_ram) + "M",
+                "-Xmx" + Long.toString(this.max_ram) + "M",
+                "-cp", classpath,
+                mainClass,
+                "--username", "SebSucks",
+                "--gameDir", instance.Dir().toString(),
+                "--assetsDir", App.ASSETS_DIR.toString(),
+                "--assetIndex", client.assets,
+                "--version", client.id,
+                "--accessToken", "0");
+        javaProcess.redirectErrorStream(true);
+        javaProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+
+        try {
+            javaProcess.start().waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

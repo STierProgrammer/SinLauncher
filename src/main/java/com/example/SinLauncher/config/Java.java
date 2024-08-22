@@ -27,7 +27,7 @@ public class Java {
         this.path = path;
     }
 
-    public static List<Java> getAvailableJavaCups() {
+    public static Java[] getAvailableJavaCups() {
         List<Java> cups = new ArrayList<>();
 
         switch (App.OS) {
@@ -91,7 +91,29 @@ public class Java {
             }
         }
 
-        return cups;
+        sortCups(cups);
+
+        return cups.toArray(new Java[0]);
+    }
+
+    public static void sortCups(List<Java> cups) {
+        cups.sort((cup1, cup2) -> compareVersions(cup1.version, cup2.version));
+    }
+
+    private static int compareVersions(String version1, String version2) {
+        String[] v1 = version1.split(".");
+        String[] v2 = version2.split(".");
+
+        int length = Math.max(v1.length, v2.length);
+        for (int i = 0; i < length; i++) {
+            int num1 = i < v1.length ? Integer.parseInt(v1[i]) : 0;
+            int num2 = i < v2.length ? Integer.parseInt(v2[i]) : 0;
+
+            if (num1 != num2) {
+                return Integer.compare(num1, num2);
+            }
+        }
+        return 0; // equal
     }
 
     public static Java getJavaHomeCup() {
@@ -117,7 +139,7 @@ public class Java {
         return home;
     }
 
-    public static List<Java> getCommonLinuxCups() {
+    private static List<Java> getCommonLinuxCups() {
         File[] directories = {
                 new File("/usr/lib/jvm"),
                 new File("/usr/lib64/jvm"),
@@ -126,7 +148,7 @@ public class Java {
         return getCupsInDirs(directories);
     }
 
-    public static List<Java> getCommonWindowsCups() {
+    private static List<Java> getCommonWindowsCups() {
         String systemDrive = System.getenv("SystemDrive");
 
         File[] directories = {
@@ -137,7 +159,7 @@ public class Java {
         return getCupsInDirs(directories);
     }
 
-    public static List<Java> getCupsInDirs(File[] directories) {
+    private static List<Java> getCupsInDirs(File[] directories) {
         List<Java> cups = new ArrayList<>();
 
         for (File dir : directories) {
@@ -171,7 +193,7 @@ public class Java {
         }
     }
 
-    public static List<Java> getPATHCups() {
+    private static List<Java> getPATHCups() {
         List<Java> cups = new ArrayList<>();
 
         // Check PATH environment variable
@@ -193,7 +215,7 @@ public class Java {
         return cups;
     }
 
-    public static List<Java> getRegCups(Preferences node) {
+    private static List<Java> getRegCups(Preferences node) {
         List<Java> cups = new ArrayList<>();
         try {
             String[] children = node.childrenNames();

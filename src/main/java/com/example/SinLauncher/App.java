@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.List;
 import java.util.Scanner;
 
 import com.example.SinLauncher.SinLauncherEntites.Arch;
@@ -127,10 +126,10 @@ public class App {
         try {
             Manifest manifest = Manifest.readManifest();
 
-            System.out.println(CONFIG.MAX_RAM);
+            System.out.println(CONFIG.max_ram);
             System.out.println(manifest.latest.release);
 
-            List<Java> cups = Java.getAvailableJavaCups();
+            var cups = Java.getAvailableJavaCups();
 
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
@@ -152,11 +151,9 @@ public class App {
             Instance testInstance = Instance.readInstances()[0];
             Instance testInstance1 = Instance.readInstances()[1];
 
-            Client client = GSON.fromJson(Files.readString(Paths.get(testInstance.Dir().toString(), "client.json")),
-                    Client.class);
+            Client client = testInstance.readClient();
 
-            Client client1 = GSON.fromJson(Files.readString(Paths.get(testInstance1.Dir().toString(), "client.json")),
-                    Client.class);
+            Client client1 = testInstance1.readClient();
 
             System.out.println(GSON.toJson(client));
             System.out.println("\n\n\nCLIENT1: ");
@@ -169,7 +166,7 @@ public class App {
             var confirm = scanner.nextLine();
 
             if (confirm.toLowerCase().equals("y")) {
-                client.download(testInstance.Dir());
+                testInstance.launch();
             }
 
             scanner.close();
