@@ -175,7 +175,7 @@ public class App {
 
             Scanner scanner = new Scanner(System.in);
             System.out.print(
-                    "Warning: 1GB of data is abotu to be installed! Do you want to continue? : Y\\N ");
+                    "Warning: 1GB of data is aboUT to be installed! Do you want to continue? : Y\\N ");
 
             var confirm = scanner.nextLine();
 

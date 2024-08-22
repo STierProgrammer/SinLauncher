@@ -22,9 +22,7 @@ public class Config {
     public long max_ram = 0;
     public Java java = null;
 
-    /**
-     * the default config
-     */
+    // The default config
     public Config() {
         OperatingSystemMXBean os = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
         long total = os.getTotalMemorySize();
@@ -59,10 +57,8 @@ public class Config {
         }
     }
 
-    /**
-     * launches minecraft using {@code this} as a {@link Config}
-     * doesn't handle downloading
-     */
+    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle downloading 
+    // ?/ Roxve for gods sake learn to organize the code
     public void launch(Instance instance) throws IOException {
         Client client = instance.readClient();
         Path[] paths = client.getLibrariesList();
@@ -77,8 +73,8 @@ public class Config {
         classpath += instance.Dir().resolve("client.jar");
         String mainClass = client.mainClass;
 
-        // TODO: use client.arguments instead
-        // TODO: account arguments...
+        // TODO: Use client.arguments instead
+        // TODO: Account arguments...
         ProcessBuilder javaProcess = new ProcessBuilder(
                 this.java.path,
                 "-Xms" + Long.toString(this.min_ram) + "M",
@@ -96,7 +92,8 @@ public class Config {
 
         try {
             javaProcess.start().waitFor();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
