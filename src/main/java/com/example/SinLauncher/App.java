@@ -174,8 +174,7 @@ public class App {
             System.out.println(GSON.toJson(client1));
 
             Scanner scanner = new Scanner(System.in);
-            System.out.print(
-                    "Warning: 1GB of data is aboUT to be installed! Do you want to continue? : Y\\N ");
+            System.out.print("Warning: 1GB of data is aboUT to be installed! Do you want to continue? : Y\\N ");
 
             var confirm = scanner.nextLine();
 
