@@ -26,8 +26,8 @@ import kong.unirest.core.Unirest;
 public class App {
     public static final Logger LOGGER = Logger.getLogger(App.class.getName());
     public static final Gson GSON = new GsonBuilder()
-                            .setPrettyPrinting()
-                            .registerTypeAdapter(Client.Argument.class, new Client.ArgumentDeserializer()).create();
+            .setPrettyPrinting()
+            .registerTypeAdapter(Client.Argument.class, new Client.ArgumentDeserializer()).create();
 
     public static final String DIR;
     public static final Path ASSETS_DIR;
@@ -55,28 +55,27 @@ public class App {
 
         String arch = System.getProperty("os.arch").toLowerCase();
 
-        if (arch == "amd64") 
+        if (arch == "amd64")
             ARCH = Arch.X86_64;
-        
-        else if (arch == "aarch64") 
+
+        else if (arch == "aarch64")
             ARCH = Arch.Arm64;
-        
+
         else if (arch == "arm")
             ARCH = Arch.Arm;
-        
-        else if (arch == "x86") 
+
+        else if (arch == "x86")
             ARCH = Arch.X86;
-        
-        else 
+
+        else
             ARCH = Arch.X86_64;
-        
 
         ASSETS_DIR = Paths.get(DIR, "assets");
         LIBRARIES_DIR = Paths.get(DIR, "libraries");
         NATIVES_DIR = Paths.get(DIR, "natives");
 
         try {
-            App.Initialize();
+            App.initialize();
         } catch (IOException e) {
             LOGGER.info("Failed to initialize the Launcher");
         }
@@ -84,7 +83,7 @@ public class App {
         CONFIG = Config.readConfig();
     }
 
-    static void InitializeInstances() throws IOException {
+    static void initializeInstances() throws IOException {
         if (!Files.exists(Instance.PARENT_DIR))
             Files.createDirectories(Instance.PARENT_DIR);
 
@@ -95,7 +94,7 @@ public class App {
         }
     }
 
-    static void InitializeLauncherDir() throws IOException {
+    static void initializeLauncherDir() throws IOException {
 
         if (!Files.exists(Paths.get(DIR)))
             Files.createDirectories(Paths.get(DIR));
@@ -106,7 +105,7 @@ public class App {
         if (!Files.exists(LIBRARIES_DIR))
             Files.createDirectories(LIBRARIES_DIR);
 
-        App.InitializeInstances();
+        App.initializeInstances();
 
         HttpResponse<String> response = Unirest
                 .get("https://launchermeta.mojang.com/mc/game/version_manifest.json")
@@ -123,8 +122,8 @@ public class App {
         }
     }
 
-    public static void Initialize() throws IOException {
-        InitializeLauncherDir();
+    public static void initialize() throws IOException {
+        initializeLauncherDir();
         LOGGER.info("Launcher initialized!");
     }
 
@@ -142,25 +141,22 @@ public class App {
 
             try {
                 Instance.createInstance("Test", manifest.latest.release);
-            } 
-            catch (InstanceAlreadyExistsException _e) {
+            } catch (InstanceAlreadyExistsException _e) {
                 String ERROR = _e.getMessage();
                 LOGGER.info("Check line 148: " + ERROR);
             }
-            
+
             try {
                 Instance.createInstance("Old", "1.6.4");
-            } 
-            catch (InstanceAlreadyExistsException _e) {
+            } catch (InstanceAlreadyExistsException _e) {
                 String ERROR = _e.getMessage();
                 LOGGER.info("Check line: 156: " + ERROR);
             }
 
             System.out.println("Instances: ");
 
-            for (Instance instance : Instance.readInstances()) 
+            for (Instance instance : Instance.readInstances())
                 System.out.println(instance.toString());
-            
 
             Instance testInstance = Instance.readInstances()[0];
             Instance testInstance1 = Instance.readInstances()[1];
@@ -174,19 +170,16 @@ public class App {
             System.out.println(GSON.toJson(client1));
 
             Scanner scanner = new Scanner(System.in);
-            System.out.print("Warning: 1GB of data is aboUT to be installed! Do you want to continue? : Y\\N ");
+            System.out.print("Warning: 1GB of data is aboUT to be installed! Do you want to continue? : y\\N ");
 
             var confirm = scanner.nextLine();
 
-            if (confirm.equalsIgnoreCase("y")) 
+            if (confirm.equalsIgnoreCase("y"))
                 testInstance.launch();
-
-            else if (confirm.equalsIgnoreCase("n")) 
+            else if (confirm.equalsIgnoreCase("n"))
                 System.out.println("Installation canceled.");
-
-            else 
-                System.out.println("Invalid input. Please enter 'y' or 'n'.");
-            
+            // else input is correct idiot, that is why i have a capital N because it
+            // defaults to it on wrong input idiot2
             scanner.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);

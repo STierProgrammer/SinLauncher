@@ -57,7 +57,8 @@ public class Config {
         }
     }
 
-    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle downloading 
+    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle
+    // downloading
     // ?/ Roxve for gods sake learn to organize the code
     public void launch(Instance instance) throws IOException {
         Client client = instance.readClient();
@@ -90,10 +91,12 @@ public class Config {
         javaProcess.redirectErrorStream(true);
         javaProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
+        System.out.println("running:");
+        System.out.println(javaProcess.command().toString());
+
         try {
             javaProcess.start().waitFor();
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
