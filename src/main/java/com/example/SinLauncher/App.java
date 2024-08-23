@@ -143,14 +143,14 @@ public class App {
                 Instance.createInstance("test", manifest.latest.release);
             } catch (InstanceAlreadyExistsException _e) {
                 String ERROR = _e.getMessage();
-                LOGGER.info("Check line 148: " + ERROR);
+                LOGGER.info("Check line 146: " + ERROR);
             }
 
             try {
                 Instance.createInstance("old", "1.6.4");
             } catch (InstanceAlreadyExistsException _e) {
                 String ERROR = _e.getMessage();
-                LOGGER.info("Check line: 156: " + ERROR);
+                LOGGER.info("Check line: 153: " + ERROR);
             }
 
             System.out.println("Instances: ");
@@ -170,7 +170,7 @@ public class App {
             System.out.println(GSON.toJson(client1));
 
             Scanner scanner = new Scanner(System.in);
-            System.out.print("Warning: 1GB of data is aboUT to be installed! Do you want to continue? : y\\N ");
+            System.out.print("Warning: 1GB of data is about to be installed! Do you want to continue? : y\\N ");
 
             var confirm = scanner.nextLine();
 
