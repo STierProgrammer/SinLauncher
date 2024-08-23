@@ -140,14 +140,14 @@ public class App {
                 System.out.println(cup.version + ": " + cup.path);
 
             try {
-                Instance.createInstance("Test", manifest.latest.release);
+                Instance.createInstance("test", manifest.latest.release);
             } catch (InstanceAlreadyExistsException _e) {
                 String ERROR = _e.getMessage();
                 LOGGER.info("Check line 148: " + ERROR);
             }
 
             try {
-                Instance.createInstance("Old", "1.6.4");
+                Instance.createInstance("old", "1.6.4");
             } catch (InstanceAlreadyExistsException _e) {
                 String ERROR = _e.getMessage();
                 LOGGER.info("Check line: 156: " + ERROR);
