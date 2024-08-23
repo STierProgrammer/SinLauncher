@@ -158,8 +158,8 @@ public class App {
             for (Instance instance : Instance.readInstances())
                 System.out.println(instance.toString());
 
-            Instance testInstance = Instance.readInstances()[0];
-            Instance testInstance1 = Instance.readInstances()[1];
+            Instance testInstance = Instance.getInsance("test");
+            Instance testInstance1 = Instance.getInsance("old");
 
             Client client = testInstance.readClient();
 

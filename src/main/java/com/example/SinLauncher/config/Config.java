@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
+import com.example.SinLauncher.SinLauncherEntites.Os;
 import com.example.SinLauncher.json.Client;
 import com.google.gson.Gson;
 import com.sun.management.OperatingSystemMXBean;
@@ -68,7 +69,10 @@ public class Config {
 
         for (Path path : paths) {
             classpath += path;
-            classpath += ':';
+            if (App.OS == Os.Windows)
+                classpath += ';';
+            else
+                classpath += ':';
         }
 
         classpath += instance.Dir().resolve("client.jar");
