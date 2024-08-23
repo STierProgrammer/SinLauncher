@@ -37,13 +37,15 @@ public class SLService {
         User user;
 
         Optional<String> monoOptional = uuidMono.blockOptional();
-        if (monoOptional.isPresent()) {
-            user = new User(monoOptional.get(), username, password, email,  false,   false);
-        } else {
+        if (monoOptional.isPresent()) 
+            user = new User(monoOptional.get(), username, password, email, false, false);
+    
+        else {
             UUID uuid = UUID.randomUUID();
             String generatedUUID = uuid.toString();
-            user = new User(generatedUUID, username, password, email,  true,  false);
+            user = new User(generatedUUID, username, password, email, true, false);
         }
+        
         userRepository.save(user);
     }
 

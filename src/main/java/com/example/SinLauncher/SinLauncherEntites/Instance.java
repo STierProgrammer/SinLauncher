@@ -61,60 +61,59 @@ public class Instance {
         return PARENT_DIR.resolve(this.name);
     }
 
-    /**
-     * creates instance dir if it doesn't exist
-     */
+    // Creates an instance directory if it doesn't exist
     public void initDir() throws IOException {
         if (!Files.exists(this.Dir()))
             Files.createDirectory(this.Dir());
     }
 
     /**
-     * creates a new vaild instance,
-     * creates it's folder, downloads it's client.json, serializes and appends it to
-     * instances.json then returns it
      * 
-     * @throws InvaildInstanceVersionException if manifest doesn't contain the
+     * creates a new vaild instance,
+     * creates it's folder, downloads it's client.json, serializes and appends it to instances.json then returns it
+     * 
+     * @throws InvaildInstanceVersionException If manifest doesn't contain the
      *                                         provided {@code version}
-     * @throws IOException                     if failed to fetch client.json from
-     *                                         the manifest or failed to append
+     * @throws IOException                     it will fail to fetch client.json from
+     *                                         the manifest or fail to append
      *                                         instance to instances.json
      */
-    // FIXME: there is a bug in here which you will never see, expect if you were me
+
+    // FIXME: There is a bug in here which cause you to not see
     public static Instance createInstance(String name, String version)
-            throws InstanceAlreadyExistsException, InvaildInstanceVersionException, IOException {
-        Instance instance = new Instance(name, version);
+        throws InstanceAlreadyExistsException, InvaildInstanceVersionException, IOException {
+            Instance instance = new Instance(name, version);
 
-        Manifest manifest = Manifest.readManifest();
+            Manifest manifest = Manifest.readManifest();
 
-        String url = null;
-        for (Version man_version : manifest.versions) {
-            if (man_version.id.equals(version)) {
-                url = man_version.url;
-                break;
+            String url = null;
+            for (Version man_version : manifest.versions) {
+                if (man_version.id.equals(version)) {
+                    url = man_version.url;
+                    break;
+                }
             }
-        }
 
-        if (url == null)
-            throw new InvaildInstanceVersionException("unexpected version while creating instance '" + version + '\'',
-                    version);
+            if (url == null)
+                throw new InvaildInstanceVersionException("Unexpected version occured while creating an instance '" + version + '\'',
+                        version);
 
-        instance.initDir();
-        Path client_path = Paths.get(instance.Dir().toString(), "client.json");
+            instance.initDir();
+            Path client_path = Paths.get(instance.Dir().toString(), "client.json");
 
-        if (Files.exists(client_path))
-            throw new InstanceAlreadyExistsException(
-                    "failed to create new instance because instance's client.json already exists", instance.name);
+            if (Files.exists(client_path))
+                throw new InstanceAlreadyExistsException(
+                        "Failed to create a new instance because instance's client.json already exists!", instance.name);
 
-        HttpResponse<String> client = Unirest.get(url).asString();
+            HttpResponse<String> client = Unirest.get(url).asString();
 
-        if (client.getStatus() == 200)
-            Files.write(client_path, client.getBody().getBytes());
-        else
-            throw new IOException("Failed to fetch client.json for version '" + version + '\'');
+            if (client.getStatus() == 200)
+                Files.write(client_path, client.getBody().getBytes());
+            else
+                throw new IOException("Failed to fetch client.json for version '" + version + '\'');
 
-        addInstance(instance);
-        return instance;
+            addInstance(instance);
+            return instance;
     }
 
     /**
@@ -236,9 +235,7 @@ public class Instance {
         }
     }
 
-    /**
-     * downloads then attempts to launch this instance
-     */
+    // Install and after the installation it attempts to launch this instance
     public void launch() throws IOException {
         this.readClient().download(this.Dir());
         this.getConfig().launch(this);

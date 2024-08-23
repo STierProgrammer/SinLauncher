@@ -13,7 +13,6 @@ import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
 public class JavaFX extends Application {
 
     private WebView webView;
@@ -25,6 +24,7 @@ public class JavaFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         webView = new WebView();
         webEngine = webView.getEngine();
+        
         root = new BorderPane();
 
         Button btnPlay = createStyledButton("Play");

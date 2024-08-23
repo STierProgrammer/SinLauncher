@@ -178,8 +178,7 @@ public class App {
                 testInstance.launch();
             else if (confirm.equalsIgnoreCase("n"))
                 System.out.println("Installation canceled.");
-            // else input is correct idiot, that is why i have a capital N because it
-            // defaults to it on wrong input idiot2
+
             scanner.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
