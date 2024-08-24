@@ -142,6 +142,10 @@ public class App {
             String ERROR = e.getMessage();
             LOGGER.info("Failed to create an instance due to invalid version: " + ERROR);
         }
+        
+        Instance existingInstance = Instance.getInstance(name);
+
+        existingInstance.launch();
 
     }
     
