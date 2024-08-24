@@ -135,7 +135,7 @@ public class Instance {
      * @param name the name of the instance to fetch in instances.json
      * @return returns an instance class deserialized from instances.json
      */
-    public static Instance getInsance(String name) {
+    public static Instance getInstance(String name) {
         Instance[] instances = readInstances();
 
         if (instances != null) {

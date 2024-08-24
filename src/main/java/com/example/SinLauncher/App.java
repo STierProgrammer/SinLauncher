@@ -13,6 +13,7 @@ import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
 import com.example.SinLauncher.SinLauncherEntites.Instance.InstanceAlreadyExistsException;
+import com.example.SinLauncher.SinLauncherEntites.Instance.InvaildInstanceVersionException;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.config.Java;
 import com.example.SinLauncher.json.Client;
@@ -127,6 +128,24 @@ public class App {
         LOGGER.info("Launcher initialized!");
     }
 
+    public static void createAnInstallation(String name, String version) throws IOException {
+        try {
+            Instance.createInstance(name, version);
+    
+            Instance createdInstance = Instance.getInstance(name);
+    
+            createdInstance.launch();
+        } catch (InstanceAlreadyExistsException _e) {
+            String ERROR = _e.getMessage();
+            LOGGER.info("Failed to create an instance because it already exists! " + ERROR);
+        } catch (InvaildInstanceVersionException e) {
+            String ERROR = e.getMessage();
+            LOGGER.info("Failed to create an instance due to invalid version: " + ERROR);
+        }
+
+    }
+    
+    
     public static void main(String[] args) {
         try {
             Manifest manifest = Manifest.readManifest();
@@ -139,47 +158,50 @@ public class App {
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
 
-            try {
-                Instance.createInstance("test", manifest.latest.release);
-            } catch (InstanceAlreadyExistsException _e) {
-                String ERROR = _e.getMessage();
-                LOGGER.info("Check line 146: " + ERROR);
-            }
+            // try {
+            //     Instance.createInstance("test2", "1.20.1");
+            // } catch (InstanceAlreadyExistsException _e) {
+            //     String ERROR = _e.getMessage();
+            //     LOGGER.info("Check line 146: " + ERROR);
+            // }
 
-            try {
-                Instance.createInstance("old", "1.6.4");
-            } catch (InstanceAlreadyExistsException _e) {
-                String ERROR = _e.getMessage();
-                LOGGER.info("Check line: 153: " + ERROR);
-            }
+            // try {
+            //     Instance.createInstance("old", "1.16");
+            // } catch (InstanceAlreadyExistsException _e) {
+            //     String ERROR = _e.getMessage();
+            //     LOGGER.info("Check line: 153: " + ERROR);
+            // }
+
 
             System.out.println("Instances: ");
 
             for (Instance instance : Instance.readInstances())
                 System.out.println(instance.toString());
 
-            Instance testInstance = Instance.getInsance("test");
-            Instance testInstance1 = Instance.getInsance("old");
+            // Instance testInstance = Instance.getInstance("test2");
+            // Instance testInstance1 = Instance.getInstance("old");
 
-            Client client = testInstance.readClient();
+            // Client client = testInstance.readClient();
 
-            Client client1 = testInstance1.readClient();
+            // Client client1 = testInstance1.readClient();
 
-            System.out.println(GSON.toJson(client));
-            System.out.println("\n\n\nCLIENT1: ");
-            System.out.println(GSON.toJson(client1));
+            // System.out.println(GSON.toJson(client));
+            // System.out.println("\n\n\nCLIENT1: ");
+            // System.out.println(GSON.toJson(client1));
 
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Warning: 1GB of data is about to be installed! Do you want to continue? : y\\N ");
+            createAnInstallation("new", manifest.latest.release);
 
-            var confirm = scanner.nextLine();
+            // Scanner scanner = new Scanner(System.in);
+            // System.out.print("Warning: 1GB of data is about to be installed! Do you want to continue? : y\\N ");
 
-            if (confirm.equalsIgnoreCase("y"))
-                testInstance.launch();
-            else if (confirm.equalsIgnoreCase("n"))
-                System.out.println("Installation canceled.");
+            // var confirm = scanner.nextLine();
 
-            scanner.close();
+            // if (confirm.equalsIgnoreCase("y"))
+            //     testInstance1.launch();
+            // else if (confirm.equalsIgnoreCase("n"))
+            //     System.out.println("Installation canceled.");
+
+            // scanner.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
