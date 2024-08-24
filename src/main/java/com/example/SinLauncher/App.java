@@ -143,30 +143,29 @@ public class App {
             if (dialogResult == JOptionPane.YES_OPTION) {
                 createdInstance.launch();
                 System.out.println("Installation started.");
-            } else {
+            } 
+            else {
                 System.out.println("Installation canceled.");
                 return; 
             }
 
-        } 
-        catch (InstanceAlreadyExistsException e) {
+        } catch (InstanceAlreadyExistsException e) {
             LOGGER.info(e.getMessage());
-        } 
-        catch (InvaildInstanceVersionException e) {
+
+            Instance existingInstance = Instance.getInstance(name);
+
+            if (existingInstance != null) {
+                existingInstance.launch();
+                System.out.println("Instance launched successfully.");
+            } 
+            else {
+                System.out.println("Failed to retrieve the instance for launching.");
+            }
+
+        } catch (InvaildInstanceVersionException e) {
             LOGGER.info(e.getMessage());
-        }
-
-        Instance existingInstance = Instance.getInstance(name);
-
-        if (existingInstance != null) {
-            existingInstance.launch();
-            System.out.println("Instance launched successfully.");
-        } 
-        else {
-            System.out.println("Failed to retrieve the instance for launching.");
         }
     }
-
 
     public static void main(String[] args) {
         try {
