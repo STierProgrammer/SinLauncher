@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    //authentication
+    // Authentication
     public UserDetailsService userDetailsService(PasswordEncoder encoder) {
 
         UserDetails admin = User.withUsername("Anmol")
@@ -31,20 +31,22 @@ public class SecurityConfig {
                 .roles("USER")
                 .build();
 
-        //For testing
+        // For Testing
         return new InMemoryUserDetailsManager(admin, user);
     }
 
-    //authorization
+    // Authorization
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        //Cross Site Request Forgery (CSRF)
-//        http.
-//                authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-//                .formLogin(Customizer.withDefaults())
-//                .httpBasic(Customizer.withDefaults());
-//
-//        return http.build(); example code
+        /* 
+        Cross Site Request Forgery (CSRF)
+                http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+        .formLogin(Customizer.withDefaults())
+        .httpBasic(Customizer.withDefaults());
+
+        return http.build(); example code
+        */
+        
         return null;
     }
 

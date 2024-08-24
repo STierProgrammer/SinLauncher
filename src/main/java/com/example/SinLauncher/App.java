@@ -184,6 +184,9 @@ public class App {
             for (Instance instance : Instance.readInstances())
                 System.out.println(instance.toString());
 
+            /*
+            ***** FOR DEBUGGING 
+            */    
             // Instance testInstance = Instance.getInstance("test2");
             // Instance testInstance1 = Instance.getInstance("old");
 

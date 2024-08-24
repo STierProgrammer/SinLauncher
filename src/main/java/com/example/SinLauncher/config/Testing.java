@@ -14,7 +14,7 @@ public class Testing {
 
     @Bean
     CommandLineRunner commandLineRunner(UserRepository userRepository) {
-        //just to check db
+        // Check the DB
         return args -> {
             UUID uuid = UUID.randomUUID();
             User user = new User(uuid.toString(), "ICantSnipe", "testPass", "test123321@gmail.com", true, false);
