@@ -7,7 +7,8 @@ import java.nio.file.Paths;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
@@ -126,30 +127,47 @@ public class App {
     public static void initialize() throws IOException {
         initializeLauncherDir();
         LOGGER.info("Launcher initialized!");
-    }
+    }    
+
 
     public static void createAnInstallation(String name, String version) throws IOException {
         try {
             Instance.createInstance(name, version);
-    
+
             Instance createdInstance = Instance.getInstance(name);
-    
-            createdInstance.launch();
-        } catch (InstanceAlreadyExistsException _e) {
-            String ERROR = _e.getMessage();
-            LOGGER.info("Failed to create an instance because it already exists! " + ERROR);
-        } catch (InvaildInstanceVersionException e) {
-            String ERROR = e.getMessage();
-            LOGGER.info("Failed to create an instance due to invalid version: " + ERROR);
+
+            int dialogResult = JOptionPane.showConfirmDialog(null, 
+                "Warning: 1GB of data is about to be installed! Do you want to continue?", 
+                "Confirm Installation", JOptionPane.YES_NO_OPTION);
+
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                createdInstance.launch();
+                System.out.println("Installation started.");
+            } else {
+                System.out.println("Installation canceled.");
+                return; 
+            }
+
+        } 
+        catch (InstanceAlreadyExistsException e) {
+            LOGGER.info(e.getMessage());
+        } 
+        catch (InvaildInstanceVersionException e) {
+            LOGGER.info(e.getMessage());
         }
-        
+
         Instance existingInstance = Instance.getInstance(name);
 
-        existingInstance.launch();
-
+        if (existingInstance != null) {
+            existingInstance.launch();
+            System.out.println("Instance launched successfully.");
+        } 
+        else {
+            System.out.println("Failed to retrieve the instance for launching.");
+        }
     }
-    
-    
+
+
     public static void main(String[] args) {
         try {
             Manifest manifest = Manifest.readManifest();
@@ -161,21 +179,6 @@ public class App {
 
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
-
-            // try {
-            //     Instance.createInstance("test2", "1.20.1");
-            // } catch (InstanceAlreadyExistsException _e) {
-            //     String ERROR = _e.getMessage();
-            //     LOGGER.info("Check line 146: " + ERROR);
-            // }
-
-            // try {
-            //     Instance.createInstance("old", "1.16");
-            // } catch (InstanceAlreadyExistsException _e) {
-            //     String ERROR = _e.getMessage();
-            //     LOGGER.info("Check line: 153: " + ERROR);
-            // }
-
 
             System.out.println("Instances: ");
 
@@ -193,19 +196,8 @@ public class App {
             // System.out.println("\n\n\nCLIENT1: ");
             // System.out.println(GSON.toJson(client1));
 
-            createAnInstallation("new", manifest.latest.release);
+            createAnInstallation("Test_001", manifest.latest.release);
 
-            // Scanner scanner = new Scanner(System.in);
-            // System.out.print("Warning: 1GB of data is about to be installed! Do you want to continue? : y\\N ");
-
-            // var confirm = scanner.nextLine();
-
-            // if (confirm.equalsIgnoreCase("y"))
-            //     testInstance1.launch();
-            // else if (confirm.equalsIgnoreCase("n"))
-            //     System.out.println("Installation canceled.");
-
-            // scanner.close();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
