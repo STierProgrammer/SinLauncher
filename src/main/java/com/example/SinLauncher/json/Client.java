@@ -436,6 +436,7 @@ public class Client {
      * Downloads libraries, natives, assets, client.jar, etc provided by {@code} this
      * will not re-download if any already exists
      */
+
     public void download(Path instanceDir) throws IOException {
         downloadAssets();
         downloadLibraries(instanceDir);

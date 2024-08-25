@@ -179,7 +179,6 @@ public class App {
         Client client = testInstance.readClient();
 
         System.out.println(GSON.toJson(client));
-        System.out.println("\n\n\nCLIENT1: ");
     }
 
     public static void main(String[] args) {
