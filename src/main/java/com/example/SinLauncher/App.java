@@ -47,10 +47,12 @@ public class App {
         if (os.contains("win")) {
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
             OS = Os.Windows;
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+        } 
+        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             DIR = System.getProperty("user.home") + "/.sinlauncher";
             OS = Os.Linux;
-        } else {
+        } 
+        else {
             DIR = "SinLauncher";
             OS = Os.Linux;
         }
@@ -78,7 +80,8 @@ public class App {
 
         try {
             App.initialize();
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             LOGGER.info("Failed to initialize the Launcher");
         }
 
