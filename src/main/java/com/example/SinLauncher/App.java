@@ -167,6 +167,25 @@ public class App {
         }
     }
 
+    // Just write debugging code here to keep the code clean ROXVE
+    public static void Debugging() throws IOException {
+        System.out.println("Instances: ");
+
+        for (Instance instance : Instance.readInstances())
+            System.out.println(instance.toString());
+
+        Instance testInstance1 = Instance.getInstance("TEST_1");
+        Instance testInstance2 = Instance.getInstance("TEST_2");
+
+        Client client = testInstance1.readClient();
+
+        Client client1 = testInstance2.readClient();
+
+        System.out.println(GSON.toJson(client));
+        System.out.println("\n\n\nCLIENT1: ");
+        System.out.println(GSON.toJson(client1));
+    }
+
     public static void main(String[] args) {
         try {
             Manifest manifest = Manifest.readManifest();
@@ -179,28 +198,11 @@ public class App {
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
 
-            System.out.println("Instances: ");
-
-            for (Instance instance : Instance.readInstances())
-                System.out.println(instance.toString());
-
-            /*
-            ***** FOR DEBUGGING 
-            */    
-            // Instance testInstance = Instance.getInstance("test2");
-            // Instance testInstance1 = Instance.getInstance("old");
-
-            // Client client = testInstance.readClient();
-
-            // Client client1 = testInstance1.readClient();
-
-            // System.out.println(GSON.toJson(client));
-            // System.out.println("\n\n\nCLIENT1: ");
-            // System.out.println(GSON.toJson(client1));
-
-            createAnInstallation("Test_001", manifest.latest.release);
-
-        } catch (Exception e) {
+            Debugging();
+            
+            createAnInstallation("new", manifest.latest.release);
+        } 
+        catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
     }

@@ -36,6 +36,7 @@ public class Config {
 
     public void writeConfig() throws IOException {
         String json = App.GSON.toJson(this);
+
         Files.writeString(PATH, json);
     }
 
@@ -44,12 +45,14 @@ public class Config {
             System.out.println("Config & App.DIR Path: " + PATH);
 
             return new Gson().fromJson(Files.readString(PATH), Config.class);
-        } catch (IOException _e) {
+        } 
+        catch (IOException _e) {
             Config config = new Config();
 
             try {
                 config.writeConfig();
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 System.err.println("Failed to write config");
                 System.exit(1);
             }
@@ -58,9 +61,7 @@ public class Config {
         }
     }
 
-    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle
-    // downloading
-    // ?/ Roxve for gods sake learn to organize the code
+    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle downloading
     public void launch(Instance instance) throws IOException {
         Client client = instance.readClient();
         Path[] paths = client.getLibrariesList();
@@ -69,6 +70,7 @@ public class Config {
 
         for (Path path : paths) {
             classpath += path;
+
             if (App.OS == Os.Windows)
                 classpath += ';';
             else
@@ -76,6 +78,7 @@ public class Config {
         }
 
         classpath += instance.Dir().resolve("client.jar");
+        
         String mainClass = client.mainClass;
 
         // TODO: Use client.arguments instead
@@ -86,12 +89,14 @@ public class Config {
                 "-Xmx" + Long.toString(this.max_ram) + "M",
                 "-cp", classpath,
                 mainClass,
-                "--username", "SebSucks",
+                "--username", "Seb",
                 "--gameDir", instance.Dir().toString(),
                 "--assetsDir", App.ASSETS_DIR.toString(),
                 "--assetIndex", client.assets,
                 "--version", client.id,
-                "--accessToken", "0");
+                "--accessToken", "0"
+                );
+
         javaProcess.redirectErrorStream(true);
         javaProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
@@ -100,7 +105,8 @@ public class Config {
 
         try {
             javaProcess.start().waitFor();
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
