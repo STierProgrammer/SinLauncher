@@ -168,22 +168,18 @@ public class App {
     }
 
     // Just write debugging code here to keep the code clean ROXVE
-    public static void Debugging() throws IOException {
+    public static void Debugging(String InstanceName) throws IOException {
         System.out.println("Instances: ");
 
         for (Instance instance : Instance.readInstances())
             System.out.println(instance.toString());
 
-        Instance testInstance1 = Instance.getInstance("TEST_1");
-        Instance testInstance2 = Instance.getInstance("TEST_2");
+        Instance testInstance = Instance.getInstance(InstanceName);
 
-        Client client = testInstance1.readClient();
-
-        Client client1 = testInstance2.readClient();
+        Client client = testInstance.readClient();
 
         System.out.println(GSON.toJson(client));
         System.out.println("\n\n\nCLIENT1: ");
-        System.out.println(GSON.toJson(client1));
     }
 
     public static void main(String[] args) {
@@ -198,7 +194,7 @@ public class App {
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
 
-            Debugging();
+            Debugging("new");
             
             createAnInstallation("new", manifest.latest.release);
         } 
