@@ -157,7 +157,10 @@ public class App {
                     }
                 } 
                 else {
-                    System.out.println("Installation canceled.");
+                    JOptionPane.showMessageDialog(null, 
+                    "Installation has been cancelled!", 
+                    "Installation Cancelled", 
+                    JOptionPane.INFORMATION_MESSAGE);
                 }
             });
     
@@ -170,7 +173,11 @@ public class App {
                 if (existingInstance != null) {
                     try {
                         existingInstance.launch(username);
-                        System.out.println("Instance launched successfully.");
+
+                        JOptionPane.showMessageDialog(null, 
+                        "Instance has been launched successfully!", 
+                        "Instance launched", 
+                        JOptionPane.INFORMATION_MESSAGE);
                     }
                     catch(IOException __e) {
                         LOGGER.info(__e.getMessage());
@@ -214,7 +221,7 @@ public class App {
 
             // Debugging("new");
             
-            intallationManager("NewNameTest", manifest.latest.release, "Seb");
+            intallationManager("NewNameTest", manifest.latest.release, "SebSigma");
         } 
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
