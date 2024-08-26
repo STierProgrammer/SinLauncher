@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
@@ -133,42 +134,57 @@ public class App {
     }    
 
 
-    public static void createAnInstallation(String name, String version) throws IOException {
+    public static void intallationManager(String installationName, String version, String username) throws IOException {
         try {
-            Instance.createInstance(name, version);
-
-            Instance createdInstance = Instance.getInstance(name);
-
-            int dialogResult = JOptionPane.showConfirmDialog(null, 
-                "Warning: 1GB of data is about to be installed! Do you want to continue?", 
-                "Confirm Installation", JOptionPane.YES_NO_OPTION);
-
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                createdInstance.launch();
-                System.out.println("Installation started.");
-            } 
-            else {
-                System.out.println("Installation canceled.");
-                return; 
-            }
-
+            Instance.createInstance(installationName, version);
+    
+            Instance createdInstance = Instance.getInstance(installationName);
+            
+            SwingUtilities.invokeLater(() -> {
+                int dialogResult = JOptionPane.showConfirmDialog(null, 
+                    "Warning: 1GB of data is about to be installed! Do you want to continue?", 
+                    "Confirm Installation", JOptionPane.YES_NO_OPTION);
+    
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    try {
+                        createdInstance.install();
+                        JOptionPane.showMessageDialog(null, 
+                            "Installation is complete!", 
+                            "Installation Complete", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                    } catch (IOException e) {
+                        LOGGER.info(e.getLocalizedMessage());
+                    }
+                } 
+                else {
+                    System.out.println("Installation canceled.");
+                }
+            });
+    
         } catch (InstanceAlreadyExistsException e) {
             LOGGER.info(e.getMessage());
-
-            Instance existingInstance = Instance.getInstance(name);
-
-            if (existingInstance != null) {
-                existingInstance.launch();
-                System.out.println("Instance launched successfully.");
-            } 
-            else {
-                System.out.println("Failed to retrieve the instance for launching.");
-            }
-
+    
+            SwingUtilities.invokeLater(() -> {
+                Instance existingInstance = Instance.getInstance(installationName);
+    
+                if (existingInstance != null) {
+                    try {
+                        existingInstance.launch(username);
+                        System.out.println("Instance launched successfully.");
+                    }
+                    catch(IOException __e) {
+                        LOGGER.info(__e.getMessage());
+                    }
+                } else {
+                    System.out.println("Failed to retrieve the instance for launching.");
+                }
+            });
+    
         } catch (InvaildInstanceVersionException e) {
             LOGGER.info(e.getMessage());
         }
     }
+    
 
     // Just write debugging code here to keep the code clean ROXVE
     public static void Debugging(String InstanceName) throws IOException {
@@ -196,9 +212,9 @@ public class App {
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
 
-            Debugging("new");
+            // Debugging("new");
             
-            createAnInstallation("new", manifest.latest.release);
+            intallationManager("NewNameTest", manifest.latest.release, "Seb");
         } 
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);

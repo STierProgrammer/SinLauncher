@@ -236,9 +236,12 @@ public class Instance {
     }
 
     // Install and after the installation it attempts to launch this instance
-    public void launch() throws IOException {
+    public void install() throws IOException {
         this.readClient().download(this.Dir());
-        this.getConfig().launch(this);
+    }
+    
+    public void launch(String username) throws IOException {
+        this.getConfig().launch(this, username);
     }
 
     @Override

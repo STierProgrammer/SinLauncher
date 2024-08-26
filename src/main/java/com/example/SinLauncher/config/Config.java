@@ -62,7 +62,9 @@ public class Config {
     }
 
     // Launches Minecraft using {@code this} as a {@link Config} doesn't handle downloading
-    public void launch(Instance instance) throws IOException {
+
+    // I'm thinking to create a class for UserSettings...
+    public void launch(Instance instance, String username) throws IOException {
         Client client = instance.readClient();
         Path[] paths = client.getLibrariesList();
 
@@ -89,7 +91,7 @@ public class Config {
                 "-Xmx" + Long.toString(this.max_ram) + "M",
                 "-cp", classpath,
                 mainClass,
-                "--username", "Seb",
+                "--username", username,
                 "--gameDir", instance.Dir().toString(),
                 "--assetsDir", App.ASSETS_DIR.toString(),
                 "--assetIndex", client.assets,
@@ -100,7 +102,7 @@ public class Config {
         javaProcess.redirectErrorStream(true);
         javaProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
-        System.out.println("running:");
+        System.out.println("Running:");
         System.out.println(javaProcess.command().toString());
 
         try {
