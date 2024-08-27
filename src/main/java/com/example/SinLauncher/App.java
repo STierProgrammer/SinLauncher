@@ -134,7 +134,6 @@ public class App {
         LOGGER.info("Launcher initialized!");
     }    
 
-
     public static void intallationManager(String installationName, String version) throws IOException {
         try {
             Instance.createInstance(installationName, version);
@@ -240,7 +239,6 @@ public class App {
         return username;
     }
     
-
     public static void Debugging(String InstanceName) throws IOException {
         System.out.println("Instances: ");
 
@@ -268,9 +266,9 @@ public class App {
 
             // Debugging("new");
     
-            setCurrentUser("IliaSigma260");
+            setCurrentUser("TestUser001");
             
-            intallationManager("NewNameTest", manifest.latest.release);
+            intallationManager("NewNameTest1", "1.21");
         } 
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
