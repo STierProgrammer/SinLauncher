@@ -1,6 +1,7 @@
 package com.example.SinLauncher;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -231,6 +232,15 @@ public class App {
         }
     }
 
+    public static String setCurrentUser(String username) throws IOException {
+        Files.write(CURRENT_USER_FILE, username.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        
+        currentUser = username;
+        
+        return username;
+    }
+    
+
     public static void Debugging(String InstanceName) throws IOException {
         System.out.println("Instances: ");
 
@@ -257,6 +267,8 @@ public class App {
                 System.out.println(cup.version + ": " + cup.path);
 
             // Debugging("new");
+    
+            setCurrentUser("IliaSigma260");
             
             intallationManager("NewNameTest", manifest.latest.release);
         } 
