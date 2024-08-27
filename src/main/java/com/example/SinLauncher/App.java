@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -134,7 +134,7 @@ public class App {
     }    
 
 
-    public static void intallationManager(String installationName, String version, String username) throws IOException {
+    public static void intallationManager(String installationName, String version) throws IOException {
         try {
             Instance.createInstance(installationName, version);
     
@@ -156,7 +156,8 @@ public class App {
                         LOGGER.info(e.getLocalizedMessage());
                     }
                 } 
-                else {
+                else 
+                {
                     JOptionPane.showMessageDialog(null, 
                     "Installation has been cancelled!", 
                     "Installation Cancelled", 
@@ -172,7 +173,7 @@ public class App {
     
                 if (existingInstance != null) {
                     try {
-                        existingInstance.launch(username);
+                        existingInstance.launch(currentUser);
 
                         JOptionPane.showMessageDialog(null, 
                         "Instance has been launched successfully!", 
@@ -192,8 +193,44 @@ public class App {
         }
     }
     
+    public static void launchingManager(String installationName) throws IOException {
+        Instance existingInstance = Instance.getInstance(installationName);
 
-    // Just write debugging code here to keep the code clean ROXVE
+        if(existingInstance != null) {
+            try {
+                existingInstance.launch(currentUser);
+            } 
+            catch(IOException ___e) {
+                LOGGER.info(___e.getMessage());
+            }
+        }
+    }
+
+    public static final Path CURRENT_USER_FILE = Paths.get(DIR, "currentUser.txt");
+
+    public static String currentUser;
+
+    static {
+        try {
+            currentUser = initializeCurrentUser();
+        } 
+        catch (IOException e) {
+            LOGGER.info("Failed to initialize the current user");
+        }
+    }
+
+    static String initializeCurrentUser() throws IOException {
+        if (Files.exists(CURRENT_USER_FILE)) 
+            return Files.readString(CURRENT_USER_FILE).trim();
+        else 
+        {
+            String defaultUser = "SinLauncherUser";
+            Files.writeString(CURRENT_USER_FILE, defaultUser, StandardOpenOption.CREATE);
+
+            return defaultUser;
+        }
+    }
+
     public static void Debugging(String InstanceName) throws IOException {
         System.out.println("Instances: ");
 
@@ -221,7 +258,7 @@ public class App {
 
             // Debugging("new");
             
-            intallationManager("NewNameTest", manifest.latest.release, "SebSigma");
+            intallationManager("NewNameTest", manifest.latest.release);
         } 
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
