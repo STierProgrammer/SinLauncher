@@ -70,50 +70,53 @@ public class Instance {
     /**
      * 
      * creates a new vaild instance,
-     * creates it's folder, downloads it's client.json, serializes and appends it to instances.json then returns it
+     * creates it's folder, downloads it's client.json, serializes and appends it to
+     * instances.json then returns it
      * 
      * @throws InvaildInstanceVersionException If manifest doesn't contain the
      *                                         provided {@code version}
-     * @throws IOException                     it will fail to fetch client.json from
+     * @throws IOException                     it will fail to fetch client.json
+     *                                         from
      *                                         the manifest or fail to append
      *                                         instance to instances.json
      */
 
     // FIXME: There is a bug in here which cause you to not see
     public static Instance createInstance(String name, String version)
-        throws InstanceAlreadyExistsException, InvaildInstanceVersionException, IOException {
-            Instance instance = new Instance(name, version);
+            throws InstanceAlreadyExistsException, InvaildInstanceVersionException, IOException {
+        Instance instance = new Instance(name, version);
 
-            Manifest manifest = Manifest.readManifest();
+        Manifest manifest = Manifest.readManifest();
 
-            String url = null;
-            for (Version man_version : manifest.versions) {
-                if (man_version.id.equals(version)) {
-                    url = man_version.url;
-                    break;
-                }
+        String url = null;
+        for (Version man_version : manifest.versions) {
+            if (man_version.id.equals(version)) {
+                url = man_version.url;
+                break;
             }
+        }
 
-            if (url == null)
-                throw new InvaildInstanceVersionException("Unexpected version occured while creating an instance '" + version + '\'',
-                        version);
+        if (url == null)
+            throw new InvaildInstanceVersionException(
+                    "Unexpected version occured while creating an instance '" + version + '\'',
+                    version);
 
-            instance.initDir();
-            Path client_path = Paths.get(instance.Dir().toString(), "client.json");
+        instance.initDir();
+        Path client_path = Paths.get(instance.Dir().toString(), "client.json");
 
-            if (Files.exists(client_path))
-                throw new InstanceAlreadyExistsException(
-                        "Failed to create a new instance because instance's client.json already exists!", instance.name);
+        if (Files.exists(client_path))
+            throw new InstanceAlreadyExistsException(
+                    "Failed to create a new instance because instance's client.json already exists!", instance.name);
 
-            HttpResponse<String> client = Unirest.get(url).asString();
+        HttpResponse<String> client = Unirest.get(url).asString();
 
-            if (client.getStatus() == 200)
-                Files.write(client_path, client.getBody().getBytes());
-            else
-                throw new IOException("Failed to fetch client.json for version '" + version + '\'');
+        if (client.getStatus() == 200)
+            Files.write(client_path, client.getBody().getBytes());
+        else
+            throw new IOException("Failed to fetch client.json for version '" + version + '\'');
 
-            addInstance(instance);
-            return instance;
+        addInstance(instance);
+        return instance;
     }
 
     /**
@@ -220,6 +223,9 @@ public class Instance {
         try {
             Config config = App.GSON.fromJson(Files.readString(path), Config.class);
 
+            if (config.username == null)
+                config.username = App.CONFIG.username;
+
             if (config.java == null)
                 config.java = App.CONFIG.java;
 
@@ -239,9 +245,9 @@ public class Instance {
     public void install() throws IOException {
         this.readClient().download(this.Dir());
     }
-    
-    public void launch(String username) throws IOException {
-        this.getConfig().launch(this, username);
+
+    public void launch() throws IOException {
+        this.getConfig().launch(this);
     }
 
     @Override

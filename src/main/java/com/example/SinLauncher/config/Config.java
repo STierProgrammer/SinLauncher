@@ -22,6 +22,7 @@ public class Config {
     public long min_ram = 0;
     public long max_ram = 0;
     public Java java = null;
+    public String username = null;
 
     // The default config
     public Config() {
@@ -32,6 +33,7 @@ public class Config {
         this.min_ram = this.max_ram / 2;
 
         this.java = Java.getAvailableJavaCups()[0];
+        this.username = App.currentUser;
     }
 
     public void writeConfig() throws IOException {
@@ -45,14 +47,12 @@ public class Config {
             System.out.println("Config & App.DIR Path: " + PATH);
 
             return new Gson().fromJson(Files.readString(PATH), Config.class);
-        } 
-        catch (IOException _e) {
+        } catch (IOException _e) {
             Config config = new Config();
 
             try {
                 config.writeConfig();
-            } 
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.err.println("Failed to write config");
                 System.exit(1);
             }
@@ -61,10 +61,11 @@ public class Config {
         }
     }
 
-    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle downloading
+    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle
+    // downloading
 
     // I'm thinking to create a class for UserSettings...
-    public void launch(Instance instance, String username) throws IOException {
+    public void launch(Instance instance) throws IOException {
         Client client = instance.readClient();
         Path[] paths = client.getLibrariesList();
 
@@ -80,7 +81,7 @@ public class Config {
         }
 
         classpath += instance.Dir().resolve("client.jar");
-        
+
         String mainClass = client.mainClass;
 
         // TODO: Use client.arguments instead
@@ -91,13 +92,12 @@ public class Config {
                 "-Xmx" + Long.toString(this.max_ram) + "M",
                 "-cp", classpath,
                 mainClass,
-                "--username", username,
+                "--username", this.username,
                 "--gameDir", instance.Dir().toString(),
                 "--assetsDir", App.ASSETS_DIR.toString(),
                 "--assetIndex", client.assets,
                 "--version", client.id,
-                "--accessToken", "0"
-                );
+                "--accessToken", "0");
 
         javaProcess.redirectErrorStream(true);
         javaProcess.redirectOutput(ProcessBuilder.Redirect.INHERIT);
@@ -107,8 +107,7 @@ public class Config {
 
         try {
             javaProcess.start().waitFor();
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

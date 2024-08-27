@@ -49,12 +49,10 @@ public class App {
         if (os.contains("win")) {
             DIR = System.getenv("APPDATA") + "\\SinLauncher";
             OS = Os.Windows;
-        } 
-        else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
             DIR = System.getProperty("user.home") + "/.sinlauncher";
             OS = Os.Linux;
-        } 
-        else {
+        } else {
             DIR = "SinLauncher";
             OS = Os.Linux;
         }
@@ -82,8 +80,7 @@ public class App {
 
         try {
             App.initialize();
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             LOGGER.info("Failed to initialize the Launcher");
         }
 
@@ -132,76 +129,74 @@ public class App {
     public static void initialize() throws IOException {
         initializeLauncherDir();
         LOGGER.info("Launcher initialized!");
-    }    
-
+    }
 
     public static void intallationManager(String installationName, String version) throws IOException {
         try {
             Instance.createInstance(installationName, version);
-    
+
             Instance createdInstance = Instance.getInstance(installationName);
-            
+
             SwingUtilities.invokeLater(() -> {
-                int dialogResult = JOptionPane.showConfirmDialog(null, 
-                    "Warning: 1GB of data is about to be installed! Do you want to continue?", 
-                    "Confirm Installation", JOptionPane.YES_NO_OPTION);
-    
+                int dialogResult = JOptionPane.showConfirmDialog(null,
+                        "Warning: 1GB of data is about to be installed! Do you want to continue?",
+                        "Confirm Installation", JOptionPane.YES_NO_OPTION);
+
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     try {
                         createdInstance.install();
-                        JOptionPane.showMessageDialog(null, 
-                            "Installation is complete!", 
-                            "Installation Complete", 
-                            JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null,
+                                "Installation is complete!",
+                                "Installation Complete",
+                                JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException e) {
                         LOGGER.info(e.getLocalizedMessage());
                     }
-                } 
-                else 
-                {
-                    JOptionPane.showMessageDialog(null, 
-                    "Installation has been cancelled!", 
-                    "Installation Cancelled", 
-                    JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Installation has been cancelled!",
+                            "Installation Cancelled",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             });
-    
+
         } catch (InstanceAlreadyExistsException e) {
             LOGGER.info(e.getMessage());
-    
+
             SwingUtilities.invokeLater(() -> {
                 Instance existingInstance = Instance.getInstance(installationName);
-    
+
                 if (existingInstance != null) {
                     try {
-                        existingInstance.launch(currentUser);
+                        // makes sure there is no missing files
+                        // shouldnt use the internet if all the files does exists
+                        existingInstance.install();
+                        existingInstance.launch();
 
-                        JOptionPane.showMessageDialog(null, 
-                        "Instance has been launched successfully!", 
-                        "Instance launched", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    catch(IOException __e) {
+                        JOptionPane.showMessageDialog(null,
+                                "Instance has been launched successfully!",
+                                "Instance launched",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } catch (IOException __e) {
                         LOGGER.info(__e.getMessage());
                     }
                 } else {
                     System.out.println("Failed to retrieve the instance for launching.");
                 }
             });
-    
+
         } catch (InvaildInstanceVersionException e) {
             LOGGER.info(e.getMessage());
         }
     }
-    
+
     public static void launchingManager(String installationName) throws IOException {
         Instance existingInstance = Instance.getInstance(installationName);
 
-        if(existingInstance != null) {
+        if (existingInstance != null) {
             try {
-                existingInstance.launch(currentUser);
-            } 
-            catch(IOException ___e) {
+                existingInstance.launch();
+            } catch (IOException ___e) {
                 LOGGER.info(___e.getMessage());
             }
         }
@@ -214,18 +209,20 @@ public class App {
     static {
         try {
             currentUser = initializeCurrentUser();
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             LOGGER.info("Failed to initialize the current user");
         }
     }
 
+    // Seb i dont this stuff is needed config is crying rn
+    // @Seb
+    // @Seb
+    // @Seb
     static String initializeCurrentUser() throws IOException {
-        if (Files.exists(CURRENT_USER_FILE)) 
+        if (Files.exists(CURRENT_USER_FILE))
             return Files.readString(CURRENT_USER_FILE).trim();
-        else 
-        {
-            String defaultUser = "SinLauncherUser";
+        else {
+            String defaultUser = "Dev";
             Files.writeString(CURRENT_USER_FILE, defaultUser, StandardOpenOption.CREATE);
 
             return defaultUser;
@@ -233,13 +230,13 @@ public class App {
     }
 
     public static String setCurrentUser(String username) throws IOException {
-        Files.write(CURRENT_USER_FILE, username.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        
+        Files.write(CURRENT_USER_FILE, username.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING);
+
         currentUser = username;
-        
+
         return username;
     }
-    
 
     public static void Debugging(String InstanceName) throws IOException {
         System.out.println("Instances: ");
@@ -267,12 +264,11 @@ public class App {
                 System.out.println(cup.version + ": " + cup.path);
 
             // Debugging("new");
-    
-            setCurrentUser("IliaSigma260");
-            
+
+            setCurrentUser("SebSucks");
+
             intallationManager("NewNameTest", manifest.latest.release);
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
     }
