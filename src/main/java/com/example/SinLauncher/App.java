@@ -1,11 +1,9 @@
 package com.example.SinLauncher;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -129,11 +127,7 @@ public class App {
     public static void initialize() throws IOException {
         initializeLauncherDir();
         LOGGER.info("Launcher initialized!");
-<<<<<<< HEAD
-    }    
-=======
     }
->>>>>>> ccbce2335158966f9fe8e2f7d8f9446331a08813
 
     public static void intallationManager(String installationName, String version) throws IOException {
         try {
@@ -206,46 +200,6 @@ public class App {
         }
     }
 
-    public static final Path CURRENT_USER_FILE = Paths.get(DIR, "currentUser.txt");
-
-    public static String currentUser;
-
-    static {
-        try {
-            currentUser = initializeCurrentUser();
-        } catch (IOException e) {
-            LOGGER.info("Failed to initialize the current user");
-        }
-    }
-
-    // Seb i dont this stuff is needed config is crying rn
-    // @Seb
-    // @Seb
-    // @Seb
-    static String initializeCurrentUser() throws IOException {
-        if (Files.exists(CURRENT_USER_FILE))
-            return Files.readString(CURRENT_USER_FILE).trim();
-        else {
-            String defaultUser = "Dev";
-            Files.writeString(CURRENT_USER_FILE, defaultUser, StandardOpenOption.CREATE);
-
-            return defaultUser;
-        }
-    }
-
-    public static String setCurrentUser(String username) throws IOException {
-        Files.write(CURRENT_USER_FILE, username.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
-
-        currentUser = username;
-
-        return username;
-    }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> ccbce2335158966f9fe8e2f7d8f9446331a08813
     public static void Debugging(String InstanceName) throws IOException {
         System.out.println("Instances: ");
 
@@ -272,20 +226,11 @@ public class App {
                 System.out.println(cup.version + ": " + cup.path);
 
             // Debugging("new");
-<<<<<<< HEAD
-    
-            setCurrentUser("TestUser001");
+
             
             intallationManager("NewNameTest1", "1.21");
         } 
         catch (Exception e) {
-=======
-
-            setCurrentUser("SebSucks");
-
-            intallationManager("NewNameTest", manifest.latest.release);
-        } catch (Exception e) {
->>>>>>> ccbce2335158966f9fe8e2f7d8f9446331a08813
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
     }
