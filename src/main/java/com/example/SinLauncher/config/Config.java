@@ -2,11 +2,9 @@ package com.example.SinLauncher.config;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -24,39 +22,6 @@ public class Config {
     public long min_ram = 0;
     public long max_ram = 0;
     public Java java = null;
-    public String username = null;
-
-    public static final Path CURRENT_USER_FILE = Paths.get(App.DIR, "currentUser.txt");
-
-    public static String currentUser;
-
-    static {
-        try {
-            currentUser = initializeCurrentUser();
-        } catch (IOException e) {
-            App.LOGGER.info("Failed to initialize the current user");
-        }
-    }
-
-    static String initializeCurrentUser() throws IOException {
-        if (Files.exists(CURRENT_USER_FILE))
-            return Files.readString(CURRENT_USER_FILE).trim();
-        else {
-            String defaultUser = "Dev";
-            Files.writeString(CURRENT_USER_FILE, defaultUser, StandardOpenOption.CREATE);
-
-            return defaultUser;
-        }
-    }
-
-    public static String setCurrentUser(String username) throws IOException {
-        Files.write(CURRENT_USER_FILE, username.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
-
-        currentUser = username;
-
-        return username;
-    }
 
     // The default config
     public Config() {
@@ -67,7 +32,6 @@ public class Config {
         this.min_ram = this.max_ram / 2;
 
         this.java = Java.getAvailableJavaCups()[0];
-        this.username = currentUser;
     }
 
     public void writeConfig() throws IOException {
@@ -126,7 +90,7 @@ public class Config {
                 "-Xmx" + Long.toString(this.max_ram) + "M",
                 "-cp", classpath,
                 mainClass,
-                "--username", this.username,
+                "--username", App.currentUser,
                 "--gameDir", instance.Dir().toString(),
                 "--assetsDir", App.ASSETS_DIR.toString(),
                 "--assetIndex", client.assets,

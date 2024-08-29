@@ -223,9 +223,6 @@ public class Instance {
         try {
             Config config = App.GSON.fromJson(Files.readString(path), Config.class);
 
-            if (config.username == null)
-                config.username = App.CONFIG.username;
-
             if (config.java == null)
                 config.java = App.CONFIG.java;
 
