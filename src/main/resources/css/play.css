@@ -1,0 +1,35 @@
+/* 
+    play.css
+*/
+
+body {
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    color: var(--text-color);
+    padding: 40px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 42px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e67e22;
+}
