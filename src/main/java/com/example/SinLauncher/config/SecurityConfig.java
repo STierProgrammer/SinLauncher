@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -38,15 +37,16 @@ public class SecurityConfig {
     // Authorization
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        /* 
-        Cross Site Request Forgery (CSRF)
-                http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
-        .formLogin(Customizer.withDefaults())
-        .httpBasic(Customizer.withDefaults());
+        /*
+         * Cross Site Request Forgery (CSRF)
+         * http.authorizeHttpRequests(authorize ->
+         * authorize.anyRequest().authenticated())
+         * .formLogin(Customizer.withDefaults())
+         * .httpBasic(Customizer.withDefaults());
+         * 
+         * return http.build(); example code
+         */
 
-        return http.build(); example code
-        */
-        
         return null;
     }
 

@@ -24,7 +24,7 @@ public class JavaFX extends Application {
     public void start(Stage primaryStage) throws Exception {
         webView = new WebView();
         webEngine = webView.getEngine();
-        
+
         root = new BorderPane();
 
         Button btnPlay = createStyledButton("Play");
@@ -58,13 +58,12 @@ public class JavaFX extends Application {
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setStyle(
-            "-fx-background-color: #61dafb;" +
-            "-fx-text-fill: white;" +
-            "-fx-font-size: 16px;" +
-            "-fx-font-weight: bold;" +
-            "-fx-padding: 12px 24px;" +
-            "-fx-background-radius: 6px;"
-            );
+                "-fx-background-color: #61dafb;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 16px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-padding: 12px 24px;" +
+                        "-fx-background-radius: 6px;");
 
         return button;
     }

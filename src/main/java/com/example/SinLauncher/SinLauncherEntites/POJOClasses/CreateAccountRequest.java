@@ -16,11 +16,11 @@ import lombok.Setter;
 public class CreateAccountRequest {
 
     @NotBlank(message = "Username must not be blank")
-    @Size(min=3, max=20, message = "Username must be between 3 to 20 Characters")
+    @Size(min = 3, max = 20, message = "Username must be between 3 to 20 Characters")
     private String username;
 
     @NotBlank(message = "Password must not be blank")
-    @Size(min=3, max=256, message = "Password must be between 6 and 256 Characters")
+    @Size(min = 3, max = 256, message = "Password must be between 6 and 256 Characters")
     private String password;
 
     @NotBlank

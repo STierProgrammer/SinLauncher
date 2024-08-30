@@ -68,7 +68,7 @@ public class Client {
         // Checks if OS matches OSRules & also respects action
         public boolean osMatches() {
             boolean match = true;
-            
+
             if (os != null) {
                 if (os.name != null)
                     match = match && os.name == App.OS;
@@ -108,43 +108,43 @@ public class Client {
      * Each *Argument* may be a plain string or a struct which looks like this
      * 
      * {
-     *     Rule[] rules;
-     *     String | String[] value;
+     * Rule[] rules;
+     * String | String[] value;
      * }
      * 
      * We want to deserialize this into the *Argument* class
      */
     public static class ArgumentDeserializer implements JsonDeserializer<Argument> {
-        
+
         @Override
         public Argument deserialize(JsonElement element, Type type, JsonDeserializationContext context)
-            throws JsonParseException {
-                var argument = new Argument();
+                throws JsonParseException {
+            var argument = new Argument();
 
-                if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString()) 
-                    argument.value = element.getAsString();
-                 
-                else if (element.isJsonObject()) {
-                    JsonObject jsonObject = element.getAsJsonObject();
+            if (element.isJsonPrimitive() && element.getAsJsonPrimitive().isString())
+                argument.value = element.getAsString();
 
-                    if (jsonObject.has("value")) {
-                        JsonElement valueObj = jsonObject.get("value");
+            else if (element.isJsonObject()) {
+                JsonObject jsonObject = element.getAsJsonObject();
 
-                        if (valueObj.isJsonPrimitive()) 
-                            argument.value = valueObj.getAsString();
+                if (jsonObject.has("value")) {
+                    JsonElement valueObj = jsonObject.get("value");
 
-                        else if (valueObj.isJsonArray()) 
-                            argument.values = context.deserialize(valueObj.getAsJsonArray(), String[].class);
-                        
-                    }
+                    if (valueObj.isJsonPrimitive())
+                        argument.value = valueObj.getAsString();
 
-                    if (jsonObject.has("rules")) 
-                        argument.rules = context.deserialize(jsonObject.get("rules"), Rule[].class);
-                    
+                    else if (valueObj.isJsonArray())
+                        argument.values = context.deserialize(valueObj.getAsJsonArray(), String[].class);
+
                 }
 
-                return argument;
+                if (jsonObject.has("rules"))
+                    argument.rules = context.deserialize(jsonObject.get("rules"), Rule[].class);
+
             }
+
+            return argument;
+        }
     }
 
     @ToString
@@ -165,7 +165,7 @@ public class Client {
         // Fetches a download returns an IOException if it fails to download
         public byte[] fetch() throws IOException {
             var response = Unirest.get(url).asBytes();
-            
+
             if (response.getStatus() != 200)
                 throw new IOException("failed to download " + this.url);
 
@@ -264,14 +264,13 @@ public class Client {
             }
         }
 
-        
-        // Extracts native libs to {@code instanceDir}/.natives excluding {@code this.exclude}
-         
-         
+        // Extracts native libs to {@code instanceDir}/.natives excluding {@code
+        // this.exclude}
+
         public void extractNative(Path instanceDir) throws IOException {
-            if (natives == null) 
+            if (natives == null)
                 return;
-            
+
             String nativeIndex = natives.get(App.OS);
 
             if (nativeIndex != null) {
@@ -286,7 +285,7 @@ public class Client {
                     Files.createDirectories(nativeDestDir);
 
                 // TODO: Maybe actually move unzipping into helper methods?
-                
+
                 // The actual unzipping
                 ZipInputStream nativeZip = new ZipInputStream(new FileInputStream(nativeZipPath.toString()));
                 ZipEntry zipEntry = nativeZip.getNextEntry();
@@ -296,7 +295,7 @@ public class Client {
                 ziploop: while (zipEntry != null) {
                     String name = zipEntry.getName();
                     Path nameAsPath = Paths.get(name);
-                    
+
                     // Excluding
                     for (String exlude : this.extract.exclude) {
                         if (nameAsPath.startsWith(exlude)) {
@@ -308,17 +307,17 @@ public class Client {
                     File newFile = new File(nativeDestDir.toString(), name);
 
                     if (!newFile.exists()) {
-                        
+
                         if (zipEntry.isDirectory()) {
-                            
+
                             if (!newFile.mkdirs()) {
                                 nativeZip.closeEntry();
                                 nativeZip.close();
                                 throw new IOException("Failed to create directory " + newFile);
                             }
 
-                        } 
-                        
+                        }
+
                         else {
                             File parent = newFile.getParentFile();
 
@@ -331,10 +330,10 @@ public class Client {
                             // Write file content
                             FileOutputStream fos = new FileOutputStream(newFile);
                             int len;
-                            
-                            while ((len = nativeZip.read(buffer)) > 0) 
+
+                            while ((len = nativeZip.read(buffer)) > 0)
                                 fos.write(buffer, 0, len);
-                            
+
                             fos.close();
 
                         }
@@ -376,16 +375,16 @@ public class Client {
     public LoggingInfo logging;
 
     public String mainClass;
-    
+
     // Removed in 1.13, replaced with arguments above
     public String minecraftArguments;
-    
+
     // TODO: Use an enum
     public String type;
 
     // Downloads the client assets
     public void downloadAssets() throws IOException {
-        
+
         // Downloads the assets
         Path indexesDir = Paths.get(App.ASSETS_DIR.toString(), "indexes");
 
@@ -393,7 +392,7 @@ public class Client {
             Files.createDirectories(indexesDir);
 
         Path indexPath = Paths.get(indexesDir.toString(), this.assets + ".json");
-        
+
         if (!Files.exists(indexPath)) {
             var indexFile = this.assetIndex.fetch();
 
@@ -403,9 +402,9 @@ public class Client {
         var json = Files.readString(indexPath);
         AssetIndex asset = App.GSON.fromJson(json, AssetIndex.class);
 
-        for (AssetObject object : asset.objects.values()) 
+        for (AssetObject object : asset.objects.values())
             object.fetch();
-        
+
     }
 
     // Downloads the client libraries including native libraries
@@ -433,7 +432,8 @@ public class Client {
     }
 
     /**
-     * Downloads libraries, natives, assets, client.jar, etc provided by {@code} this
+     * Downloads libraries, natives, assets, client.jar, etc provided by
+     * {@code} this
      * will not re-download if any already exists
      */
 

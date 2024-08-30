@@ -30,7 +30,7 @@ public class AssetIndex {
             return Paths.get(App.ASSETS_DIR.toString(), "objects", this.id(), hash);
         }
 
-        // Downloads an asset object and puts it in {@code this.path()} 
+        // Downloads an asset object and puts it in {@code this.path()}
         public void fetch() throws IOException {
             if (!Files.exists(this.path())) {
                 var fetch = Unirest.get(this.url()).asBytes();

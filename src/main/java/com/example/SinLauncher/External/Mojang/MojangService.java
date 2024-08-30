@@ -11,7 +11,8 @@ public class MojangService {
     private final WebClient webClient;
 
     @Autowired
-    public MojangService(WebClient.Builder webClientBuilder) { //Builds mojang api for this class using uri and constructor
+    public MojangService(WebClient.Builder webClientBuilder) { // Builds mojang api for this class using uri and
+                                                               // constructor
         webClient = webClientBuilder.baseUrl("https://api.mojang.com").build();
     }
 
@@ -22,7 +23,7 @@ public class MojangService {
                 .bodyToMono(String.class);
         // finds user by username if they don't exist returns empty Mono<String>
     }
-//    public boolean userTaken(String username) {
-//
-//    } under review for now
+    // public boolean userTaken(String username) {
+    //
+    // } under review for now
 }
