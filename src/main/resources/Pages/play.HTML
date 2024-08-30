@@ -1,64 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play Minecraft</title>
-    <link rel="stylesheet" href="../Styles/styles.css">
-</head>
-<body>
-    <header>
-        <h1>Fabulously Optimized - SinLauncher</h1>
-    </header>
-    <main>
-        <section class="launcher-container">
-            <div class="launcher-header">
-                <div class="launcher-title">
-                    <h2 id="launcher-title">Fabulously Optimized - <span id="version">1.20.1</span></h2>
-                    <p id="version-details">Fabric 1.14.22</p>
-                </div>
-                <button class="launch-button" id="launch-button">Launch</button>
-            </div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="../Styles/Play.css">
 
-            <div class="launcher-content">
-                <div class="launcher-section">
-                    <h3>Mods</h3>
-                    <p id="mods-enabled">46 Mods enabled</p>
-                    <button class="manage-button">Manage Mods</button>
-                </div>
-                <div class="launcher-section">
-                    <h3>Shader Pack</h3>
-                    <p>No shader pack allocated</p>
-                    <button class="manage-button">Manage Shader Packs</button>
-                </div>
-                <div class="launcher-section">
-                    <h3>Saves</h3>
-                    <p>You have 0 worlds</p>
-                    <button class="manage-button">Manage Saves</button>
-                </div>
-                <div class="launcher-section">
-                    <h3>Resource Packs</h3>
-                    <p>1 Resource Pack is enabled</p>
-                    <button class="manage-button">Manage Resource Packs</button>
-                </div>
-            </div>
-        </section>
-    </main>
-    <script>
-        // JavaScript to dynamically update the version based on the selection
-        document.addEventListener("DOMContentLoaded", function () {
-            const versionChoiceBox = document.querySelector("select[name='versionChoiceBox']");
-            const versionDisplay = document.getElementById("version");
-            const versionDetails = document.getElementById("version-details");
+        <title>Play Page</title>
+    </head>
 
-            if (versionChoiceBox) {
-                versionChoiceBox.addEventListener("change", function () {
-                    const selectedVersion = versionChoiceBox.value;
-                    versionDisplay.textContent = selectedVersion;
-                    versionDetails.textContent = `Fabric ${selectedVersion}`; // Update details based on the version
-                });
-            }
-        });
-    </script>
-</body>
+    <body>
+        <div>
+            
+        </div>
+    </body>
+
 </html>

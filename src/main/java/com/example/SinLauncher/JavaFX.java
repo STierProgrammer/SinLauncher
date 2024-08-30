@@ -28,18 +28,11 @@ public class JavaFX extends Application {
         root = new BorderPane();
 
         Button btnPlay = createStyledButton("Play");
-        Button btnMods = createStyledButton("Mods");
-        Button btnSettings = createStyledButton("Settings");
-        Button btnRegister = createStyledButton("Register");
-        Button btnLogin = createStyledButton("Login");
 
         btnPlay.setOnAction(e -> loadPage("/Pages/play.HTML"));
-        btnMods.setOnAction(e -> loadPage("/Pages/mods.HTML"));
-        btnSettings.setOnAction(e -> loadPage("/Pages/settings.HTML"));
-        btnRegister.setOnAction(e -> loadPage("/Pages/register.HTML"));
-        btnLogin.setOnAction(e -> loadPage("/Pages/login.HTML"));
 
-        VBox sidebar = new VBox(15, btnPlay, btnMods, btnSettings, btnRegister, btnLogin);
+        VBox sidebar = new VBox(15, btnPlay);
+
         sidebar.setPadding(new Insets(20));
         sidebar.setStyle("-fx-background-color: #20232a; -fx-pref-width: 220px;");
 
@@ -65,12 +58,14 @@ public class JavaFX extends Application {
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setStyle(
-                "-fx-background-color: #61dafb;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-size: 16px;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-padding: 12px 24px;" +
-                        "-fx-background-radius: 6px;");
+            "-fx-background-color: #61dafb;" +
+            "-fx-text-fill: white;" +
+            "-fx-font-size: 16px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-padding: 12px 24px;" +
+            "-fx-background-radius: 6px;"
+            );
+
         return button;
     }
 

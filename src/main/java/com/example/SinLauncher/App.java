@@ -116,9 +116,13 @@ public class App {
                 .asString();
 
         if (response.getStatus() == 200)
-            Files.write(Manifest.PATH, response
-                    .getBody()
-                    .getBytes());
+            Files.write
+                (
+                    Manifest.PATH, 
+                        response
+                        .getBody()
+                        .getBytes()
+                );
 
         else {
             if (!Files.exists(Manifest.PATH))
@@ -223,7 +227,13 @@ public class App {
             return Files.readString(CURRENT_USER_FILE).trim();
         else {
             String defaultUser = "Dev001";
-            Files.writeString(CURRENT_USER_FILE, defaultUser, StandardOpenOption.CREATE);
+     
+            Files.write(
+                CURRENT_USER_FILE,
+                defaultUser.getBytes(StandardCharsets.UTF_8),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING
+            );
 
             return defaultUser;
         }
@@ -268,12 +278,11 @@ public class App {
                 System.out.println(cup.version + ": " + cup.path);
 
             System.out.println(currentUser);
-
-            setCurrentUser("STierProgrammer");
             
             try {
                 currentUser = initializeCurrentUser();
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 App.LOGGER.info("Failed to initialize the current user");
             }
 
