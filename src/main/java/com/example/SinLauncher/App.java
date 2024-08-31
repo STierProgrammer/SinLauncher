@@ -255,7 +255,6 @@ public class App {
                     DummyUser.getBytes(StandardCharsets.UTF_8),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);
-
         }
 
         return username;

@@ -1,3 +1,5 @@
+// EncryptorConfig.java
+
 package com.example.SinLauncher.config;
 
 // import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;

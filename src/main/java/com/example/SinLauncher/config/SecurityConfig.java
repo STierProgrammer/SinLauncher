@@ -1,3 +1,5 @@
+// SecurityConfig.java
+
 package com.example.SinLauncher.config;
 
 import org.springframework.context.annotation.Bean;

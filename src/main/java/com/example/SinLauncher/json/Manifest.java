@@ -1,3 +1,5 @@
+// Manifest.java
+
 package com.example.SinLauncher.json;
 
 import java.io.IOException;

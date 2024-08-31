@@ -23,6 +23,8 @@ public class JavaFX extends Application {
     private BorderPane root;
     private Scene scene;
 
+    public static String username = App.currentUser;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         webView = new WebView();
@@ -81,10 +83,10 @@ public class JavaFX extends Application {
     private void loadPage(String page, String css) {
         webEngine.load(getClass().getResource(page).toExternalForm());
         webEngine.setUserStyleSheetLocation(getClass().getResource(css).toExternalForm());
-
+    
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-                webEngine.executeScript("window.currentUser = '" + App.currentUser + "';");
+                webEngine.executeScript("window.currentUser = '" + username + "';");
             }
         });
     }

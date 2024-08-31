@@ -1,3 +1,5 @@
+// Config.java
+
 package com.example.SinLauncher.config;
 
 import java.io.IOException;
@@ -59,10 +61,6 @@ public class Config {
         }
     }
 
-    // Launches Minecraft using {@code this} as a {@link Config} doesn't handle
-    // downloading
-
-    // I'm thinking to create a class for UserSettings...
     public void launch(Instance instance) throws IOException {
         Client client = instance.readClient();
         Path[] paths = client.getLibrariesList();

@@ -1,3 +1,5 @@
+// MojangService.java
+
 package com.example.SinLauncher.External.Mojang;
 
 import org.springframework.beans.factory.annotation.Autowired;
