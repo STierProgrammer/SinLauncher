@@ -21,8 +21,6 @@ public class JavaFX extends Application {
     private BorderPane root;
     private Scene scene;
 
-    public static String username = App.currentUser;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         webView = new WebView();

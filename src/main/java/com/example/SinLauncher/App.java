@@ -3,11 +3,9 @@
 package com.example.SinLauncher;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,11 +80,11 @@ public class App {
 
         try {
             App.initialize();
+            CONFIG = Config.readConfig();
         } catch (IOException e) {
             LOGGER.info("Failed to initialize the Launcher");
+            System.exit(1);
         }
-
-        CONFIG = Config.readConfig();
     }
 
     static void initializeInstances() throws IOException {
@@ -220,47 +218,6 @@ public class App {
 
     public static final Path CURRENT_USER_FILE = Paths.get(App.DIR, "currentUser.txt");
 
-    public static String currentUser;
-
-    static String initializeCurrentUser() throws IOException {
-        if (Files.exists(CURRENT_USER_FILE) && Files.readString(CURRENT_USER_FILE).length() <= 16
-                && Files.readString(CURRENT_USER_FILE).length() >= 3)
-            return Files.readString(CURRENT_USER_FILE).trim();
-        else {
-            String defaultUser = "Dev001";
-
-            Files.write(
-                    CURRENT_USER_FILE,
-                    defaultUser.getBytes(StandardCharsets.UTF_8),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
-
-            return defaultUser;
-        }
-    }
-
-    public static String setCurrentUser(String username) throws IOException {
-        if (username.length() >= 3 && username.length() <= 16) {
-            Files.write(CURRENT_USER_FILE,
-                    username.getBytes(StandardCharsets.UTF_8),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
-
-            currentUser = username;
-        } else {
-            String DummyUser = "Dev001";
-
-            Files.write(
-                    CURRENT_USER_FILE,
-                    DummyUser.getBytes(StandardCharsets.UTF_8),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
-        }
-
-        return username;
-
-    }
-
     public static void main(String[] args) {
         try {
             Manifest manifest = Manifest.readManifest();
@@ -273,15 +230,8 @@ public class App {
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
 
-            System.out.println(currentUser);
-
-            try {
-                currentUser = initializeCurrentUser();
-            } catch (IOException e) {
-                App.LOGGER.info("Failed to initialize the current user");
-            }
-
-            intallationManager("NewNameTest1", "1.21");
+            // @Seb dont CHANGE
+            intallationManager("test", "1.21");
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
