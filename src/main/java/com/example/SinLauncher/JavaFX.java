@@ -23,8 +23,6 @@ public class JavaFX extends Application {
     private BorderPane root;
     private Scene scene;
 
-    public static String username = App.currentUser;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         webView = new WebView();
@@ -81,9 +79,12 @@ public class JavaFX extends Application {
     }
 
     private void loadPage(String page, String css) {
+        // @Seb wtf is this???? no WE DONT WANT A CURRENTUSER.TXT kys
+        String username = App.CONFIG.user.getUsername();
+
         webEngine.load(getClass().getResource(page).toExternalForm());
         webEngine.setUserStyleSheetLocation(getClass().getResource(css).toExternalForm());
-    
+
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 webEngine.executeScript("window.currentUser = '" + username + "';");

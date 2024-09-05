@@ -232,6 +232,9 @@ public class Instance {
             if (config.max_ram == 0)
                 config.max_ram = App.CONFIG.max_ram;
 
+            if (config.user == null)
+                config.user = App.CONFIG.user;
+
             return config;
         } catch (IOException _e) {
             return App.CONFIG;

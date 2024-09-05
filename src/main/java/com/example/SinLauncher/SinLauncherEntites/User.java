@@ -40,4 +40,8 @@ public class User {
         this.cracked = cracked;
         this.isLoggedIn = isLoggedIn;
     }
+
+    public String getUsername() {
+        return this.username;
+    }
 }

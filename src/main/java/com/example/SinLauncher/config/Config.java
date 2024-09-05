@@ -5,6 +5,7 @@ package com.example.SinLauncher.config;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
+import com.example.SinLauncher.SinLauncherEntites.User;
+import com.example.SinLauncher.json.Accounts;
 import com.example.SinLauncher.json.Client;
 import com.google.gson.Gson;
 import com.sun.management.OperatingSystemMXBean;
@@ -21,12 +24,13 @@ import com.sun.management.OperatingSystemMXBean;
 public class Config {
     public static final Path PATH = Paths.get(App.DIR, "config.json");
 
-    public long min_ram = 0;
-    public long max_ram = 0;
-    public Java java = null;
+    public long min_ram;
+    public long max_ram;
+    public Java java;
+    public User user;
 
     // The default config
-    public Config() {
+    public Config() throws IOException {
         OperatingSystemMXBean os = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
         long total = os.getTotalMemorySize();
 
@@ -34,6 +38,7 @@ public class Config {
         this.min_ram = this.max_ram / 2;
 
         this.java = Java.getAvailableJavaCups()[0];
+        this.user = Accounts.readAccounts().getDefaultUser();
     }
 
     public void writeConfig() throws IOException {
@@ -42,20 +47,15 @@ public class Config {
         Files.writeString(PATH, json);
     }
 
-    public static Config readConfig() {
+    public static Config readConfig() throws IOException {
         try {
             System.out.println("Config & App.DIR Path: " + PATH);
 
             return new Gson().fromJson(Files.readString(PATH), Config.class);
-        } catch (IOException _e) {
+        } catch (NoSuchFileException _e) {
             Config config = new Config();
 
-            try {
-                config.writeConfig();
-            } catch (IOException e) {
-                System.err.println("Failed to write config");
-                System.exit(1);
-            }
+            config.writeConfig();
 
             return config;
         }
@@ -88,7 +88,7 @@ public class Config {
                 "-Xmx" + Long.toString(this.max_ram) + "M",
                 "-cp", classpath,
                 mainClass,
-                "--username", App.currentUser,
+                "--username", this.user.getUsername(),
                 "--gameDir", instance.Dir().toString(),
                 "--assetsDir", App.ASSETS_DIR.toString(),
                 "--assetIndex", client.assets,
