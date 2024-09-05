@@ -3,7 +3,6 @@
 package com.example.SinLauncher;
 
 import javafx.application.Application;
-import javafx.concurrent.Worker;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -17,7 +16,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class JavaFX extends Application {
-
     private WebView webView;
     private WebEngine webEngine;
     private BorderPane root;
@@ -83,12 +81,6 @@ public class JavaFX extends Application {
     private void loadPage(String page, String css) {
         webEngine.load(getClass().getResource(page).toExternalForm());
         webEngine.setUserStyleSheetLocation(getClass().getResource(css).toExternalForm());
-    
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
-                webEngine.executeScript("window.currentUser = '" + username + "';");
-            }
-        });
     }
 
     public static void main(String[] args) {
