@@ -221,21 +221,7 @@ public class Instance {
         Path path = this.Dir().resolve("config.json");
 
         try {
-            Config config = App.GSON.fromJson(Files.readString(path), Config.class);
-
-            if (config.java == null)
-                config.java = App.CONFIG.java;
-
-            if (config.min_ram == 0)
-                config.min_ram = App.CONFIG.min_ram;
-
-            if (config.max_ram == 0)
-                config.max_ram = App.CONFIG.max_ram;
-
-            if (config.user == null)
-                config.user = App.CONFIG.user;
-
-            return config;
+            return Config.getConfig(path);
         } catch (IOException _e) {
             return App.CONFIG;
         }

@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.example.SinLauncher.App;
 import com.example.SinLauncher.SinLauncherEntites.User;
@@ -77,14 +78,14 @@ public class Accounts {
      * gets a {@link User} from {@code this.users} with username {@code username}
      * returns null if no such a user
      */
-    public User getUser(String username) {
+    public User getUser(String username) throws NoSuchAccountException {
         List<User> users = this.users;
 
         for (User user : users)
             if (user.getUsername().equals(username))
                 return user;
 
-        return null;
+        throw new NoSuchAccountException(username, "couldn't get user because it doesn't exist");
     }
 
     /**
@@ -100,7 +101,12 @@ public class Accounts {
     }
 
     public User getDefaultUser() {
-        return this.getUser(this.defaultUser);
+        try {
+            return this.getUser(this.defaultUser);
+        } catch (NoSuchAccountException _e) {
+            App.LOGGER.log(Level.SEVERE, "FAILED GETTING DEFAULT USER PANIC!");
+            return null;
+        }
     }
 
     /**

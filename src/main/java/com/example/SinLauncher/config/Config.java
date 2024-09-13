@@ -17,20 +17,30 @@ import com.example.SinLauncher.SinLauncherEntites.Os;
 import com.example.SinLauncher.SinLauncherEntites.User;
 import com.example.SinLauncher.json.Accounts;
 import com.example.SinLauncher.json.Client;
-import com.google.gson.Gson;
+import com.example.SinLauncher.json.Accounts.NoSuchAccountException;
 import com.sun.management.OperatingSystemMXBean;
 
 @Configuration
 public class Config {
-    public static final Path PATH = Paths.get(App.DIR, "config.json");
+    public static final Path MAIN_PATH = Paths.get(App.DIR, "config.json");
 
-    public long min_ram;
-    public long max_ram;
-    public Java java;
-    public User user;
+    // String so Gson doesnt cry :(
+    private String path;
+    private long min_ram;
+    private long max_ram;
+    private Java java;
+    private User user;
 
-    // The default config
-    public Config() throws IOException {
+    /** retrives a Config from path */
+    public static Config getConfig(Path path) throws IOException {
+        Config config = App.GSON.fromJson(Files.readString(path), Config.class);
+        config.path = path.toString();
+
+        return config;
+    }
+
+    /** The default config */
+    private Config() throws IOException {
         OperatingSystemMXBean os = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
         long total = os.getTotalMemorySize();
 
@@ -39,19 +49,65 @@ public class Config {
 
         this.java = Java.getAvailableJavaCups()[0];
         this.user = Accounts.readAccounts().getDefaultUser();
+        this.path = MAIN_PATH.toString();
     }
 
-    public void writeConfig() throws IOException {
+    public long getMinRam() {
+        if (this.min_ram == 0)
+            return App.CONFIG.min_ram;
+        return this.min_ram;
+    }
+
+    public long getMaxRam() {
+        if (this.min_ram == 0)
+            return App.CONFIG.max_ram;
+        return this.max_ram;
+    }
+
+    public Java getJava() {
+        if (this.java == null)
+            return App.CONFIG.java;
+        return this.java;
+    }
+
+    public User getUser() {
+        if (this.user == null)
+            return App.CONFIG.user;
+        return this.user;
+    }
+
+    private void writeConfig() throws IOException {
         String json = App.GSON.toJson(this);
 
-        Files.writeString(PATH, json);
+        Files.writeString(Paths.get(path), json);
     }
 
-    public static Config readConfig() throws IOException {
-        try {
-            System.out.println("Config & App.DIR Path: " + PATH);
+    public void setMinRam(long min_ram) throws IOException {
+        this.min_ram = min_ram;
+        this.writeConfig();
+    }
 
-            return new Gson().fromJson(Files.readString(PATH), Config.class);
+    public void setMaxRam(long max_ram) throws IOException {
+        this.max_ram = max_ram;
+        this.writeConfig();
+    }
+
+    public void setJava(Java java) throws IOException {
+        this.java = java;
+        this.writeConfig();
+    }
+
+    public void setUser(String username) throws IOException, NoSuchAccountException {
+        User user = Accounts.readAccounts().getUser(username);
+        this.user = user;
+        this.writeConfig();
+    }
+
+    public static Config readMainConfig() throws IOException {
+        try {
+            System.out.println("Config & App.DIR Path: " + MAIN_PATH);
+
+            return Config.getConfig(MAIN_PATH);
         } catch (NoSuchFileException _e) {
             Config config = new Config();
 
@@ -83,12 +139,12 @@ public class Config {
         // TODO: Use client.arguments instead
         // TODO: Account arguments...
         ProcessBuilder javaProcess = new ProcessBuilder(
-                this.java.path,
-                "-Xms" + Long.toString(this.min_ram) + "M",
-                "-Xmx" + Long.toString(this.max_ram) + "M",
+                this.getJava().path,
+                "-Xms" + Long.toString(this.getMinRam()) + "M",
+                "-Xmx" + Long.toString(this.getMaxRam()) + "M",
                 "-cp", classpath,
                 mainClass,
-                "--username", this.user.getUsername(),
+                "--username", this.getUser().getUsername(),
                 "--gameDir", instance.Dir().toString(),
                 "--assetsDir", App.ASSETS_DIR.toString(),
                 "--assetIndex", client.assets,

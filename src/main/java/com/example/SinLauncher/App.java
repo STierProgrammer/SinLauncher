@@ -80,7 +80,7 @@ public class App {
 
         try {
             App.initialize();
-            CONFIG = Config.readConfig();
+            CONFIG = Config.readMainConfig();
         } catch (IOException e) {
             LOGGER.info("Failed to initialize the Launcher");
             System.exit(1);
@@ -222,7 +222,7 @@ public class App {
         try {
             Manifest manifest = Manifest.readManifest();
 
-            System.out.println(CONFIG.max_ram);
+            System.out.println(CONFIG.getMaxRam());
             System.out.println(manifest.latest.release);
 
             var cups = Java.getAvailableJavaCups();
