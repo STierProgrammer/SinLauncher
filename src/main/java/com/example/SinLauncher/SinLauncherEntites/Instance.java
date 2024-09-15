@@ -217,13 +217,13 @@ public class Instance {
      * reads the instance config, desrializes it and returns it or simply returns
      * {@code App.CONFIG}
      */
-    public Config getConfig() {
+    public Config getConfig() throws IOException {
         Path path = this.Dir().resolve("config.json");
 
         try {
             return Config.getConfig(path);
         } catch (IOException _e) {
-            return App.CONFIG;
+            return new Config(path);
         }
     }
 

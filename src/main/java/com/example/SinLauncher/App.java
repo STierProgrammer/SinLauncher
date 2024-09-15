@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -227,8 +228,26 @@ public class App {
 
             var cups = Java.getAvailableJavaCups();
 
+            Instance instance = null;
+            try {
+                instance = Instance.createInstance("old", "1.6.4");
+            } catch (InstanceAlreadyExistsException _e) {
+                instance = Instance.getInstance("old");
+            }
+
             for (Java cup : cups)
                 System.out.println(cup.version + ": " + cup.path);
+
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("enter the index of the java cup you want to use to launch instance `old`: ");
+
+            int i = scanner.nextInt();
+            scanner.close();
+
+            instance.getConfig().setJava(cups[i]);
+            instance.install();
+            instance.launch();
 
             // @Seb dont CHANGE
             intallationManager("test", "1.21");

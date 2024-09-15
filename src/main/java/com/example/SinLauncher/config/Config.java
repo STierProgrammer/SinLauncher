@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -30,6 +31,17 @@ public class Config {
     private long max_ram;
     private Java java;
     private User user;
+
+    /** creates a new null config at path */
+    public Config(Path path) throws IOException {
+        this.path = path.toString();
+        this.max_ram = 0;
+        this.min_ram = 0;
+        this.java = null;
+        this.user = null;
+
+        this.writeConfig();
+    }
 
     /** retrives a Config from path */
     public static Config getConfig(Path path) throws IOException {
@@ -79,7 +91,7 @@ public class Config {
     private void writeConfig() throws IOException {
         String json = App.GSON.toJson(this);
 
-        Files.writeString(Paths.get(path), json);
+        Files.writeString(Paths.get(path), json, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
     }
 
     public void setMinRam(long min_ram) throws IOException {
@@ -140,6 +152,7 @@ public class Config {
         // TODO: Account arguments...
         ProcessBuilder javaProcess = new ProcessBuilder(
                 this.getJava().path,
+                "-Djava.library.path=" + instance.Dir().resolve(".natives"),
                 "-Xms" + Long.toString(this.getMinRam()) + "M",
                 "-Xmx" + Long.toString(this.getMaxRam()) + "M",
                 "-cp", classpath,
