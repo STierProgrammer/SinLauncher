@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,16 +59,16 @@ public class App {
 
         String arch = System.getProperty("os.arch").toLowerCase();
 
-        if (arch == "amd64")
+        if (arch.equals("amd64"))
             ARCH = Arch.X86_64;
 
-        else if (arch == "aarch64")
+        else if (arch.equals("aarch64"))
             ARCH = Arch.Arm64;
 
-        else if (arch == "arm")
+        else if (arch.equals("arm"))
             ARCH = Arch.Arm;
 
-        else if (arch == "x86")
+        else if (arch.equals("x86"))
             ARCH = Arch.X86;
 
         else
@@ -135,62 +134,90 @@ public class App {
         LOGGER.info("Launcher initialized!");
     }
 
-    public static void intallationManager(String installationName, String version) throws IOException {
+    public static void intallationManager(String installationName, String version, Java[] cups, int _cups_arg) throws IOException {
         try {
             Instance.createInstance(installationName, version);
-
+    
             Instance createdInstance = Instance.getInstance(installationName);
-
+    
             SwingUtilities.invokeLater(() -> {
                 int dialogResult = JOptionPane.showConfirmDialog(null,
                         "Warning: 1GB of data is about to be installed! Do you want to continue?",
                         "Confirm Installation", JOptionPane.YES_NO_OPTION);
-
+    
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     try {
+                        LOGGER.info("Starting installation for instance: " + installationName);
+                        
                         createdInstance.install();
+                        
+                        LOGGER.info("Installation completed for instance: " + installationName);
+                        
                         JOptionPane.showMessageDialog(null,
                                 "Installation is complete!",
                                 "Installation Complete",
                                 JOptionPane.INFORMATION_MESSAGE);
-                    } catch (IOException e) {
-                        LOGGER.info(e.getLocalizedMessage());
+                    } 
+                    catch (IOException e) {
+                        LOGGER.log(Level.SEVERE, "Installation error: ", e);
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null,
+                    JOptionPane
+                        .showMessageDialog
+                            (
+                            null,
                             "Installation has been cancelled!",
                             "Installation Cancelled",
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.INFORMATION_MESSAGE
+                            );
                 }
             });
-
+    
         } catch (InstanceAlreadyExistsException e) {
-            LOGGER.info(e.getMessage());
-
+            LOGGER.info("Instance already exists: " + e.getMessage());
+    
             SwingUtilities.invokeLater(() -> {
                 Instance existingInstance = Instance.getInstance(installationName);
-
+    
                 if (existingInstance != null) {
                     try {
+                        if (_cups_arg < 0 || _cups_arg >= cups.length) {
+                            LOGGER.severe("Invalid index for Java cups: " + _cups_arg);
+
+                            return;
+                        }
+
+                        LOGGER.info("Setting Java configuration and launching instance: " + installationName);
+
+                        existingInstance.getConfig().setJava(cups[_cups_arg]);
                         existingInstance.install();
                         existingInstance.launch();
 
-                        JOptionPane.showMessageDialog(null,
+                        LOGGER.info("Instance launched successfully: " + installationName);
+
+                        JOptionPane
+                            .showMessageDialog
+                                (
+                                null,
                                 "Instance has been launched successfully!",
                                 "Instance launched",
-                                JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.INFORMATION_MESSAGE
+                                );
+
                     } catch (IOException __e) {
-                        LOGGER.info(__e.getMessage());
+                        LOGGER.log(Level.SEVERE, "Launch error: ", __e);
                     }
-                } else {
-                    System.out.println("Failed to retrieve the instance for launching.");
+                } 
+                else {
+                    LOGGER.warning("Failed to retrieve the instance for launching.");
                 }
             });
-
+    
         } catch (InvaildInstanceVersionException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.log(Level.SEVERE, "Invalid instance version: ", e);
         }
     }
+    
 
     public static void launchingManager(String installationName) throws IOException {
         Instance existingInstance = Instance.getInstance(installationName);
@@ -228,29 +255,7 @@ public class App {
 
             var cups = Java.getAvailableJavaCups();
 
-            Instance instance = null;
-            try {
-                instance = Instance.createInstance("old", "1.6.4");
-            } catch (InstanceAlreadyExistsException _e) {
-                instance = Instance.getInstance("old");
-            }
-
-            for (Java cup : cups)
-                System.out.println(cup.version + ": " + cup.path);
-
-            Scanner scanner = new Scanner(System.in);
-
-            System.out.print("enter the index of the java cup you want to use to launch instance `old`: ");
-
-            int i = scanner.nextInt();
-            scanner.close();
-
-            instance.getConfig().setJava(cups[i]);
-            instance.install();
-            instance.launch();
-
-            // @Seb dont CHANGE
-            intallationManager("test", "1.21");
+            intallationManager("test-912139", "1.6.4", cups, 2);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
