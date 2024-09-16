@@ -189,21 +189,9 @@ public class App {
 
                         LOGGER.info("Setting Java configuration and launching instance: " + installationName);
 
-                        existingInstance.getConfig().setJava(cups[_cups_arg]);
-                        existingInstance.install();
-                        existingInstance.launch();
-
-                        LOGGER.info("Instance launched successfully: " + installationName);
-
-                        JOptionPane
-                            .showMessageDialog
-                                (
-                                null,
-                                "Instance has been launched successfully!",
-                                "Instance launched",
-                                JOptionPane.INFORMATION_MESSAGE
-                                );
-
+                            existingInstance.getConfig().setJava(cups[_cups_arg]);
+                            existingInstance.install();
+                            existingInstance.launch();
                     } catch (IOException __e) {
                         LOGGER.log(Level.SEVERE, "Launch error: ", __e);
                     }
