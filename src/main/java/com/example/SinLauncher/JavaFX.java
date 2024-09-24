@@ -2,8 +2,6 @@
 
 package com.example.SinLauncher;
 
-import com.example.SinLauncher.config.Config;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -23,7 +21,8 @@ public class JavaFX extends Application {
     private BorderPane root;
     private Scene scene;
 
-    private String currentUserName;
+    private String currentUserName = App.user.getUsername();
+    private String currentUserPassword = App.user.getEmail();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -70,10 +69,12 @@ public class JavaFX extends Application {
 
     private void loadProfilePage() {
         loadPage("/Pages/profile.html", "/css/profile.css");
+        
         webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
             if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
-                // Call JavaScript function to set the username
                 webEngine.executeScript("document.getElementById('username').innerText = '" + currentUserName + "';");
+                
+                webEngine.executeScript("document.getElementById('password').innerText = '" + currentUserPassword + "';");
             }
         });
     }

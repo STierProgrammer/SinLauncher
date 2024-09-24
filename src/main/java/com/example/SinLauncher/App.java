@@ -12,12 +12,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.springframework.security.core.userdetails.User;
+import com.example.SinLauncher.SinLauncherEntites.User;
 
 import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
-import com.example.SinLauncher.SinLauncherEntites.User;
 import com.example.SinLauncher.SinLauncherEntites.Instance.InstanceAlreadyExistsException;
 import com.example.SinLauncher.SinLauncherEntites.Instance.InvaildInstanceVersionException;
 import com.example.SinLauncher.config.Config;
@@ -46,6 +45,8 @@ public class App {
     public static final Arch ARCH;
 
     public static Config CONFIG;
+
+    static User user = new User("0", "SebSucks", "12345678", "Haxxers@gmail.com", true, true);
 
     static {
         String os = System.getProperty("os.name").toLowerCase();
@@ -243,12 +244,15 @@ public class App {
 
             intallationManager("test-912139", "1.6.4", cups, 2);
 
-            User user = new User("0", "SebSucks", "1234567890", "SebIStheWorst@DONTCHANGETESTVERSIONNAMES.org", true,
-                    true);
+            
+            
             Accounts.addUser(user);
             Accounts.readAccounts().getUser(user.getUsername());
+            
             App.CONFIG.setUser(user.getUsername());
+            
             Accounts.removeUser(user.getUsername());
+
             App.CONFIG.setUser(Accounts.readAccounts().getDefaultUser().getUsername());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
