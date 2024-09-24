@@ -15,10 +15,12 @@ import javax.swing.SwingUtilities;
 import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
+import com.example.SinLauncher.SinLauncherEntites.User;
 import com.example.SinLauncher.SinLauncherEntites.Instance.InstanceAlreadyExistsException;
 import com.example.SinLauncher.SinLauncherEntites.Instance.InvaildInstanceVersionException;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.config.Java;
+import com.example.SinLauncher.json.Accounts;
 import com.example.SinLauncher.json.Client;
 import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
@@ -134,51 +136,49 @@ public class App {
         LOGGER.info("Launcher initialized!");
     }
 
-    public static void intallationManager(String installationName, String version, Java[] cups, int _cups_arg) throws IOException {
+    public static void intallationManager(String installationName, String version, Java[] cups, int _cups_arg)
+            throws IOException {
         try {
             Instance.createInstance(installationName, version);
-    
+
             Instance createdInstance = Instance.getInstance(installationName);
-    
+
             SwingUtilities.invokeLater(() -> {
                 int dialogResult = JOptionPane.showConfirmDialog(null,
                         "Warning: 1GB of data is about to be installed! Do you want to continue?",
                         "Confirm Installation", JOptionPane.YES_NO_OPTION);
-    
+
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     try {
                         LOGGER.info("Starting installation for instance: " + installationName);
-                        
+
                         createdInstance.install();
-                        
+
                         LOGGER.info("Installation completed for instance: " + installationName);
-                        
+
                         JOptionPane.showMessageDialog(null,
                                 "Installation is complete!",
                                 "Installation Complete",
                                 JOptionPane.INFORMATION_MESSAGE);
-                    } 
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         LOGGER.log(Level.SEVERE, "Installation error: ", e);
                     }
                 } else {
                     JOptionPane
-                        .showMessageDialog
-                            (
-                            null,
-                            "Installation has been cancelled!",
-                            "Installation Cancelled",
-                            JOptionPane.INFORMATION_MESSAGE
-                            );
+                            .showMessageDialog(
+                                    null,
+                                    "Installation has been cancelled!",
+                                    "Installation Cancelled",
+                                    JOptionPane.INFORMATION_MESSAGE);
                 }
             });
-    
+
         } catch (InstanceAlreadyExistsException e) {
             LOGGER.info("Instance already exists: " + e.getMessage());
-    
+
             SwingUtilities.invokeLater(() -> {
                 Instance existingInstance = Instance.getInstance(installationName);
-    
+
                 if (existingInstance != null) {
                     try {
                         if (_cups_arg < 0 || _cups_arg >= cups.length) {
@@ -189,23 +189,21 @@ public class App {
 
                         LOGGER.info("Setting Java configuration and launching instance: " + installationName);
 
-                            existingInstance.getConfig().setJava(cups[_cups_arg]);
-                            existingInstance.install();
-                            existingInstance.launch();
+                        existingInstance.getConfig().setJava(cups[_cups_arg]);
+                        existingInstance.install();
+                        existingInstance.launch();
                     } catch (IOException __e) {
                         LOGGER.log(Level.SEVERE, "Launch error: ", __e);
                     }
-                } 
-                else {
+                } else {
                     LOGGER.warning("Failed to retrieve the instance for launching.");
                 }
             });
-    
+
         } catch (InvaildInstanceVersionException e) {
             LOGGER.log(Level.SEVERE, "Invalid instance version: ", e);
         }
     }
-    
 
     public static void launchingManager(String installationName) throws IOException {
         Instance existingInstance = Instance.getInstance(installationName);
@@ -232,8 +230,6 @@ public class App {
         System.out.println(GSON.toJson(client));
     }
 
-    public static final Path CURRENT_USER_FILE = Paths.get(App.DIR, "currentUser.txt");
-
     public static void main(String[] args) {
         try {
             Manifest manifest = Manifest.readManifest();
@@ -244,6 +240,14 @@ public class App {
             var cups = Java.getAvailableJavaCups();
 
             intallationManager("test-912139", "1.6.4", cups, 2);
+
+            User user = new User("0", "SebSucks", "1234567890", "SebIStheWorst@DONTCHANGETESTVERSIONNAMES.org", true,
+                    true);
+            Accounts.addUser(user);
+            Accounts.readAccounts().getUser(user.getUsername());
+            App.CONFIG.setUser(user.getUsername());
+            Accounts.removeUser(user.getUsername());
+            App.CONFIG.setUser(Accounts.readAccounts().getDefaultUser().getUsername());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
