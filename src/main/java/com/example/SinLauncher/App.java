@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.springframework.security.core.userdetails.User;
+
 import com.example.SinLauncher.SinLauncherEntites.Arch;
 import com.example.SinLauncher.SinLauncherEntites.Instance;
 import com.example.SinLauncher.SinLauncherEntites.Os;
@@ -19,6 +21,7 @@ import com.example.SinLauncher.SinLauncherEntites.Instance.InstanceAlreadyExists
 import com.example.SinLauncher.SinLauncherEntites.Instance.InvaildInstanceVersionException;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.config.Java;
+import com.example.SinLauncher.json.Accounts;
 import com.example.SinLauncher.json.Client;
 import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
@@ -82,7 +85,7 @@ public class App {
             App.initialize();
             CONFIG = Config.readMainConfig();
         } catch (IOException e) {
-            LOGGER.info("Failed to initialize the Launcher");
+            LOGGER.info("Failed to initialize the Launcher. ERROR: " + e.getMessage());
             System.exit(1);
         }
     }
@@ -232,18 +235,16 @@ public class App {
         System.out.println(GSON.toJson(client));
     }
 
-    public static final Path CURRENT_USER_FILE = Paths.get(App.DIR, "currentUser.txt");
-
     public static void main(String[] args) {
         try {
             Manifest manifest = Manifest.readManifest();
 
-            System.out.println(CONFIG.getMaxRam());
-            System.out.println(manifest.latest.release);
+            System.out.println("Max Ram: " + CONFIG.getMaxRam());
+            System.out.println("Latest Minecraft Version: " + manifest.latest.release);
 
             var cups = Java.getAvailableJavaCups();
-
-            intallationManager("test-912139", "1.6.4", cups, 2);
+            
+            intallationManager("test-91213923442", "1.6.4", cups, 2);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }

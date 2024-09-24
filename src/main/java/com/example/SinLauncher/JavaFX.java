@@ -2,6 +2,8 @@
 
 package com.example.SinLauncher;
 
+import com.example.SinLauncher.config.Config;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
@@ -21,6 +23,8 @@ public class JavaFX extends Application {
     private BorderPane root;
     private Scene scene;
 
+    private String currentUserName;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         webView = new WebView();
@@ -39,7 +43,7 @@ public class JavaFX extends Application {
         btnSettings.setOnAction(e -> loadPage("/Pages/settings.html", "/css/settings.css"));
         btnAbout.setOnAction(e -> loadPage("/Pages/about.html", "/css/about.css"));
         btnMods.setOnAction(e -> loadPage("/Pages/mods.html", "/css/mods.css"));
-        btnProfile.setOnAction(e -> loadPage("/Pages/profile.html", "/css/profile.css"));
+        btnProfile.setOnAction(e -> loadProfilePage());
         btnServers.setOnAction(e -> loadPage("/Pages/servers.html", "/css/servers.css"));
 
         VBox sidebar = new VBox(15, btnPlay, btnSettings, btnAbout, btnMods, btnProfile, btnServers);
@@ -62,6 +66,16 @@ public class JavaFX extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("SinLauncher");
         primaryStage.show();
+    }
+
+    private void loadProfilePage() {
+        loadPage("/Pages/profile.html", "/css/profile.css");
+        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+            if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
+                // Call JavaScript function to set the username
+                webEngine.executeScript("document.getElementById('username').innerText = '" + currentUserName + "';");
+            }
+        });
     }
 
     private Button createStyledButton(String text) {
