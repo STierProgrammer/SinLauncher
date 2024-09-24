@@ -1,35 +1,40 @@
-/* 
-    play.css
-*/
-
-body {
-    background-color: var(--background-color);
-    font-family: var(--font-family);
-    color: var(--text-color);
-    padding: 40px;
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: url('https://cdn.pixabay.com/photo/2017/02/10/00/10/minecraft-2053886_1280.png') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-header {
+.container {
+    width: 400px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
     text-align: center;
-    margin-bottom: 30px;
 }
 
-h1 {
-    font-size: 42px;
-    color: var(--primary-color);
-    margin-bottom: 20px;
+select, button {
+    padding: 10px;
+    font-size: 18px;
+    margin-top: 10px;
+    width: 100%;
 }
 
 button {
-    background-color: var(--primary-color);
-    color: #fff;
-    font-size: 18px;
-    padding: 10px 20px;
+    background-color: #32cd32;
+    color: white;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #e67e22;
+    background-color: #228b22;
 }

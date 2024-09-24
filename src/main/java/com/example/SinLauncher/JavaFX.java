@@ -1,8 +1,12 @@
-// JavaFX.java
-
 package com.example.SinLauncher;
 
+import java.io.IOException;
+
+import com.example.SinLauncher.config.Java;
+import com.example.SinLauncher.json.Accounts;
+
 import javafx.application.Application;
+import javafx.concurrent.Worker;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -14,6 +18,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 public class JavaFX extends Application {
     private WebView webView;
@@ -61,7 +66,6 @@ public class JavaFX extends Application {
         scene = new Scene(root, screenWidth * 0.8, screenHeight * 0.8);
 
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/assets/images/SinLauncher.png")));
-
         primaryStage.setScene(scene);
         primaryStage.setTitle("SinLauncher");
         primaryStage.show();
@@ -79,6 +83,52 @@ public class JavaFX extends Application {
         });
     }
 
+    private void loadPage(String page, String css) {
+        webEngine.load(getClass().getResource(page).toExternalForm());
+        webEngine.setUserStyleSheetLocation(getClass().getResource(css).toExternalForm());
+    
+        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                JSObject window = (JSObject) webEngine.executeScript("window");
+
+                window.setMember("JavaFXApp", this); 
+
+                System.out.println("JavaFXApp object exposed to JavaScript");
+            }
+        });
+    }
+
+    public void selectVersion(String version) {
+        System.out.println("Selected Version: " + version);
+
+        try {
+            Java[] javaCups = Java.getAvailableJavaCups();
+            int cupsArg = 0;
+            App.intallationManager("MyInstallation", version, javaCups, cupsArg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        try {
+            Accounts.addUser(App.user);
+            Accounts.readAccounts().getUser(App.user.getUsername());
+            
+            App.CONFIG.setUser(App.user.getUsername());
+            
+            Accounts.removeUser(App.user.getUsername());
+    
+            App.CONFIG.setUser(Accounts.readAccounts().getDefaultUser().getUsername());
+    
+            App.launchingManager("MyInstallation");
+        } catch (Accounts.NoSuchAccountException e) {
+            System.err.println("No such account exists during user operation: " + e.getMessage());
+        } catch (IOException _e) {
+            _e.printStackTrace();
+        }
+    }
+
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setStyle(
@@ -89,11 +139,6 @@ public class JavaFX extends Application {
                         "-fx-padding: 12px 24px;" +
                         "-fx-background-radius: 6px;");
         return button;
-    }
-
-    private void loadPage(String page, String css) {
-        webEngine.load(getClass().getResource(page).toExternalForm());
-        webEngine.setUserStyleSheetLocation(getClass().getResource(css).toExternalForm());
     }
 
     public static void main(String[] args) {

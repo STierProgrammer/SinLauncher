@@ -21,7 +21,6 @@ import com.example.SinLauncher.SinLauncherEntites.Instance.InstanceAlreadyExists
 import com.example.SinLauncher.SinLauncherEntites.Instance.InvaildInstanceVersionException;
 import com.example.SinLauncher.config.Config;
 import com.example.SinLauncher.config.Java;
-import com.example.SinLauncher.json.Accounts;
 import com.example.SinLauncher.json.Client;
 import com.example.SinLauncher.json.Manifest;
 import com.google.gson.Gson;
@@ -243,17 +242,6 @@ public class App {
             var cups = Java.getAvailableJavaCups();
 
             intallationManager("test-912139", "1.6.4", cups, 2);
-
-            
-            
-            Accounts.addUser(user);
-            Accounts.readAccounts().getUser(user.getUsername());
-            
-            App.CONFIG.setUser(user.getUsername());
-            
-            Accounts.removeUser(user.getUsername());
-
-            App.CONFIG.setUser(Accounts.readAccounts().getDefaultUser().getUsername());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Exception: ", e);
         }
